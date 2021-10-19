@@ -1,4 +1,3 @@
-import 'package:crypto_lab/View/home/home_screen.dart';
 import 'package:flutter/material.dart';
 
 class NavBar extends StatelessWidget {
@@ -36,26 +35,31 @@ class NavBar extends StatelessWidget {
         ListTile(
           leading: const Icon(Icons.home),
           title: const Text('Home'),
-          // TODO Route 1
-          onTap: () {
-            Navigator.pop(context);
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => const HomeScreen()));
-          },
+          onTap: () => _navigateToRoute(context, "/"),
         ),
         ListTile(
           leading: const Icon(Icons.list_alt),
           title: const Text('Krypto-Übersicht'),
-          // TODO Route 2
-          onTap: () => {},
+          onTap: () => _navigateToRoute(context, "/overview"),
         ),
         ListTile(
           leading: const Icon(Icons.favorite),
           title: const Text('Favoriten'),
-          // TODO Route 3
-          onTap: () => {},
+          onTap: () => _navigateToRoute(context, "/favorites"),
         ),
       ]),
     );
+  }
+
+  void _navigateToRoute(BuildContext context, String route) {
+    Navigator.pop(context);
+    // only push if not already on current page to prevent multiple identical
+    // instances on stack
+    if (ModalRoute
+        .of(context)
+        ?.settings
+        .name != route) {
+      Navigator.pushNamed(context, route);
+    }
   }
 }
