@@ -1,9 +1,11 @@
+import 'package:crypto_lab/View/home/news_list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreenBody extends StatelessWidget {
   // https://www.hicetnunc.xyz/objkt/278284
   final AssetImage backGroundImage = const AssetImage("assets/images/animated_background_image.gif");
+  // jpg alternative
   /* final NetworkImage backGroundImage = const NetworkImage(
       "https://now.northropgrumman.com/wp-content/uploads/sites/2/2018/03/thinkstockphotos-816838496_72dpi.jpg"
   ); */
@@ -33,6 +35,9 @@ class HomeScreenBody extends StatelessWidget {
           // logo
           Expanded(child:
             Image(image: imageLogo,alignment: Alignment.topCenter),
+          ),
+          const Expanded(child:
+            NewsList(),
           ),
         ]
     );
