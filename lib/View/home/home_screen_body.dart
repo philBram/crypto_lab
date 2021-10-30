@@ -4,13 +4,10 @@ import 'package:flutter/material.dart';
 
 class HomeScreenBody extends StatelessWidget {
   // https://www.hicetnunc.xyz/objkt/278284
-  final AssetImage backGroundImage = const AssetImage("assets/images/animated_background_image.gif");
-  // jpg alternative
-  /* final NetworkImage backGroundImage = const NetworkImage(
-      "https://now.northropgrumman.com/wp-content/uploads/sites/2/2018/03/thinkstockphotos-816838496_72dpi.jpg"
-  ); */
+  final String backGroundImage = "https://ipfs.io/ipfs/bafybeicass6d3ftqyfigxciwfysnzm4aobfjuk4zvtueenvqqpjo3p75ju";
+  final String backGroundImagePlaceholder = "assets/images/backGroundImagePlaceholder.jpg";
   // [logo_white.png, logo_white_simple.png] in assets/images
-  final AssetImage imageLogo = const AssetImage("assets/images/logo_white_simple.png");
+  final String imageLogo = "assets/images/logo_white_simple.png";
 
   const HomeScreenBody({Key? key}) : super(key: key);
 
@@ -20,8 +17,15 @@ class HomeScreenBody extends StatelessWidget {
       children: [
         // BackgroundImage for the hole screen
         SizedBox(
-          child: Image(image: backGroundImage, fit: BoxFit.cover),
+          child: FadeInImage.assetNetwork(
+            // show placeholder as long as network image is not loaded yet
+            placeholder: backGroundImagePlaceholder,
+            image: backGroundImage,
+            fadeInDuration: const Duration(milliseconds: 1),
+            fit: BoxFit.cover,
+          ),
           height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
         ),
         _createStackElements(),
       ],
@@ -34,7 +38,7 @@ class HomeScreenBody extends StatelessWidget {
         children: [
           // logo
           Expanded(child:
-            Image(image: imageLogo,alignment: Alignment.topCenter),
+            Image.asset(imageLogo, alignment: Alignment.topCenter),
           ),
           const Expanded(child:
             NewsList(),
