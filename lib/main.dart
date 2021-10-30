@@ -1,4 +1,8 @@
+import 'dart:io';
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'View/custom_colors.dart';
 import 'View/home/home_screen.dart';
@@ -6,7 +10,23 @@ import 'View/overview/overview_screen.dart';
 import 'View/favorites/favorites_screen.dart';
 
 void main() {
+  /*
+  adding certificate from https://ipfs.io/ipfs/bafybeicass6d3ftqyfigxciwfysnzm4aobfjuk4zvtueenvqqpjo3p75ju
+  (backGroundImage for home_screen_body.dart) to the trusted certificates of this project to prevent
+  “HandshakeException: Handshake error in client (OS Error: CERTIFICATE_VERIFY_FAILED: certificate has expired(handshake.cc:359))”
+  solution from https://stackoverflow.com/questions/49638183/flutter-image-network-throws-handshakeexception
+   */
+  addCertificate();
+
   runApp(const CryptoLab());
+}
+
+void addCertificate() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  ByteData data = await
+  rootBundle.load('assets/raw/certificate.pem');
+  SecurityContext context = SecurityContext.defaultContext;
+  context.setTrustedCertificatesBytes(data.buffer.asUint8List());
 }
 
 class CryptoLab extends StatelessWidget {
