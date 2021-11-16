@@ -10,9 +10,9 @@ class OverViewScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      endDrawer: NavBar(),
-      appBar: MyAppBar(
+    return Scaffold(
+      endDrawer: const NavBar(),
+      appBar: const MyAppBar(
         pageTitle: "Übersicht",
       ),
       body: OverViewScreenBody(),

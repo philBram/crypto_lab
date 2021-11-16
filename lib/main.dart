@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import 'Model/crypto_manager.dart';
 import 'View/custom_colors.dart';
 import 'View/home/home_screen.dart';
 import 'View/overview/overview_screen.dart';
@@ -17,6 +18,7 @@ void main() {
   solution from https://stackoverflow.com/questions/49638183/flutter-image-network-throws-handshakeexception
    */
   addCertificate();
+  CryptoManager().initializeExampleCryptos();
 
   runApp(const CryptoLab());
 }
@@ -35,6 +37,7 @@ class CryptoLab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Crypto Lab',
       theme: ThemeData(
         primaryColor: CryptoLabColors.cryptoLabBackground,
