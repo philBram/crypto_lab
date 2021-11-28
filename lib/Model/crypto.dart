@@ -1,22 +1,31 @@
-import 'package:flutter/material.dart';
+import 'package:json_annotation/json_annotation.dart';
 
+part 'crypto.g.dart';
+
+// generate crypto.g.dart with "flutter pub run build_runner build"
+// build_runner, json_annotation, json_annotation as dependencies needed
+@JsonSerializable()
 class Crypto {
+  final String id;
+  final String symbol;
+  final String name;
+  final String image;
+  final double current_price;
+  final double price_change_24h;
+  final double price_change_percentage_24h;
 
-  String id, name, nameShort;
-  final String _image;
+  Crypto({
+    required this.id,
+    required this.symbol,
+    required this.name,
+    required this.image,
+    required this.current_price,
+    required this.price_change_24h,
+    required this.price_change_percentage_24h
+  });
 
-  /// Euro
-  double buyPrice;
-  /// Euro
-  double marketCap;
+  factory Crypto.fromJson(Map<String, dynamic> json) =>
+      _$CryptoFromJson(json);
 
-  Crypto(this.id, this.name, this.nameShort, this._image, this.buyPrice, this.marketCap);
-
-  Image get image {
-    if (_image.contains("http")) {
-      return Image.network(_image);
-    } else {
-      return Image.asset(_image);
-    }
-  }
+  Map<String, dynamic> toJson() => _$CryptoToJson(this);
 }
