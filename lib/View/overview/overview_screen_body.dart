@@ -1,4 +1,4 @@
-import 'package:crypto_lab/controller/coingecko_api_service.dart';
+import 'package:crypto_lab/controller/coin_overview_api_service.dart';
 import 'package:crypto_lab/Model/crypto.dart';
 import 'package:flutter/material.dart';
 
@@ -10,7 +10,7 @@ class OverViewScreenBody extends StatefulWidget {
 }
 
 class _OverViewScreenBody extends State<OverViewScreenBody> {
-  final CoinGeckoApiService _cryptoCoinsApi = CoinGeckoApiService();
+  final CoinOverviewApiService _cryptoCoinsApi = CoinOverviewApiService();
   late Future<List<Crypto>> _cryptoList;
 
   @override
@@ -23,8 +23,8 @@ class _OverViewScreenBody extends State<OverViewScreenBody> {
   @override
   Widget build(BuildContext context) {
     return RefreshIndicator(
-        onRefresh: _pullRefresh,
-        child: _createList(),
+      onRefresh: _pullRefresh,
+      child: _createList(),
     );
   }
 
@@ -32,8 +32,7 @@ class _OverViewScreenBody extends State<OverViewScreenBody> {
     // new API call and setState so that the Price change can get updated
     // CoinGecko update-rate about 1 min
     _cryptoList = _cryptoCoinsApi.getCrypto();
-    setState(() {
-    });
+    setState(() {});
   }
 
   Widget _createList() {
@@ -44,10 +43,9 @@ class _OverViewScreenBody extends State<OverViewScreenBody> {
           return ListView.builder(
             itemCount: snapshot.data.length,
             itemBuilder: (BuildContext context, int index) =>
-                _createListViewItems(context, index, snapshot.data),
+                _createListViewItems(context, snapshot.data[index]),
           );
-        }
-        else {
+        } else {
           return const Center(
             child: CircularProgressIndicator(),
           );
@@ -56,17 +54,17 @@ class _OverViewScreenBody extends State<OverViewScreenBody> {
     );
   }
 
-  Widget _createListViewItems(BuildContext context, int index,
-      List<Crypto> cryptos) {
+  Widget _createListViewItems(BuildContext context, Crypto crypto) {
     return Card(
       child: ListTile(
-        // TODO: implement onTap for crypto details
         onTap: () {
+          // pass tapped Crypto instance to the details-screen => check _generateRoute in main.dart
+          Navigator.of(context).pushNamed("/details", arguments: crypto);
         },
-        leading: Image.network(cryptos[index].image),
-        title: Text(cryptos[index].name),
-        subtitle: Text(cryptos[index].symbol),
-        trailing: Text(cryptos[index].current_price.toString() + ' €'),
+        leading: Image.network(crypto.image),
+        title: Text(crypto.name),
+        subtitle: Text(crypto.symbol),
+        trailing: Text(crypto.current_price.toString() + ' €'),
       ),
     );
   }

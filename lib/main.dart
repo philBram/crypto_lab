@@ -1,6 +1,8 @@
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:crypto_lab/Model/crypto.dart';
+import 'package:crypto_lab/View/details/details_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -16,12 +18,12 @@ void main() {
   “HandshakeException: Handshake error in client (OS Error: CERTIFICATE_VERIFY_FAILED: certificate has expired(handshake.cc:359))”
   solution from https://stackoverflow.com/questions/49638183/flutter-image-network-throws-handshakeexception
    */
-  addCertificate();
+  _addCertificate();
 
   runApp(const CryptoLab());
 }
 
-void addCertificate() async{
+void _addCertificate() async{
   WidgetsFlutterBinding.ensureInitialized();
   ByteData data = await
   rootBundle.load('assets/raw/certificate.pem');
@@ -44,11 +46,11 @@ class CryptoLab extends StatelessWidget {
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       initialRoute: "/",
-      onGenerateRoute: generateRoute,
+      onGenerateRoute: _generateRoute,
     );
   }
 
-  Route generateRoute(RouteSettings settings) {
+  Route _generateRoute(RouteSettings settings) {
     // settings.arguments can be used to pass arguments to the other screens
     switch (settings.name) {
       // settings has to be passed in so ModalRoute.of(context)?.settings.name
@@ -56,6 +58,19 @@ class CryptoLab extends StatelessWidget {
       case "/": return MaterialPageRoute(settings: settings, builder: (_) => const HomeScreen());
       case "/overview": return MaterialPageRoute(settings: settings, builder: (_) => const OverViewScreen());
       case "/favorites": return MaterialPageRoute(settings: settings, builder: (_) => const FavoritesScreen());
+      case "/details":
+        if (settings.arguments is Crypto) {
+          return MaterialPageRoute(settings: settings,
+              // pass tapped Crypto instance to the details-screen
+              builder: (_) => DetailsScreen(settings.arguments as Crypto));
+        }
+        else {
+          return MaterialPageRoute(settings: settings, builder: (_) => const Scaffold(
+              body: Center(
+                child: Text("There was no Coin selected"),
+              ),
+          ));
+        }
 
       default: return MaterialPageRoute(settings: settings, builder: (_) => Scaffold(
         body: Center(
