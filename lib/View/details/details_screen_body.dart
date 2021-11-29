@@ -53,6 +53,8 @@ class _DetailsScreenBody extends State<DetailsScreenBody> {
           " " +
           ohlc.open.toString() +
           " " +
+          ohlc.high.toString() +
+          " " +
           ohlc.low.toString() +
           " " +
           ohlc.close.toString()),
