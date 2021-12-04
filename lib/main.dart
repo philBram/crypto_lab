@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:crypto_lab/View/login/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -55,7 +56,7 @@ class CryptoLab extends StatelessWidget {
     switch (settings.name) {
       // settings has to be passed in so ModalRoute.of(context)?.settings.name
       // in nav_bar.dart can check if already on current page
-      case "/": return MaterialPageRoute(settings: settings, builder: (_) => const HomeScreen());
+      case "/": return MaterialPageRoute(settings: settings, builder: (_) => const LoginScreen());
       case "/overview": return MaterialPageRoute(settings: settings, builder: (_) => const OverViewScreen());
       case "/favorites": return MaterialPageRoute(settings: settings, builder: (_) => const FavoritesScreen());
 
