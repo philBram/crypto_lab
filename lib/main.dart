@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:crypto_lab/View/login/login_screen.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -11,7 +12,9 @@ import 'View/home/home_screen.dart';
 import 'View/overview/overview_screen.dart';
 import 'View/favorites/favorites_screen.dart';
 
-void main() {
+Future <void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   /*
   adding certificate from https://ipfs.io/ipfs/bafybeicass6d3ftqyfigxciwfysnzm4aobfjuk4zvtueenvqqpjo3p75ju
   (backGroundImage for home_screen_body.dart) to the trusted certificates of this project to prevent
@@ -56,7 +59,8 @@ class CryptoLab extends StatelessWidget {
     switch (settings.name) {
       // settings has to be passed in so ModalRoute.of(context)?.settings.name
       // in nav_bar.dart can check if already on current page
-      case "/": return MaterialPageRoute(settings: settings, builder: (_) => const LoginScreen());
+      case "/": return MaterialPageRoute(settings: settings, builder: (_) => LoginScreen());
+      case "/home": return MaterialPageRoute(settings: settings, builder: (_) => const HomeScreen());
       case "/overview": return MaterialPageRoute(settings: settings, builder: (_) => const OverViewScreen());
       case "/favorites": return MaterialPageRoute(settings: settings, builder: (_) => const FavoritesScreen());
 
