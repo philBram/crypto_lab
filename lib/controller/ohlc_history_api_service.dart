@@ -18,7 +18,7 @@ class OhlcHistoryApiService {
       // ForEach Ohlc Array value the num values are for:
       // 1. time (int)
       // 2. open (double)
-      // 3. high (double>
+      // 3. high (double)
       // 4. low (double)
       // 5. close (double)
       return _createOhlc(jsonOhlc);
