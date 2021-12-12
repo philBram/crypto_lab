@@ -14,7 +14,8 @@ class DetailsScreen extends StatelessWidget {
     return Scaffold(
       endDrawer: const NavBar(),
       appBar: MyAppBar(
-        pageTitle: _crypto.name,
+        // display "name not found" if crypto name is null
+        pageTitle: _crypto.name ?? "name not found",
       ),
       body: DetailsScreenBody(_crypto),
     );

@@ -6,21 +6,21 @@ part 'crypto.g.dart';
 // build_runner, json_annotation, json_annotation as dependencies needed
 @JsonSerializable()
 class Crypto {
-  final String id;
-  final String symbol;
-  final String name;
-  final String image;
-  final double current_price;
-  final double market_cap;
-  final double total_volume;
-  final double high_24h;
-  final double low_24h;
-  final double price_change_24h;
-  final double price_change_percentage_24h;
-  final double market_cap_change_24h;
-  final double market_cap_change_percentage_24h;
-  final double ath;
-  final double atl;
+  final String? id;
+  final String? symbol;
+  final String? name;
+  final String? image;
+  final double? current_price;
+  final double? market_cap;
+  final double? total_volume;
+  final double? high_24h;
+  final double? low_24h;
+  final double? price_change_24h;
+  final double? price_change_percentage_24h;
+  final double? market_cap_change_24h;
+  final double? market_cap_change_percentage_24h;
+  final double? ath;
+  final double? atl;
 
   Crypto({
     required this.id,

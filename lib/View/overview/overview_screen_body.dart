@@ -61,9 +61,11 @@ class _OverViewScreenBody extends State<OverViewScreenBody> {
           // pass tapped Crypto instance to the details-screen => check _generateRoute in main.dart
           Navigator.of(context).pushNamed("/details", arguments: crypto);
         },
-        leading: Image.network(crypto.image),
-        title: Text(crypto.name),
-        subtitle: Text(crypto.symbol),
+        // if crypto data is null => output a "not found" String instead, toString() on null will not throw an exception
+        leading: Image.network(crypto.image ??
+            "https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fwww.trendycovers.com%2Fcovers%2F1324229779.jpg&f=1&nofb=1"),
+        title: Text(crypto.name ?? "name not found"),
+        subtitle: Text(crypto.symbol ?? "symbol not found"),
         trailing: Text(crypto.current_price.toString() + ' €'),
       ),
     );

@@ -7,23 +7,24 @@ part of 'crypto.dart';
 // **************************************************************************
 
 Crypto _$CryptoFromJson(Map<String, dynamic> json) => Crypto(
-      id: json['id'] as String,
-      symbol: json['symbol'] as String,
-      name: json['name'] as String,
-      image: json['image'] as String,
-      current_price: (json['current_price'] as num).toDouble(),
-      market_cap: (json['market_cap'] as num).toDouble(),
-      total_volume: (json['total_volume'] as num).toDouble(),
-      high_24h: (json['high_24h'] as num).toDouble(),
-      low_24h: (json['low_24h'] as num).toDouble(),
-      price_change_24h: (json['price_change_24h'] as num).toDouble(),
+      id: json['id'] as String?,
+      symbol: json['symbol'] as String?,
+      name: json['name'] as String?,
+      image: json['image'] as String?,
+      current_price: (json['current_price'] as num?)?.toDouble(),
+      market_cap: (json['market_cap'] as num?)?.toDouble(),
+      total_volume: (json['total_volume'] as num?)?.toDouble(),
+      high_24h: (json['high_24h'] as num?)?.toDouble(),
+      low_24h: (json['low_24h'] as num?)?.toDouble(),
+      price_change_24h: (json['price_change_24h'] as num?)?.toDouble(),
       price_change_percentage_24h:
-          (json['price_change_percentage_24h'] as num).toDouble(),
-      market_cap_change_24h: (json['market_cap_change_24h'] as num).toDouble(),
+          (json['price_change_percentage_24h'] as num?)?.toDouble(),
+      market_cap_change_24h:
+          (json['market_cap_change_24h'] as num?)?.toDouble(),
       market_cap_change_percentage_24h:
-          (json['market_cap_change_percentage_24h'] as num).toDouble(),
-      ath: (json['ath'] as num).toDouble(),
-      atl: (json['atl'] as num).toDouble(),
+          (json['market_cap_change_percentage_24h'] as num?)?.toDouble(),
+      ath: (json['ath'] as num?)?.toDouble(),
+      atl: (json['atl'] as num?)?.toDouble(),
     );
 
 Map<String, dynamic> _$CryptoToJson(Crypto instance) => <String, dynamic>{

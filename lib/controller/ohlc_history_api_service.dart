@@ -4,7 +4,7 @@ import 'package:crypto_lab/Model/ohlc.dart';
 import 'package:http/http.dart' as http;
 
 class OhlcHistoryApiService {
-  // https://www.coingecko.com/en/api/documentation?
+  // https://www.coingecko.com/en/api/documentation
   final String _baseUrl = "https://api.coingecko.com/api/v3/coins/";
   final String _targetCurrency = "vs_currency=eur";
   final String _dateUpTo = "&days=365";
