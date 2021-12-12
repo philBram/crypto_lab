@@ -15,7 +15,7 @@ class LoginScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return FlutterLogin(
       //title: 'Crypto-Lab',
-      logo: 'assets/images/logo_white.png',
+      logo: 'assets/images/logo_white_simple.png',
       messages: LoginMessages(
           userHint: 'E-Mail',
           passwordHint: 'Passwort',
@@ -43,6 +43,7 @@ class LoginScreen extends StatelessWidget {
         pageColorDark: Colors.grey,
         pageColorLight: Colors.deepPurple,
         primaryColor: Colors.deepPurple,
+        logoWidth: 1
       ),
       onLogin: (loginData) async {
         try {
