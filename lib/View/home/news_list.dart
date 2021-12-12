@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:crypto_lab/View/custom_colors.dart';
+import 'package:crypto_lab/View/crypto_lab_colors.dart';
 
 class NewsList extends StatelessWidget {
   final BorderRadius _listItemBorderRadius = const BorderRadius.all(Radius.circular(10));

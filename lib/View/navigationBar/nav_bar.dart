@@ -1,3 +1,5 @@
+import 'package:crypto_lab/Controller/route_manager.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class NavBar extends StatelessWidget {
@@ -35,31 +37,28 @@ class NavBar extends StatelessWidget {
         ListTile(
           leading: const Icon(Icons.home),
           title: const Text('Home'),
-          onTap: () => _navigateToRoute(context, "/"),
+          onTap: () => RouteManager().navigateToRoute(context, "/"),
         ),
         ListTile(
           leading: const Icon(Icons.list_alt),
           title: const Text('Krypto-Übersicht'),
-          onTap: () => _navigateToRoute(context, "/overview"),
+          onTap: () => RouteManager().navigateToRoute(context, "/overview"),
         ),
         ListTile(
           leading: const Icon(Icons.favorite),
           title: const Text('Favoriten'),
-          onTap: () => _navigateToRoute(context, "/favorites"),
+          onTap: () => RouteManager().navigateToRoute(context, "/favorites"),
+        ),
+        const Divider(),
+        ListTile(
+          leading: const Icon(Icons.logout),
+          title: const Text('Ausloggen'),
+          onTap: () async {
+            await FirebaseAuth.instance.signOut();
+            RouteManager().navigateToRoute(context, "/login");
+          },
         ),
       ]),
     );
-  }
-
-  void _navigateToRoute(BuildContext context, String route) {
-    Navigator.pop(context);
-    // only push if not already on current page to prevent multiple identical
-    // instances on stack
-    if (ModalRoute
-        .of(context)
-        ?.settings
-        .name != route) {
-      Navigator.pushNamed(context, route);
-    }
   }
 }

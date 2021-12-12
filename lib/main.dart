@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'Model/crypto_manager.dart';
-import 'View/custom_colors.dart';
+import 'View/crypto_lab_colors.dart';
 import 'View/home/home_screen.dart';
 import 'View/overview/overview_screen.dart';
 import 'View/favorites/favorites_screen.dart';
@@ -49,7 +49,7 @@ class CryptoLab extends StatelessWidget {
         textTheme: Theme.of(context).textTheme.apply(bodyColor: CryptoLabColors.cryptoLabFont),
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      initialRoute: "/",
+      initialRoute: "/login",
       onGenerateRoute: generateRoute,
     );
   }
@@ -59,7 +59,8 @@ class CryptoLab extends StatelessWidget {
     switch (settings.name) {
       // settings has to be passed in so ModalRoute.of(context)?.settings.name
       // in nav_bar.dart can check if already on current page
-      case "/": return MaterialPageRoute(settings: settings, builder: (_) => LoginScreen());
+      case "/": return MaterialPageRoute(settings: settings, builder: (_) => const HomeScreen());
+      case "/login": return MaterialPageRoute(settings: settings, builder: (_) => LoginScreen());
       case "/home": return MaterialPageRoute(settings: settings, builder: (_) => const HomeScreen());
       case "/overview": return MaterialPageRoute(settings: settings, builder: (_) => const OverViewScreen());
       case "/favorites": return MaterialPageRoute(settings: settings, builder: (_) => const FavoritesScreen());

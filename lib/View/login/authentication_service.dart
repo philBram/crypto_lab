@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 
 class AuthenticationService {
+
   final FirebaseAuth _firebaseAuth;
   AuthenticationService(this._firebaseAuth);
 
@@ -24,11 +25,11 @@ class AuthenticationService {
     }
   }
 
-  Future<String?>recoverPassword({required String password}) async{
+  Future<String?> changePassword({required String password}) async{
     try{
       await _firebaseAuth.currentUser!.updatePassword(password);
       return "Password updated";
-    }on FirebaseException catch(e){
+    } on FirebaseException catch(e){
       return e.message;
     }
   }
