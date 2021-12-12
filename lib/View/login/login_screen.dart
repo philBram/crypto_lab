@@ -1,13 +1,10 @@
 import 'package:crypto_lab/Controller/route_manager.dart';
-import 'package:crypto_lab/View/crypto_lab_colors.dart';
 import 'package:crypto_lab/View/home/home_screen.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter_login/flutter_login.dart';
-import 'package:crypto_lab/View/login/authentication_service.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class LoginScreen extends StatelessWidget {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -17,7 +14,8 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FlutterLogin(
-      title: 'Crypto-Lab',
+      //title: 'Crypto-Lab',
+      logo: 'assets/images/logo_white.png',
       messages: LoginMessages(
           userHint: 'E-Mail',
           passwordHint: 'Passwort',
@@ -41,10 +39,10 @@ class LoginScreen extends StatelessWidget {
               'Der Code zur Authentifizierung wurde an Deine angegebene E-Mail verschickt. Bitte gebe den Code ein, um die Authentifizierung abzuschließen.',
           confirmSignupSuccess: ''),
       theme: LoginTheme(
-        accentColor: Colors.blue,
+        accentColor: Colors.yellow,
         pageColorDark: Colors.grey,
-        pageColorLight: Colors.amber,
-        primaryColor: Colors.red,
+        pageColorLight: Colors.deepPurple,
+        primaryColor: Colors.deepPurple,
       ),
       onLogin: (loginData) async {
         try {
@@ -79,9 +77,31 @@ class LoginScreen extends StatelessWidget {
           return ("Registrierung fehlgeschlagen: " + e.toString().replaceAll("Exception: ", ""));
         }
       },
-      onRecoverPassword: (email) {
-        // TODO
+      onRecoverPassword: (email) async {
+        await _auth.sendPasswordResetEmail(email: email);
       },
+      loginProviders: [
+        LoginProvider(
+          icon: FontAwesomeIcons.bitcoin,
+          label: 'Anonymous',
+          callback: () async{
+             await _auth.signInAnonymously();
+             ScaffoldMessenger.of(context).showSnackBar(
+               const SnackBar(
+                 content: Text("Registrierung erfolgreich!"),
+                 backgroundColor: Colors.green,
+               ),
+             );
+             Navigator.push(
+               context,
+               MaterialPageRoute(
+                 builder: (context) => HomeScreen(),
+               ),
+             );
+             return null;
+          }
+        )
+      ],
     );
   }
 
