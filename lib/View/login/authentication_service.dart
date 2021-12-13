@@ -1,40 +1,78 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_login/flutter_login.dart';
 
 class AuthenticationService {
 
-  final FirebaseAuth _firebaseAuth;
-  AuthenticationService(this._firebaseAuth);
+  /// AuthenticationService-Singleton
+  static final AuthenticationService _instance = AuthenticationService._internal();
 
-  Stream<User?> get authStateChanages => _firebaseAuth.authStateChanges();
+  factory AuthenticationService() => _instance;
 
-  Future<String?> signIn({required String email, required String password}) async {
-    try{
-      await _firebaseAuth.signInWithEmailAndPassword(email: email, password: password);
-      return "Signed in:";
-    } on FirebaseAuthException catch (e){
-      return e.message;
+  AuthenticationService._internal();
+
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  Future<void> signInAnonymously() async {
+    try {
+      await _auth.signInAnonymously();
+    } on Exception catch (e) {
+      throw Exception("Error: " + e.toString().replaceAll("Exception: ", ""));
     }
   }
 
-  Future<String?> signUp({required String email, required String password}) async{
-    try{
-      await _firebaseAuth.createUserWithEmailAndPassword(email: email, password: password);
-      return "Signed up:";
-    } on FirebaseAuthException catch (e){
-      return e.message;
+  Future<void> registerUser(SignupData signupData) async {
+    try {
+      await _auth.createUserWithEmailAndPassword(
+        email: signupData.name!,
+        password: signupData.password!,
+      );
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'weak password') {
+        throw Exception("Das Passwort ist zu schwach.");
+      } else if (e.code == 'email-already-in-use') {
+        throw Exception("Dieser Account existiert bereits!");
+      } else {
+        throw Exception("Unbekannter Fehler");
+      }
+    } on Exception catch (e) {
+      throw Exception("Error: " + e.toString().replaceAll("Exception: ", ""));
     }
   }
 
-  Future<String?> changePassword({required String password}) async{
-    try{
-      await _firebaseAuth.currentUser!.updatePassword(password);
-      return "Password updated";
-    } on FirebaseException catch(e){
-      return e.message;
+  Future<void> loginUser(LoginData loginData) async {
+    try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: loginData.name,
+        password: loginData.password,
+      );
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        throw Exception("Es konnte kein passender User gefunden werden!");
+      } else if (e.code == 'wrong-password') {
+        throw Exception("Falsches Passwort für diesen Nutzer!");
+      } else {
+        throw Exception("Unbekannter Fehler");
+      }
+    } on Exception catch (e) {
+      throw Exception("Error: " + e.toString().replaceAll("Exception: ", ""));
     }
   }
 
-  Future<void> signOut() async{
-    await _firebaseAuth.signOut();
+  Future<void> sendPasswordResetEmail(String email) async {
+    try {
+      await _auth.sendPasswordResetEmail(email: email);
+    } on Exception catch(e) {
+      throw Exception("Error: " + e.toString().replaceAll("Exception: ", ""));
+    }
   }
+
+  Future<void> signOut() async {
+    try {
+      await _auth.signOut();
+    } on Exception catch(e) {
+      throw Exception("Error: " + e.toString().replaceAll("Exception: ", ""));
+    }
+  }
+
+
 }

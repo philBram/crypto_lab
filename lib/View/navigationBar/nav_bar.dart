@@ -1,4 +1,5 @@
 import 'package:crypto_lab/Controller/route_manager.dart';
+import 'package:crypto_lab/View/login/authentication_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -7,12 +8,14 @@ class NavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final User? user = FirebaseAuth.instance.currentUser;
+
     return Drawer(
       child: ListView(children: [
         Stack(children: [
           UserAccountsDrawerHeader(
-            accountName: const Text('myUserName'),
-            accountEmail: const Text('myUserEmail'),
+            accountName: null,
+            accountEmail: user != null ? Text(user.email!) : const Text("Gast"),
             currentAccountPicture: CircleAvatar(
               child: ClipOval(
                 child: Image.network(
@@ -54,7 +57,7 @@ class NavBar extends StatelessWidget {
           leading: const Icon(Icons.logout),
           title: const Text('Ausloggen'),
           onTap: () async {
-            await FirebaseAuth.instance.signOut();
+            await AuthenticationService().signOut();
             RouteManager().navigateToRoute(context, "/login");
           },
         ),

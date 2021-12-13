@@ -6,9 +6,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_login/flutter_login.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-class LoginScreen extends StatelessWidget {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+import 'authentication_service.dart';
 
+class LoginScreen extends StatelessWidget {
   LoginScreen({Key? key}) : super(key: key);
 
   @override
@@ -16,55 +16,77 @@ class LoginScreen extends StatelessWidget {
     return FlutterLogin(
       //title: 'Crypto-Lab',
       logo: 'assets/images/logo_white_simple.png',
+      passwordValidator: (password) {
+        if (password == null || password.length < 6) {
+          return 'Passwort ist nicht lang genug! (mind. 6 Zeichen)';
+        } else {
+          return null;
+        }
+      },
       messages: LoginMessages(
-          userHint: 'E-Mail',
-          passwordHint: 'Passwort',
-          confirmPasswordHint: 'Passwort wiederholen',
-          loginButton: 'Einloggen',
-          signupButton: 'Registrieren',
-          forgotPasswordButton: 'Passwort vergessen?',
-          recoverPasswordButton: 'Passwort zurücksetzen',
-          goBackButton: 'Zurück',
-          confirmPasswordError: 'Passwörter stimmen nicht überein',
-          additionalSignUpFormDescription: 'Bitte eine E-Mail wählen!',
-          additionalSignUpSubmitButton: 'Bestätigen',
-          recoverPasswordIntro: 'Passwort zurücksetzen',
-          recoverPasswordDescription:
-              'Bitte geben Sie Ihre E-Mail ein zum Verschicken eines Reset-Links und drücken Sie auf bestätigen.',
-          recoverPasswordSuccess: 'E-Mail erfoglreich versendet',
-          resendCodeButton: 'Code erneut senden',
-          confirmationCodeHint: 'Bestätigungs-Code',
-          confirmSignupButton: 'Bestätigen',
-          confirmSignupIntro:
-              'Der Code zur Authentifizierung wurde an Deine angegebene E-Mail verschickt. Bitte gebe den Code ein, um die Authentifizierung abzuschließen.',
-          confirmSignupSuccess: ''),
+        userHint: 'E-Mail',
+        passwordHint: 'Passwort',
+        confirmPasswordHint: 'Passwort wiederholen',
+        loginButton: 'Einloggen',
+        signupButton: 'Registrieren',
+        forgotPasswordButton: 'Passwort vergessen?',
+        recoverPasswordButton: 'Passwort zurücksetzen',
+        goBackButton: 'Zurück',
+        confirmPasswordError: 'Passwörter stimmen nicht überein',
+        additionalSignUpFormDescription: 'Bitte eine E-Mail wählen!',
+        additionalSignUpSubmitButton: 'Bestätigen',
+        recoverPasswordIntro: 'Passwort zurücksetzen',
+        recoverPasswordDescription:
+            'Bitte geben Sie Ihre E-Mail ein, um eine Mail zum Zurücksetzen Ihres Passwortes zu erhalten.',
+        recoverPasswordSuccess: 'E-Mail zum Zurücksetzen des Passwortes erfolgreich versendet!',
+        resendCodeButton: 'Code erneut senden',
+        confirmationCodeHint: 'Bestätigungs-Code',
+        confirmSignupButton: 'Bestätigen',
+        confirmSignupIntro:
+            'Der Code zur Authentifizierung wurde an Deine angegebene E-Mail verschickt. Bitte gebe den Code ein, um die Authentifizierung abzuschließen.',
+        confirmSignupSuccess: '',
+        confirmRecoverSuccess: 'Erfolg',
+        signUpSuccess: 'Erfolgreich registriert!',
+        providersTitleFirst: 'oder anonym als Gast anmelden',
+        providersTitleSecond: 'Anonym',
+        setPasswordButton: 'Passwort',
+        resendCodeSuccess: 'Rücksetz-Code erfolgreich versendet!',
+        confirmationCodeValidationError: 'Der Code konnte nicht validiert werden!',
+        confirmRecoverIntro: 'Erfolg!',
+        recoverCodePasswordDescription: 'Lasse Dir zum Zurücksetzen deines Passwortes einen Code zuschicken!',
+      ),
+      onSubmitAnimationCompleted: () {
+        Navigator.of(context).pushReplacement(MaterialPageRoute(
+          builder: (context) => const HomeScreen(),
+        ));
+      },
       theme: LoginTheme(
-        accentColor: Colors.yellow,
+        accentColor: Colors.white,
         pageColorDark: Colors.grey,
         pageColorLight: Colors.deepPurple,
         primaryColor: Colors.deepPurple,
-        logoWidth: 1
+        logoWidth: 1,
       ),
       onLogin: (loginData) async {
         try {
-          await loginUser(loginData);
+          await AuthenticationService().loginUser(loginData);
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
-              content: Text("Login erfolgreich!"),
+              content: Text("Anmeldung erfolgreich!"),
               backgroundColor: Colors.green,
             ),
           );
           RouteManager().navigateToRoute(context, "/home");
         } on Exception catch (e) {
-          return ("Login fehlgeschlagen: " + e.toString().replaceAll("Exception: ", ""));
+          return ("Anmeldung fehlgeschlagen: " + e.toString().replaceAll("Exception: ", ""));
         }
       },
       onSignup: (signupData) async {
         try {
-          await registerUser(signupData);
+          await AuthenticationService().registerUser(signupData);
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
-              content: Text("Registrierung erfolgreich!"),
+              content: Text("Registrierung erfolgreich! Du kannst Dich nun mit den Daten anmelden."),
               backgroundColor: Colors.green,
             ),
           );
@@ -79,68 +101,45 @@ class LoginScreen extends StatelessWidget {
         }
       },
       onRecoverPassword: (email) async {
-        await _auth.sendPasswordResetEmail(email: email);
+        try {
+          await AuthenticationService().sendPasswordResetEmail(email);
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text(
+                  "Es wurde eine Mail an die angegebene E-Mail-Adresse zum Zurücksetzen des Passwortes geschickt!"),
+              backgroundColor: Colors.green,
+            ),
+          );
+        } on Exception catch (e) {
+          return (e.toString().replaceAll("Exception: ", ""));
+        }
       },
       loginProviders: [
         LoginProvider(
           icon: FontAwesomeIcons.bitcoin,
-          label: 'Anonymous',
-          callback: () async{
-             await _auth.signInAnonymously();
-             ScaffoldMessenger.of(context).showSnackBar(
-               const SnackBar(
-                 content: Text("Registrierung erfolgreich!"),
-                 backgroundColor: Colors.green,
-               ),
-             );
-             Navigator.push(
-               context,
-               MaterialPageRoute(
-                 builder: (context) => HomeScreen(),
-               ),
-             );
-             return null;
-          }
+          label: 'Anonym',
+          callback: () async {
+            try {
+              await AuthenticationService().signInAnonymously();
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text("Anmeldung erfolgreich!"),
+                  backgroundColor: Colors.green,
+                ),
+              );
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const HomeScreen(),
+                ),
+              );
+              return null;
+            } on Exception catch (e) {
+              return ("Anmeldung fehlgeschlagen: " + e.toString().replaceAll("Exception: ", ""));
+            }
+          },
         )
       ],
     );
-  }
-
-  Future<void> registerUser(SignupData signupData) async {
-    try {
-      await _auth.createUserWithEmailAndPassword(
-        email: signupData.name!,
-        password: signupData.password!,
-      );
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'weak password') {
-        throw Exception("Das Passwort ist zu schwach.");
-      } else if (e.code == 'email-already-in-use') {
-        throw Exception("Dieser Account existiert bereits!");
-      } else {
-        throw Exception("Unbekannter Fehler");
-      }
-    } on Exception catch (e) {
-      throw Exception("Error: " + e.toString().replaceAll("Exception: ", ""));
-    }
-  }
-
-  Future<void> loginUser(LoginData loginData) async {
-    try {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: loginData.name,
-        password: loginData.password,
-      );
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'user-not-found') {
-        throw Exception("Es konnte kein passender User gefunden werden!");
-      } else if (e.code == 'wrong-password') {
-        throw Exception("Falsches Passwort für diesen Nutzer!");
-      } else {
-        throw Exception("Unbekannter Fehler");
-      }
-    } on Exception catch (e) {
-      throw Exception("Error: " + e.toString().replaceAll("Exception: ", ""));
-    }
   }
 }
