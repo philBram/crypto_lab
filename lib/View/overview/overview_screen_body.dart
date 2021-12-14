@@ -1,4 +1,4 @@
-import 'package:crypto_lab/controller/coin_overview_api_service.dart';
+import 'package:crypto_lab/Controller/coin_overview_api_service.dart';
 import 'package:crypto_lab/Model/crypto.dart';
 import 'package:flutter/material.dart';
 
