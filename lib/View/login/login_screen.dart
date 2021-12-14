@@ -15,7 +15,7 @@ class LoginScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return FlutterLogin(
       //title: 'Crypto-Lab',
-      logo: 'assets/images/logo_white_simple.png',
+      logo: 'assets/images/logo_white_simple2.png',
       passwordValidator: (password) {
         if (password == null || password.length < 6) {
           return 'Passwort ist nicht lang genug! (mind. 6 Zeichen)';
@@ -90,12 +90,7 @@ class LoginScreen extends StatelessWidget {
               backgroundColor: Colors.green,
             ),
           );
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => LoginScreen(),
-            ),
-          );
+          RouteManager().navigateToRoute(context, "/login");
         } on Exception catch (e) {
           return ("Registrierung fehlgeschlagen: " + e.toString().replaceAll("Exception: ", ""));
         }
@@ -127,12 +122,7 @@ class LoginScreen extends StatelessWidget {
                   backgroundColor: Colors.green,
                 ),
               );
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const HomeScreen(),
-                ),
-              );
+              RouteManager().navigateToRoute(context, "/home");
               return null;
             } on Exception catch (e) {
               return ("Anmeldung fehlgeschlagen: " + e.toString().replaceAll("Exception: ", ""));

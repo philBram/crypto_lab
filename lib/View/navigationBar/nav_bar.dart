@@ -15,7 +15,7 @@ class NavBar extends StatelessWidget {
         Stack(children: [
           UserAccountsDrawerHeader(
             accountName: const Text("Eingelogt als:"),
-            accountEmail: user == null || user.isAnonymous ?  const Text("Gast") : Text(user.email!),
+            accountEmail: user == null || user.isAnonymous ? const Text("Gast") : Text(user.email!),
             currentAccountPicture: CircleAvatar(
               child: ClipOval(
                 child: Image.network(
@@ -40,7 +40,7 @@ class NavBar extends StatelessWidget {
         ListTile(
           leading: const Icon(Icons.home),
           title: const Text('Home'),
-          onTap: () => RouteManager().navigateToRoute(context, "/"),
+          onTap: () => RouteManager().navigateToRoute(context, "/home"),
         ),
         ListTile(
           leading: const Icon(Icons.list_alt),
