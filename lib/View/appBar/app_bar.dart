@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../custom_colors.dart';
+import '../crypto_lab_colors.dart';
 
 class MyAppBar extends StatelessWidget with PreferredSizeWidget {
   final String pageTitle;

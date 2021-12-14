@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "88958316989",
+    "project_id": "crpytolab",
+    "storage_bucket": "crpytolab.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:88958316989:android:a838d4cf10d85074e2e2d4",
+        "android_client_info": {
+          "package_name": "com.example.crypto_lab"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "88958316989-9tun84ug4lk9gu66f2uq7lrqjuosa1qh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.crypto_lab",
+            "certificate_hash": "fe00183af290750a0aed601127be745ba0367918"
+          }
+        },
+        {
+          "client_id": "88958316989-jo5204l9sae3s6qj706sjlof233rhd4h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCIxkDm2vOV2sLKJPy7H_Xb6fnLn_yQnIw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "88958316989-jo5204l9sae3s6qj706sjlof233rhd4h.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
