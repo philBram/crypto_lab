@@ -3,10 +3,11 @@ import 'dart:typed_data';
 
 import 'package:crypto_lab/View/login/login_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:crypto_lab/Model/crypto.dart';
+import 'package:crypto_lab/View/details/details_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'Model/crypto_manager.dart';
 import 'View/crypto_lab_colors.dart';
 import 'View/home/home_screen.dart';
 import 'View/overview/overview_screen.dart';
@@ -21,13 +22,12 @@ Future <void> main() async {
   “HandshakeException: Handshake error in client (OS Error: CERTIFICATE_VERIFY_FAILED: certificate has expired(handshake.cc:359))”
   solution from https://stackoverflow.com/questions/49638183/flutter-image-network-throws-handshakeexception
    */
-  addCertificate();
-  CryptoManager().initializeExampleCryptos();
+  _addCertificate();
 
   runApp(const CryptoLab());
 }
 
-void addCertificate() async{
+void _addCertificate() async{
   WidgetsFlutterBinding.ensureInitialized();
   ByteData data = await
   rootBundle.load('assets/raw/certificate.pem');
@@ -64,6 +64,19 @@ class CryptoLab extends StatelessWidget {
       case "/home": return MaterialPageRoute(settings: settings, builder: (_) => const HomeScreen());
       case "/overview": return MaterialPageRoute(settings: settings, builder: (_) => const OverViewScreen());
       case "/favorites": return MaterialPageRoute(settings: settings, builder: (_) => const FavoritesScreen());
+      case "/details":
+        if (settings.arguments is Crypto) {
+          return MaterialPageRoute(settings: settings,
+              // pass tapped Crypto instance to the details-screen
+              builder: (_) => DetailsScreen(settings.arguments as Crypto));
+        }
+        else {
+          return MaterialPageRoute(settings: settings, builder: (_) => const Scaffold(
+              body: Center(
+                child: Text("There was no Coin selected"),
+              ),
+          ));
+        }
 
       default: return MaterialPageRoute(settings: settings, builder: (_) => Scaffold(
         body: Center(

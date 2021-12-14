@@ -1,96 +1,136 @@
+import 'package:crypto_lab/Model/articles.dart';
+import 'package:crypto_lab/View/adaptive_text_size.dart';
+import 'package:crypto_lab/controller/crypto_news_api_service.dart';
 import 'package:flutter/material.dart';
-import 'package:crypto_lab/View/crypto_lab_colors.dart';
+import 'package:crypto_lab/View/crypto_lab_colors.dart.dart';
+import 'package:url_launcher/url_launcher.dart';
 
-class NewsList extends StatelessWidget {
-  final BorderRadius _listItemBorderRadius = const BorderRadius.all(Radius.circular(10));
+class NewsList extends StatefulWidget {
+  const NewsList({Key? key}) : super(key: key);
+
+  @override
+  State<StatefulWidget> createState() => _NewsList();
+}
+
+class _NewsList extends State<NewsList> {
+  final BorderRadius _listItemBorderRadius =
+      const BorderRadius.all(Radius.circular(10));
   final EdgeInsets _listItemMargin = const EdgeInsets.all(5);
   final EdgeInsets _listItemPadding = const EdgeInsets.all(10);
   final double _listItemWidthFactor = 0.9;
-  final double _listViewHeightFactor = 0.7;
+  final double _listViewHeightFactor = 0.8;
 
-  const NewsList({Key? key}) : super(key: key);
+  final CryptoNewsApiService _cryptoNewsApiService = CryptoNewsApiService();
+  late Future<List<Article>> _articleList;
+
+  @override
+  void initState() {
+    super.initState();
+    // Make Api call to get Articles and store Future in _articleList for later use
+    _articleList = _cryptoNewsApiService.getArticle();
+  }
 
   @override
   Widget build(BuildContext context) {
     return FractionallySizedBox(
-        alignment: Alignment.bottomCenter,
-        // max 50 % of screen (2 columns), _listViewHeightFactor determine height in %
-        heightFactor: _listViewHeightFactor,
-        child: ListView.builder(
-          itemCount: 20,
-          scrollDirection: Axis.horizontal,
-          itemBuilder: (_, index) => _createListViewItem(index, context),
-        )
+      alignment: Alignment.bottomCenter,
+      // max 50 % of screen (2 columns), _listViewHeightFactor determine height in %
+      heightFactor: _listViewHeightFactor,
+      child: FutureBuilder(
+        future: _articleList,
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          if (snapshot.hasData) {
+            return ListView.builder(
+              itemCount: snapshot.data.length,
+              scrollDirection: Axis.horizontal,
+              itemBuilder: (_, index) =>
+                  _createListViewItem(context, snapshot.data[index]),
+            );
+          } else {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+        },
+      ),
     );
   }
 
-  Widget _createListViewItem(int index, BuildContext context) {
+  Widget _createListViewItem(BuildContext context, Article article) {
     return Container(
-        margin: _listItemMargin,
-        // width of listview item is % value of _listItemWidthFactor
-        width: MediaQuery.of(context).size.width * _listItemWidthFactor,
-        decoration: BoxDecoration(
-          color: CryptoLabColors.cryptoLabBackground.withOpacity(0.8),
-          border: Border.all(color: CryptoLabColors.cryptoLabFont),
-          borderRadius: _listItemBorderRadius,
+      margin: _listItemMargin,
+      // width of listview item is % value of _listItemWidthFactor
+      width: MediaQuery.of(context).size.width * _listItemWidthFactor,
+      decoration: BoxDecoration(
+        color: CryptoLabColors.cryptoLabBackground.withOpacity(0.8),
+        border: Border.all(color: CryptoLabColors.cryptoLabFont),
+        borderRadius: _listItemBorderRadius,
+      ),
+      child: Padding(
+        padding: _listItemPadding,
+        child: ListTile(
+          // article url is null => pass empty String so no website will be opened
+          onTap: () => _launchURL(article.url ?? ""),
+          title: _createListViewItemContent(article),
         ),
-        child: Padding(
-            padding: _listItemPadding,
-            child: ListTile(
-              // TODO: implement onTap for news API
-              onTap: () {},
-              title: _createListViewItemContent(index),
-            )
-        )
+      ),
     );
   }
 
-  // TODO: replace content of the ListView with data from API to display crypto news
-  Widget _createListViewItemContent(int index) {
+  Widget _createListViewItemContent(Article article) {
     // Column with News header, subtitle and lorem ipsum placeholder
     return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-              flex: 2,
-              child: Text(
-                "News Header $index",
-                style: const TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  color: CryptoLabColors.cryptoLabFont,
-                ),
-              )
-          ),
-          Expanded(
-              flex: 2,
-              child: Text(
-                  "News Subtitle $index",
-                  style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: CryptoLabColors.cryptoLabFont,
-                  )
-              )
-          ),
-          const Expanded(
-              flex: 8,
-              child: Text("Lorem ipsum dolor sit amet,\n"
-                  "consectetur adipiscing elit,\n"
-                  "sed do eiusmod tempor incididunt\n"
-                  "ut labore et dolore magna aliqua.\n"
-                  "ut labore et dolore magna aliqua.\n"
-                  "ut labore et dolore magna aliqua.\n"
-                  "ut labore et dolore magna aliqua.\n"
-                  "ut labore et dolore magna aliqua.\n"
-                  "ut labore et dolore magna aliqua.\n"
-                  "ut labore et dolore magna aliqua.\n",
-                  style: TextStyle(
-                    color: CryptoLabColors.cryptoLabFont,
-                  )
-              )
-          )
-        ]
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _createArticleText(article.title, 22, FontWeight.bold, 12),
+        _createArticleText(article.author, 17, FontWeight.normal, 10),
+        _createArticleImage(article.urlToImage, 80),
+      ],
     );
+  }
+
+  Widget _createArticleText(
+      String? articleText, double size, FontWeight weight, flexValue) {
+    return Expanded(
+      flex: flexValue,
+      child: Text(
+        // display "Text not found" if article String is null
+        articleText ?? "Text not found",
+        style: TextStyle(
+          // 720 is the medium screen size => responsive Text
+          fontSize: AdaptiveTextSize.getAdaptiveTextSize(context, size),
+          fontWeight: weight,
+        ),
+      ),
+    );
+  }
+
+  Widget _createArticleImage(String? articleImage, flexValue) {
+    return Expanded(
+      flex: flexValue,
+      child: Align(
+        alignment: Alignment.center,
+        child: Image.network(
+          // Display 404 networkimage if image of Artice is null
+          articleImage ??
+              "https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fwww.trendycovers.com%2Fcovers%2F1324229779.jpg&f=1&nofb=1",
+          // use all the space available
+          fit: BoxFit.fill,
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height,
+        ),
+      ),
+    );
+  }
+
+  // https://pub.dev/packages/url_launcher
+  // <queries> tag must be added to android/app/src/main/AndroidManifest.xml
+  // to be able to open the Browser
+  Future<void> _launchURL(String url) async {
+    if (await canLaunch(url)) {
+      await launch(url, forceWebView: false);
+    } else {
+      throw 'Could not launch $url';
+    }
   }
 }
