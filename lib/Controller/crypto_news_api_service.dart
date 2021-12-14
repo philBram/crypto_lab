@@ -9,11 +9,6 @@ class CryptoNewsApiService {
   final String _keyWords = "q=crypto OR Bitcoin OR ethereum";
   final String _pageSize = "&pagesize=20";
   final String _apiKey = "&apiKey=d05f511c622b4c069efd97d09df654df";
-  static final CryptoNewsApiService _instance = CryptoNewsApiService._internal();
-
-  factory CryptoNewsApiService() => _instance;
-
-  CryptoNewsApiService._internal();
 
   Future<List<Article>> getArticle() async {
     final url = _baseUrl + _keyWords + _pageSize + _apiKey;

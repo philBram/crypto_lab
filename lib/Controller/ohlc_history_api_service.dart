@@ -8,11 +8,6 @@ class OhlcHistoryApiService {
   final String _baseUrl = "https://api.coingecko.com/api/v3/coins/";
   final String _targetCurrency = "vs_currency=eur";
   final String _dateUpTo = "&days=365";
-  static final OhlcHistoryApiService _instance = OhlcHistoryApiService._internal();
-
-  factory OhlcHistoryApiService() => _instance;
-
-  OhlcHistoryApiService._internal();
 
   Future<List<Ohlc>> getOhcl(String coinId) async {
     final url = _baseUrl + coinId + "/ohlc?" + _targetCurrency + _dateUpTo;
