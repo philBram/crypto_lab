@@ -9,11 +9,6 @@ class CoinOverviewApiService {
   final String _targetCurrency = "vs_currency=eur";
   final String _order = "&order=marget_cap_desc";
   final String _totalResults = "&per_page=100";
-  static final CoinOverviewApiService _instance = CoinOverviewApiService._internal();
-
-  factory CoinOverviewApiService() => _instance;
-
-  CoinOverviewApiService._internal();
 
   Future<List<Crypto>> getCrypto() async {
     final url = _baseUrl + _targetCurrency + _order + _totalResults;
