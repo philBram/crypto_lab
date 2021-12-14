@@ -14,8 +14,8 @@ class NavBar extends StatelessWidget {
       child: ListView(children: [
         Stack(children: [
           UserAccountsDrawerHeader(
-            accountName: null,
-            accountEmail: user != null ? Text(user.email!) : const Text("Gast"),
+            accountName: const Text("Eingelogt als:"),
+            accountEmail: user == null || user.isAnonymous ?  const Text("Gast") : Text(user.email!),
             currentAccountPicture: CircleAvatar(
               child: ClipOval(
                 child: Image.network(
