@@ -50,6 +50,8 @@ dependencies:
   #Provides 1600 additional icons to use in your apps.
   font_awesome_flutter: ^9.2.0
 
+  syncfusion_flutter_charts: ^19.3.59
+
   #sign in loading screen not null safe apparently
   #modal_progress_hud: ^0.1.3
 
