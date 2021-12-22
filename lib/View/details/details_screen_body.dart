@@ -23,7 +23,7 @@ class _DetailsScreenBody extends State<DetailsScreenBody> {
     // check _createListViewItems in overview_screen_body.dart
     // Make Api call to get crypto coins and store Future in _cryptoList for later use
     // pass "no valid id to the ohlc API call if crypto id is null => Api call will not return a result
-    _ohlcList = _ohlcHistoryApiService.getOhcl(widget._crypto.id ?? "no valid id");
+    _ohlcList = _ohlcHistoryApiService.getOhlc(widget._crypto.id ?? "no valid id");
   }
 
   @override
