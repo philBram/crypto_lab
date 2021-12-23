@@ -16,7 +16,7 @@ class _NewsList extends State<NewsList> {
   final BorderRadius _listItemBorderRadius =
       const BorderRadius.all(Radius.circular(10));
   final EdgeInsets _listItemMargin = const EdgeInsets.all(5);
-  final EdgeInsets _listItemPadding = const EdgeInsets.all(10);
+  final EdgeInsets _listItemPadding = const EdgeInsets.fromLTRB(2, 5, 2, 15);
   final double _listItemWidthFactor = 0.9;
   final double _listViewHeightFactor = 0.8;
 
@@ -66,13 +66,11 @@ class _NewsList extends State<NewsList> {
         border: Border.all(color: CryptoLabColors.cryptoLabFont),
         borderRadius: _listItemBorderRadius,
       ),
-      child: Padding(
-        padding: _listItemPadding,
-        child: ListTile(
-          // article url is null => pass empty String so no website will be opened
-          onTap: () => _launchURL(article.url ?? ""),
-          title: _createListViewItemContent(article),
-        ),
+      padding: _listItemPadding,
+      child: ListTile(
+        // article url is null => pass empty String so no website will be opened
+        onTap: () => _launchURL(article.url ?? ""),
+        title: _createListViewItemContent(article),
       ),
     );
   }
@@ -110,14 +108,15 @@ class _NewsList extends State<NewsList> {
       flex: flexValue,
       child: Align(
         alignment: Alignment.center,
-        child: Image.network(
-          // Display 404 networkimage if image of Artice is null
-          articleImage ??
-              "https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fwww.trendycovers.com%2Fcovers%2F1324229779.jpg&f=1&nofb=1",
-          // use all the space available
-          fit: BoxFit.fill,
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height,
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(15.0),
+          child: Image.network(
+            articleImage ??
+                "https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fwww.trendycovers.com%2Fcovers%2F1324229779.jpg&f=1&nofb=1",
+            fit: BoxFit.cover,
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
+          ),
         ),
       ),
     );

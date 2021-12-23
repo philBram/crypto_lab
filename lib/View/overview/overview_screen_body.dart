@@ -1,6 +1,7 @@
 import 'package:crypto_lab/Controller/coin_overview_api_service.dart';
 import 'package:crypto_lab/Model/crypto.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 class OverViewScreenBody extends StatefulWidget {
   const OverViewScreenBody({Key? key}) : super(key: key);
@@ -11,7 +12,12 @@ class OverViewScreenBody extends StatefulWidget {
 
 class _OverViewScreenBody extends State<OverViewScreenBody> {
   final CoinOverviewApiService _cryptoCoinsApi = CoinOverviewApiService();
+  final TextEditingController _textEditingController = TextEditingController();
+  // only true if _cryptoList returned List<Crypto> in FutureBuilder
+  bool _futureReturnedFlag = false;
   late Future<List<Crypto>> _cryptoList;
+  List<Crypto> _referenceList = [];
+  List<Crypto> _searchList = [];
 
   @override
   void initState() {
@@ -29,6 +35,9 @@ class _OverViewScreenBody extends State<OverViewScreenBody> {
   }
 
   Future<void> _pullRefresh() async {
+    // reset flag and text of the TextField after refresh so new data can be loaded
+    _futureReturnedFlag = false;
+    _textEditingController.text = '';
     // new API call and setState so that the Price change can get updated
     // CoinGecko update-rate about 1 min
     _cryptoList = _cryptoCoinsApi.getCrypto();
@@ -36,21 +45,61 @@ class _OverViewScreenBody extends State<OverViewScreenBody> {
   }
 
   Widget _createList() {
-    return FutureBuilder(
-      future: _cryptoList,
-      builder: (BuildContext context, AsyncSnapshot snapshot) {
-        if (snapshot.hasData) {
-          return ListView.builder(
-            itemCount: snapshot.data.length,
-            itemBuilder: (BuildContext context, int index) =>
-                _createListViewItems(context, snapshot.data[index]),
-          );
-        } else {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        }
-      },
+    return Column(
+      children: [
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+          child: TextField(
+            onChanged: (text) {
+              setState(() {
+                // filter keywords by coin-name and symbol-name and only show these in the ListView
+                _searchList = _referenceList
+                    .where((element) =>
+                        element.name!
+                            .toLowerCase()
+                            .contains(text.toLowerCase()) ||
+                        element.symbol!
+                            .toLowerCase()
+                            .contains(text.toLowerCase()))
+                    .toList();
+              });
+            },
+            decoration: const InputDecoration(
+              prefixIcon: Icon(Icons.search),
+              border: OutlineInputBorder(),
+              hintText: 'search for coins',
+              contentPadding: EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+            ),
+            controller: _textEditingController,
+          ),
+        ),
+        Expanded(
+          child: FutureBuilder(
+            future: _cryptoList,
+            builder: (BuildContext context, AsyncSnapshot snapshot) {
+              if (snapshot.hasData) {
+                // store snapshot data in _searchList and _referenceList
+                // only for the first time FutureBuilder returns the data
+                // so it wont be overridden and a search is possible
+                if (!_futureReturnedFlag) {
+                  _futureReturnedFlag = true;
+                  _searchList = snapshot.data;
+                  _referenceList = snapshot.data;
+                }
+                return ListView.builder(
+                  itemCount: _searchList.length,
+                  itemBuilder: (BuildContext context, int index) =>
+                      _createListViewItems(context, _searchList[index]),
+                );
+              } else {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+            },
+          ),
+        ),
+      ],
     );
   }
 
