@@ -1,8 +1,12 @@
+import 'dart:io';
+import 'dart:typed_data';
+
 import 'package:crypto_lab/View/login/login_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:crypto_lab/Model/crypto.dart';
 import 'package:crypto_lab/View/details/details_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'View/crypto_lab_colors.dart';
 import 'View/home/home_screen.dart';
@@ -18,18 +22,18 @@ Future <void> main() async {
   “HandshakeException: Handshake error in client (OS Error: CERTIFICATE_VERIFY_FAILED: certificate has expired(handshake.cc:359))”
   solution from https://stackoverflow.com/questions/49638183/flutter-image-network-throws-handshakeexception
    */
-  //_addCertificate();
+  _addCertificate();
 
   runApp(const CryptoLab());
 }
 
-/* void _addCertificate() async{
+void _addCertificate() async{
   WidgetsFlutterBinding.ensureInitialized();
   ByteData data = await
   rootBundle.load('assets/raw/certificate.pem');
   SecurityContext context = SecurityContext.defaultContext;
   context.setTrustedCertificatesBytes(data.buffer.asUint8List());
-} */
+}
 
 class CryptoLab extends StatelessWidget {
   const CryptoLab({Key? key}) : super(key: key);
