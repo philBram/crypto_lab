@@ -1,6 +1,7 @@
 import 'package:crypto_lab/Controller/coin_overview_api_service.dart';
 import 'package:crypto_lab/Model/crypto.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 class OverViewScreenBody extends StatefulWidget {
   const OverViewScreenBody({Key? key}) : super(key: key);
@@ -11,6 +12,7 @@ class OverViewScreenBody extends StatefulWidget {
 
 class _OverViewScreenBody extends State<OverViewScreenBody> {
   final CoinOverviewApiService _cryptoCoinsApi = CoinOverviewApiService();
+  final TextEditingController _textEditingController = TextEditingController();
   // only true if _cryptoList returned List<Crypto> in FutureBuilder
   bool futureReturnedFlag = false;
   late Future<List<Crypto>> _cryptoList;
@@ -33,6 +35,9 @@ class _OverViewScreenBody extends State<OverViewScreenBody> {
   }
 
   Future<void> _pullRefresh() async {
+    // reset flag and text of the TextField after refresh so new data can be loaded
+    futureReturnedFlag = false;
+    _textEditingController.text = '';
     // new API call and setState so that the Price change can get updated
     // CoinGecko update-rate about 1 min
     _cryptoList = _cryptoCoinsApi.getCrypto();
@@ -65,6 +70,7 @@ class _OverViewScreenBody extends State<OverViewScreenBody> {
               hintText: 'search for coins',
               contentPadding: EdgeInsets.symmetric(horizontal: 8, vertical: 6),
             ),
+            controller: _textEditingController,
           ),
         ),
         Expanded(
