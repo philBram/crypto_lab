@@ -14,7 +14,7 @@ class _OverViewScreenBody extends State<OverViewScreenBody> {
   final CoinOverviewApiService _cryptoCoinsApi = CoinOverviewApiService();
   final TextEditingController _textEditingController = TextEditingController();
   // only true if _cryptoList returned List<Crypto> in FutureBuilder
-  bool futureReturnedFlag = false;
+  bool _futureReturnedFlag = false;
   late Future<List<Crypto>> _cryptoList;
   List<Crypto> _referenceList = [];
   List<Crypto> _searchList = [];
@@ -36,7 +36,7 @@ class _OverViewScreenBody extends State<OverViewScreenBody> {
 
   Future<void> _pullRefresh() async {
     // reset flag and text of the TextField after refresh so new data can be loaded
-    futureReturnedFlag = false;
+    _futureReturnedFlag = false;
     _textEditingController.text = '';
     // new API call and setState so that the Price change can get updated
     // CoinGecko update-rate about 1 min
@@ -81,8 +81,8 @@ class _OverViewScreenBody extends State<OverViewScreenBody> {
                 // store snapshot data in _searchList and _referenceList
                 // only for the first time FutureBuilder returns the data
                 // so it wont be overridden and a search is possible
-                if (!futureReturnedFlag) {
-                  futureReturnedFlag = true;
+                if (!_futureReturnedFlag) {
+                  _futureReturnedFlag = true;
                   _searchList = snapshot.data;
                   _referenceList = snapshot.data;
                 }
