@@ -25,7 +25,7 @@ class _DetailsScreenBody extends State<DetailsScreenBody> {
     /// check _createListViewItems in overview_screen_body.dart
     /// Make Api call to get crypto coins and store Future in _cryptoList for later use
     /// pass "no valid id to the ohlc API call if crypto id is null => Api call will not return a result
-    _ohlcData = _ohlcHistoryApiService.getOhcl(widget._crypto.id ?? "no valid id");
+    _ohlcData = _ohlcHistoryApiService.getOhlc(widget._crypto.id ?? "no valid id");
     super.initState();
   }
 
@@ -40,7 +40,7 @@ class _DetailsScreenBody extends State<DetailsScreenBody> {
   Future<void> _pullRefresh() async {
     // new API call and setState so that the Price change can get updated
     // CoinGecko update-rate about 1 min
-    _ohlcData = _ohlcHistoryApiService.getOhcl(widget._crypto.id ?? "no valid id");
+    _ohlcData = _ohlcHistoryApiService.getOhlc(widget._crypto.id ?? "no valid id");
     setState(() {});
   }
 
