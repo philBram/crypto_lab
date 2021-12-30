@@ -3,6 +3,7 @@ import 'package:crypto_lab/Model/ohlc.dart';
 import 'package:crypto_lab/Controller/ohlc_history_api_service.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
+import 'package:intl/intl.dart';
 
 class DetailsScreenBody extends StatefulWidget {
   final Crypto _crypto;
@@ -15,48 +16,76 @@ class DetailsScreenBody extends StatefulWidget {
 
 class _DetailsScreenBody extends State<DetailsScreenBody> {
   final OhlcHistoryApiService _ohlcHistoryApiService = OhlcHistoryApiService();
-  static List<Ohlc>? _ohlcList;
+  late Future<List<Ohlc>> _ohlcData;
 
-  Future<void> setOhlcList() async {
-    // Get Crypto Instance which got tapped and got passed as argument
-    // check _createListViewItems in overview_screen_body.dart
-    // Make Api call to get crypto coins and store Future in _cryptoList for later use
-    // pass "no valid id to the ohlc API call if crypto id is null => Api call will not return a result
-    _ohlcList = await _ohlcHistoryApiService.getOhcl(widget._crypto.id ?? "no valid id");
-  }
-
-  Future<List<LineSeries<Ohlc, num>>> getLineSeries() async {
-    await setOhlcList();
-    return <LineSeries<Ohlc, num>>[
-      LineSeries<Ohlc, num>(
-        dataSource: _ohlcList!,
-        xValueMapper: (_ohlcList, _) => _ohlcList.time,
-        yValueMapper: (_ohlcList, _) => _ohlcList.high,
-        width: 2,
-      ),
-    ];
+  @override
+  void initState() {
+    /// Get Crypto Instance which got tapped and got passed as argument.
+    ///
+    /// check _createListViewItems in overview_screen_body.dart
+    /// Make Api call to get crypto coins and store Future in _cryptoList for later use
+    /// pass "no valid id to the ohlc API call if crypto id is null => Api call will not return a result
+    _ohlcData = _ohlcHistoryApiService.getOhcl(widget._crypto.id ?? "no valid id");
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    String crypto = widget._crypto.name ?? "Example";
-    // TODO: implement Details Statistics
-    return Center(
-        child: SfCartesianChart(
-          title: ChartTitle(text: crypto + "-Chart"),
-          legend: Legend(isVisible: true),
-          series: _ohlcList,
-        )
+    return RefreshIndicator(
+      onRefresh: _pullRefresh,
+      child: _createChart(),
     );
-    /*
+  }
+
+  Future<void> _pullRefresh() async {
+    // new API call and setState so that the Price change can get updated
+    // CoinGecko update-rate about 1 min
+    _ohlcData = _ohlcHistoryApiService.getOhcl(widget._crypto.id ?? "no valid id");
+    setState(() {});
+  }
+
+  Widget _createChart() {
     return FutureBuilder(
-      future: _ohlcList,
+      future: _ohlcData,
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         if (snapshot.hasData) {
-          return ListView.builder(
-            itemCount: snapshot.data.length,
-            itemBuilder: (BuildContext context, int index) =>
-                _showDemoOhcl(snapshot.data[index]),
+          return SafeArea(
+            child: Scaffold(
+              body: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Row(
+                    children: const [
+                      Text("1"),
+                      Text("2"),
+                    ],
+                  ),
+                  Expanded(
+                    child: FittedBox(
+                      fit: BoxFit.contain,
+                      child: SfCartesianChart(
+                        series: <CandleSeries>[
+                          CandleSeries<Ohlc, DateTime>(
+                            dataSource: snapshot.data,
+
+                            /// ohlcData.time contains an integer with millescondsSinceEpoch that needs to be converted
+                            xValueMapper: (Ohlc data, _) => DateTime.fromMillisecondsSinceEpoch(data.time),
+                            lowValueMapper: (Ohlc data, _) => data.low,
+                            highValueMapper: (Ohlc data, _) => data.high,
+                            openValueMapper: (Ohlc data, _) => data.open,
+                            closeValueMapper: (Ohlc data, _) => data.close,
+                          ),
+                        ],
+                        primaryXAxis: DateTimeAxis(),
+
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
           );
         } else {
           return const Center(
@@ -65,25 +94,5 @@ class _DetailsScreenBody extends State<DetailsScreenBody> {
         }
       },
     );
-
-     */
   }
-
-  /*Widget _showDemoOhcl(Ohlc ohlc) {
-
-    return Card(
-        child: ListTile(
-      title: Text(ohlc.time.toString() +
-          " " +
-          ohlc.open.toString() +
-          " " +
-          ohlc.high.toString() +
-          " " +
-          ohlc.low.toString() +
-          " " +
-          ohlc.close.toString()),
-    ));
-  }
-
-     */
 }
