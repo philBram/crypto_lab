@@ -7,16 +7,18 @@ class OhlcHistoryApiService {
   // https://www.coingecko.com/en/api/documentation
   final String _baseUrl = "https://api.coingecko.com/api/v3/coins/";
   final String _targetCurrency = "vs_currency=eur";
-  final String _dateUpTo = "&days=365";
-  
+
+  String _timeUpTo = "1y";
+
   static final OhlcHistoryApiService _instance = OhlcHistoryApiService._internal();
 
   factory OhlcHistoryApiService() => _instance;
 
   OhlcHistoryApiService._internal();
 
-  Future<List<Ohlc>> getOhlc(String coinId) async {
-    final url = _baseUrl + coinId + "/ohlc?" + _targetCurrency + _dateUpTo;
+  Future<List<Ohlc>> getOhlc(String coinId, String? ohlcTimeInterval) async {
+    _timeUpTo = ohlcTimeInterval ?? "1y";
+    final url = _baseUrl + coinId + "/ohlc?" + _targetCurrency + _convertTimeDistanceToDaysInterval(_timeUpTo);
     final http.Response res = await http.get(Uri.parse(url));
     if (res.statusCode == 200) {
       List<dynamic> jsonOhlc = json.decode(res.body);
@@ -28,8 +30,7 @@ class OhlcHistoryApiService {
       // 4. low (double)
       // 5. close (double)
       return _createOhlc(jsonOhlc);
-    }
-    else {
+    } else {
       throw ("Api not available");
     }
   }
@@ -43,5 +44,29 @@ class OhlcHistoryApiService {
       ohlc.add(Ohlc(singleOhlcValue: List<num>.from(element)));
     }
     return ohlc;
+  }
+
+  String _convertTimeDistanceToDaysInterval(String timeDistance) {
+    String daysInterval = "&days=";
+    switch (timeDistance) {
+      case "24h":
+        return daysInterval + "1";
+      case "7d":
+        return daysInterval + "7";
+      case "14d":
+        return daysInterval + "14";
+      case "30d":
+        return daysInterval + "30";
+      case "90d":
+        return daysInterval += "90";
+      case "180d":
+        return daysInterval += "180";
+      case "1y":
+        return daysInterval += "365";
+      case "Max":
+        return daysInterval += "max";
+      default:
+        return daysInterval += "365";
+    }
   }
 }
