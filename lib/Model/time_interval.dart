@@ -32,4 +32,27 @@ extension TimeIntervalExtension on TimeInterval {
         return "1y";
     }
   }
+
+  String get dayValue {
+    switch (this) {
+      case TimeInterval.oneDay:
+        return "1";
+      case TimeInterval.sevenDays:
+        return "7";
+      case TimeInterval.fourteenDays:
+        return "14";
+      case TimeInterval.thirtyDays:
+        return "30";
+      case TimeInterval.ninetyDays:
+        return "90";
+      case TimeInterval.oneHundredEightyDays:
+        return "180";
+      case TimeInterval.oneYear:
+        return "365";
+      case TimeInterval.maximum:
+        return "max";
+      default:
+        return "365";
+    }
+  }
 }

@@ -2,6 +2,8 @@ import 'package:crypto_lab/Model/crypto.dart';
 import 'package:crypto_lab/Model/ohlc.dart';
 import 'package:crypto_lab/Controller/ohlc_history_api_service.dart';
 import 'package:crypto_lab/Model/time_interval.dart';
+import 'package:crypto_lab/View/crypto_lab_colors.dart';
+import 'package:crypto_lab/controller/ohlc_calculator.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:intl/intl.dart';
@@ -17,18 +19,14 @@ class DetailsScreenBody extends StatefulWidget {
 
 class _DetailsScreenBody extends State<DetailsScreenBody> {
   final OhlcHistoryApiService _ohlcHistoryApiService = OhlcHistoryApiService();
-  late Future<List<Ohlc>> _ohlcData;
+
+  Future<List<Ohlc>>? _ohlcData;
 
   TimeInterval _pressedTimeInterval = TimeInterval.oneYear;
 
   @override
   void initState() {
-    /// Get Crypto Instance which got tapped and got passed as argument.
-    ///
-    /// check _createListViewItems in overview_screen_body.dart
-    /// Make Api call to get crypto coins and store Future in _cryptoList for later use
-    /// pass "no valid id to the ohlc API call if crypto id is null => Api call will not return a result
-    _ohlcData = _ohlcHistoryApiService.getOhlc(widget._crypto.id ?? "no valid id", _pressedTimeInterval.name);
+    _ohlcData = _ohlcHistoryApiService.getOhlc(widget._crypto.id ?? "no valid id", null);
     super.initState();
   }
 
@@ -36,31 +34,75 @@ class _DetailsScreenBody extends State<DetailsScreenBody> {
   Widget build(BuildContext context) {
     return RefreshIndicator(
       onRefresh: _pullRefresh,
-      child: _createChart(),
+      child: _createScreen(),
     );
   }
 
+  /// Fetches the new ohlc-data and stores it in [_ohlcData].
   Future<void> _pullRefresh() async {
     // new API call and setState so that the Price change can get updated
     // CoinGecko update-rate about 1 min
-    _ohlcData = _ohlcHistoryApiService.getOhlc(widget._crypto.id ?? "no valid id", _pressedTimeInterval.name);
+    _ohlcData = null;
+    _ohlcData = _ohlcHistoryApiService.getOhlc(widget._crypto.id ?? "no valid id", _pressedTimeInterval);
     setState(() {});
   }
 
-  Future<void> _updateTimeInterval(TimeInterval timeInterval) async {
-    _pressedTimeInterval = timeInterval;
+  /// Updates the time interval [_pressedTimeInterval] and [_ohlcData] after a dropdown-button is clicked.
+  Future<void> _updateTimeInterval(String dropdownInput) async {
+    _pressedTimeInterval = _getTimeIntervalByName(dropdownInput);
     await _pullRefresh();
   }
 
-  ElevatedButton _createElevatedTimeIntervalButton(TimeInterval timeInterval) {
-    return ElevatedButton(
-      child: Text(timeInterval.name),
-      style: ElevatedButton.styleFrom(primary: _pressedTimeInterval == timeInterval ? Colors.blue : Colors.grey),
-      onPressed: () => {_updateTimeInterval(timeInterval)},
+  // TODO: maybe refactor
+  /// Returns a TimeInterval by a given [timerIntervalName].
+  ///
+  /// Throws an [Exception] if no appropriate TimeInterval can be found.
+  TimeInterval _getTimeIntervalByName(String timeIntervalName) {
+    for (TimeInterval timeInterval in TimeInterval.values) {
+      if (timeInterval.name == timeIntervalName) {
+        return timeInterval;
+      }
+    }
+    throw Exception("Dies ist keine gültige Zeitspanne!");
+  }
+
+  // TODO: maybe refactor
+  /// Returns a list of strings containing all name-values of the TimeInterval-enum.
+  List<String> _getAllTimeIntervalNames() {
+    List<String> listOfTimeIntervalNames = [];
+    for (TimeInterval timeInterval in TimeInterval.values) {
+      listOfTimeIntervalNames.add(timeInterval.name);
+    }
+    return listOfTimeIntervalNames;
+  }
+
+  /// Creates and returns a SFCartesianChart to display the Ohlc-data of a given [snapshot].
+  Widget _createChart(AsyncSnapshot snapshot) {
+    return SfCartesianChart(
+      series: <CandleSeries>[
+        CandleSeries<Ohlc, DateTime>(
+          dataSource: snapshot.data,
+
+          /// ohlcData.time contains an integer with millescondsSinceEpoch that needs to be converted
+          xValueMapper: (Ohlc data, _) {
+            return DateTime.fromMillisecondsSinceEpoch(data.time);
+          },
+          lowValueMapper: (Ohlc data, _) => data.low,
+          highValueMapper: (Ohlc data, _) => data.high,
+          openValueMapper: (Ohlc data, _) => data.open,
+          closeValueMapper: (Ohlc data, _) => data.close,
+        ),
+      ],
+      // TODO: german format - but it's some expense, because Syncfusion-chart already auto-formats the axis if it detects only time of day or year
+      primaryXAxis: DateTimeAxis(),
+      primaryYAxis: NumericAxis(
+        numberFormat: NumberFormat.simpleCurrency(locale: "de"),
+      ),
     );
   }
 
-  Widget _createChart() {
+  /// Creates and returns the displayed screen with all contents with a FutureBuilder for reloads and refreshes.
+  Widget _createScreen() {
     return FutureBuilder(
       future: _ohlcData,
       builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -72,50 +114,61 @@ class _DetailsScreenBody extends State<DetailsScreenBody> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  ButtonBar(
-                    alignment: MainAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      _createElevatedTimeIntervalButton(TimeInterval.oneDay),
-                      _createElevatedTimeIntervalButton(TimeInterval.sevenDays),
-                      _createElevatedTimeIntervalButton(TimeInterval.fourteenDays),
-                      _createElevatedTimeIntervalButton(TimeInterval.thirtyDays),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text("Zeitraum: "),
+                      DropdownButton<String>(
+                        value: _pressedTimeInterval.name,
+                        icon: const Icon(
+                          Icons.access_time,
+                          color: CryptoLabColors.cryptoLabIcon,
+                        ),
+                        elevation: 16,
+                        style: const TextStyle(color: CryptoLabColors.cryptoLabFont),
+                        underline: Container(
+                          height: 2,
+                          color: CryptoLabColors.cryptoLabBackground,
+                        ),
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            try {
+                              _updateTimeInterval(newValue!);
+                            } on Exception catch (e) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(e.toString().replaceAll("Exception: ", "")),
+                                  backgroundColor: Colors.green,
+                                ),
+                              );
+                            }
+                          });
+                        },
+                        items: _getAllTimeIntervalNames().map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                      ),
                     ],
                   ),
-                  ButtonBar(
-                    alignment: MainAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      _createElevatedTimeIntervalButton(TimeInterval.ninetyDays),
-                      _createElevatedTimeIntervalButton(TimeInterval.oneHundredEightyDays),
-                      _createElevatedTimeIntervalButton(TimeInterval.oneYear),
-                      _createElevatedTimeIntervalButton(TimeInterval.maximum),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text("G/V(€): "),
+                      // TODO: decrease runtime by only calling the function once
+                      Text(
+                        OhlcCalculator().getGrowthRateByOhlcData(snapshot.data).toStringAsFixed(2) + " %",
+                        style: TextStyle(
+                            color: (OhlcCalculator().getGrowthRateByOhlcData(snapshot.data) < 0.0)
+                                ? Colors.red
+                                : Colors.green),
+                      ),
                     ],
                   ),
                   Expanded(
-                    child: SfCartesianChart(
-                      series: <CandleSeries>[
-                        CandleSeries<Ohlc, DateTime>(
-                          dataSource: snapshot.data,
-
-                          /// ohlcData.time contains an integer with millescondsSinceEpoch that needs to be converted
-                          xValueMapper: (Ohlc data, _) {
-                            return DateTime.fromMillisecondsSinceEpoch(data.time);
-                          },
-                          lowValueMapper: (Ohlc data, _) => data.low,
-                          highValueMapper: (Ohlc data, _) => data.high,
-                          openValueMapper: (Ohlc data, _) => data.open,
-                          closeValueMapper: (Ohlc data, _) => data.close,
-                        ),
-                      ],
-                      primaryXAxis: DateTimeAxis(),
-                    ),
-                  ),
-                  Row(
-                    children: const [
-                      Text("Untere "),
-                      Text("Reihe"),
-                    ],
+                    child: _createChart(snapshot),
                   ),
                 ],
               ),
