@@ -29,9 +29,10 @@ class _NewsList extends State<NewsList> {
 
   final _streamSubscriptions = <StreamSubscription<dynamic>>[];
   final _scrollDirection = Axis.horizontal;
-  late int _listLength;
-  final _yRotationThreshold = 15;
-  int _currentListPosition = 0;
+  late double _listLength;
+  final int _yRotationThreshold = 15;
+  final double _scrollingSpeed = 0.3;
+  double _currentListPosition = 0.0;
   late AutoScrollController _autoScrollController;
 
   @override
@@ -40,7 +41,8 @@ class _NewsList extends State<NewsList> {
     // Make Api call to get Articles and store Future in _articleList for later use
     _articleList = _cryptoNewsApiService.getArticle();
 
-    _listLength = int.parse(_cryptoNewsApiService.newsArticleSize);
+    // get the length which is used to get the news articles from the newsApi
+    _listLength = double.parse(_cryptoNewsApiService.newsArticleSize);
 
     _autoScrollController = AutoScrollController(
       viewportBoundaryGetter: () =>
@@ -54,18 +56,19 @@ class _NewsList extends State<NewsList> {
       magnetometerEvents.listen(
         (MagnetometerEvent event) {
           setState(() {
-            print(event.x);
-            print(_currentListPosition);
+            // comment out to get information about the current sensor and list state
+            /* print(event.x);
+            print(_currentListPosition); */
             if (event.x > _yRotationThreshold) {
-              _currentListPosition = _currentListPosition <= 0
+              _currentListPosition = _currentListPosition <= 0.0
                   ? _currentListPosition
-                  : _currentListPosition - 1;
-              _scrollToIndex(_currentListPosition);
+                  : _currentListPosition - _scrollingSpeed;
+              _scrollToIndex(_currentListPosition.round());
             } else if (event.x < -_yRotationThreshold) {
               _currentListPosition = _currentListPosition > _listLength
                   ? _currentListPosition
-                  : _currentListPosition + 1;
-              _scrollToIndex(_currentListPosition);
+                  : _currentListPosition + _scrollingSpeed;
+              _scrollToIndex(_currentListPosition.round());
             }
           });
         },
