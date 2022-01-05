@@ -1,5 +1,5 @@
 import 'package:crypto_lab/Controller/route_manager.dart';
-import 'package:crypto_lab/View/login/authentication_service.dart';
+import 'package:crypto_lab/controller/authentication_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -47,11 +47,7 @@ class NavBar extends StatelessWidget {
           title: const Text('Krypto-Übersicht'),
           onTap: () => RouteManager().navigateToRoute(context, "/overview"),
         ),
-        ListTile(
-          leading: const Icon(Icons.favorite),
-          title: const Text('Favoriten'),
-          onTap: () => RouteManager().navigateToRoute(context, "/favorites"),
-        ),
+        for (Widget widget in _buildUserWidgets(context, user)) widget,
         const Divider(),
         ListTile(
           leading: const Icon(Icons.logout),
@@ -63,5 +59,29 @@ class NavBar extends StatelessWidget {
         ),
       ]),
     );
+  }
+
+  /// Only build the "favorites" and "settings"-tap if the user-type isn't guest-user.
+  List<Widget> _buildUserWidgets(BuildContext context, User? user) {
+    if (1 == 1) {
+      // TODO: auskommentieren, falls APP produktiv geht:
+      //if (!(user == null || user.isAnonymous)) {
+      return <Widget>[
+        ListTile(
+          leading: const Icon(Icons.favorite),
+          title: const Text('Favoriten'),
+          onTap: () => RouteManager().navigateToRoute(context, "/favorites"),
+        ),
+        const Divider(),
+        ListTile(
+          leading: const Icon(Icons.settings),
+          title: const Text('Einstellungen'),
+          onTap: () => RouteManager().navigateToRoute(context, "/settings"),
+        ),
+        const Divider(),
+      ];
+    } else {
+      return const <Widget>[];
+    }
   }
 }

@@ -12,6 +12,7 @@ import 'View/crypto_lab_colors.dart';
 import 'View/home/home_screen.dart';
 import 'View/overview/overview_screen.dart';
 import 'View/favorites/favorites_screen.dart';
+import 'View/settings/settings_screen.dart';
 
 Future <void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -64,6 +65,7 @@ class CryptoLab extends StatelessWidget {
       case "/home": return MaterialPageRoute(settings: settings, builder: (_) => const HomeScreen());
       case "/overview": return MaterialPageRoute(settings: settings, builder: (_) => const OverViewScreen());
       case "/favorites": return MaterialPageRoute(settings: settings, builder: (_) => const FavoritesScreen());
+      case "/settings": return MaterialPageRoute(settings: settings, builder: (_) => SettingsScreen());
       case "/details":
         if (settings.arguments is Crypto) {
           return MaterialPageRoute(settings: settings,

@@ -40,6 +40,10 @@ dependencies:
   # The flutter_login package gives easy login functionalties
   flutter_login: ^3.0.0-beta.2
 
+  # This is a simple flutter plugin for easily creating app settings screens.
+  # The unique thing about this library is that it is not dependent upon any specific storage library used to store settings.
+  flutter_settings_screens: ^0.3.2-null-safety
+
   # Firebase
   firebase_core: ^1.10.2
   firebase_auth: ^3.3.0

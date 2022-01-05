@@ -1,12 +1,14 @@
 import 'package:crypto_lab/Controller/route_manager.dart';
+import 'package:crypto_lab/View/globals.dart';
 import 'package:crypto_lab/View/home/home_screen.dart';
+import 'package:crypto_lab/View/widgets/custom_snackbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_login/flutter_login.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import 'authentication_service.dart';
+import '../../controller/authentication_service.dart';
 
 class LoginScreen extends StatelessWidget {
   LoginScreen({Key? key}) : super(key: key);
@@ -70,11 +72,11 @@ class LoginScreen extends StatelessWidget {
       onLogin: (loginData) async {
         try {
           await AuthenticationService().loginUser(loginData);
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text("Anmeldung erfolgreich!"),
-              backgroundColor: Colors.green,
-            ),
+          CustomSnackbar().displayTextWithTitle(
+            context: context,
+            status: SnackbarStatus.success,
+            displayText: successLoginText,
+            displayTitle: successLoginTitle,
           );
           RouteManager().navigateToRoute(context, "/home");
         } on Exception catch (e) {
@@ -84,11 +86,11 @@ class LoginScreen extends StatelessWidget {
       onSignup: (signupData) async {
         try {
           await AuthenticationService().registerUser(signupData);
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text("Registrierung erfolgreich! Du kannst Dich nun mit den Daten anmelden."),
-              backgroundColor: Colors.green,
-            ),
+          CustomSnackbar().displayTextWithTitle(
+            context: context,
+            status: SnackbarStatus.success,
+            displayText: successSignupText,
+            displayTitle: successSignupTitle,
           );
           RouteManager().navigateToRoute(context, "/login");
         } on Exception catch (e) {
