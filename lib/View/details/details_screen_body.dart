@@ -20,13 +20,18 @@ class DetailsScreenBody extends StatefulWidget {
 class _DetailsScreenBody extends State<DetailsScreenBody> {
   final OhlcHistoryApiService _ohlcHistoryApiService = OhlcHistoryApiService();
 
-  Future<List<Ohlc>>? _ohlcData;
+  Future<List<Ohlc>>? _ohlcFuture;
+  List<Ohlc>? _ohlcData;
 
-  TimeInterval _pressedTimeInterval = TimeInterval.oneYear;
+  late TimeInterval _pressedTimeInterval;
+
+  double? _growthRate;
 
   @override
   void initState() {
-    _ohlcData = _ohlcHistoryApiService.getOhlc(widget._crypto.id ?? "no valid id", null);
+    _pressedTimeInterval = TimeInterval.oneDay;
+    _ohlcFuture = _ohlcHistoryApiService.getOhlc(widget._crypto.id ?? "no valid id", _pressedTimeInterval);
+    _setGrowthRate();
     super.initState();
   }
 
@@ -38,12 +43,23 @@ class _DetailsScreenBody extends State<DetailsScreenBody> {
     );
   }
 
+  _setGrowthRate() {
+    if (_ohlcData == null) {
+      _growthRate = widget._crypto.price_change_percentage_24h;
+    }
+    else {
+      _growthRate = OhlcCalculator().getGrowthRateByOhlcData(_ohlcData!);
+    }
+  }
+
   /// Fetches the new ohlc-data and stores it in [_ohlcData].
   Future<void> _pullRefresh() async {
     // new API call and setState so that the Price change can get updated
     // CoinGecko update-rate about 1 min
-    _ohlcData = null;
-    _ohlcData = _ohlcHistoryApiService.getOhlc(widget._crypto.id ?? "no valid id", _pressedTimeInterval);
+    _ohlcFuture = null;
+    _ohlcFuture = _ohlcHistoryApiService.getOhlc(widget._crypto.id ?? "no valid id", _pressedTimeInterval);
+    _ohlcData = await _ohlcFuture;
+    _setGrowthRate();
     setState(() {});
   }
 
@@ -104,7 +120,7 @@ class _DetailsScreenBody extends State<DetailsScreenBody> {
   /// Creates and returns the displayed screen with all contents with a FutureBuilder for reloads and refreshes.
   Widget _createScreen() {
     return FutureBuilder(
-      future: _ohlcData,
+      future: _ohlcFuture,
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         if (snapshot.hasData) {
           return SafeArea(
@@ -156,14 +172,14 @@ class _DetailsScreenBody extends State<DetailsScreenBody> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Text("G/V(€): "),
-                      // TODO: decrease runtime by only calling the function once
+                      const Text("G/V(%): "),
                       Text(
-                        OhlcCalculator().getGrowthRateByOhlcData(snapshot.data).toStringAsFixed(2) + " %",
+                        _growthRate != null ? _growthRate!.toStringAsFixed(2) + " %" : "",
                         style: TextStyle(
-                            color: (OhlcCalculator().getGrowthRateByOhlcData(snapshot.data) < 0.0)
-                                ? Colors.red
-                                : Colors.green),
+                          color: (_growthRate == null || _growthRate! < 0.0)
+                              ? Colors.red
+                              : Colors.green,
+                        ),
                       ),
                     ],
                   ),

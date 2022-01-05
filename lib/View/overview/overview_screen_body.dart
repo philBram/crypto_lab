@@ -13,6 +13,7 @@ class OverViewScreenBody extends StatefulWidget {
 class _OverViewScreenBody extends State<OverViewScreenBody> {
   final CoinOverviewApiService _cryptoCoinsApi = CoinOverviewApiService();
   final TextEditingController _textEditingController = TextEditingController();
+
   // only true if _cryptoList returned List<Crypto> in FutureBuilder
   bool _futureReturnedFlag = false;
   late Future<List<Crypto>> _cryptoList;
@@ -55,12 +56,8 @@ class _OverViewScreenBody extends State<OverViewScreenBody> {
                 // filter keywords by coin-name and symbol-name and only show these in the ListView
                 _searchList = _referenceList
                     .where((element) =>
-                        element.name!
-                            .toLowerCase()
-                            .contains(text.toLowerCase()) ||
-                        element.symbol!
-                            .toLowerCase()
-                            .contains(text.toLowerCase()))
+                        element.name!.toLowerCase().contains(text.toLowerCase()) ||
+                        element.symbol!.toLowerCase().contains(text.toLowerCase()))
                     .toList();
               });
             },
@@ -88,8 +85,7 @@ class _OverViewScreenBody extends State<OverViewScreenBody> {
                 }
                 return ListView.builder(
                   itemCount: _searchList.length,
-                  itemBuilder: (BuildContext context, int index) =>
-                      _createListViewItems(context, _searchList[index]),
+                  itemBuilder: (BuildContext context, int index) => _createListViewItems(context, _searchList[index]),
                 );
               } else {
                 return const Center(
@@ -115,7 +111,22 @@ class _OverViewScreenBody extends State<OverViewScreenBody> {
             "https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fwww.trendycovers.com%2Fcovers%2F1324229779.jpg&f=1&nofb=1"),
         title: Text(crypto.name ?? "name not found"),
         subtitle: Text(crypto.symbol ?? "symbol not found"),
-        trailing: Text(crypto.current_price.toString() + ' €'),
+        trailing: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            Text(crypto.current_price.toString() + ' €'),
+            Text(
+              ((crypto.price_change_percentage_24h != null)
+                  ? crypto.price_change_percentage_24h!.toStringAsFixed(2) + " %"
+                  : "change not found"),
+              style: TextStyle(
+                  color: (crypto.price_change_percentage_24h == null || crypto.price_change_percentage_24h! < 0.0)
+                      ? Colors.red
+                      : Colors.green),
+            ),
+          ],
+        ),
       ),
     );
   }

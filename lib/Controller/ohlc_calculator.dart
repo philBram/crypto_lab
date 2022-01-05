@@ -1,4 +1,6 @@
+import 'package:crypto_lab/Model/crypto.dart';
 import 'package:crypto_lab/Model/ohlc.dart';
+import 'package:crypto_lab/Model/time_interval.dart';
 
 class OhlcCalculator {
   /// OhlcCalculator-Singleton.
@@ -27,7 +29,12 @@ class OhlcCalculator {
     if (growthRate < 1.0) {
       return (1.0 - growthRate) * (-1.0) * 100;
     } else {
-      return growthRate * 100;
+      return (growthRate * 100 - 100);
     }
+  }
+
+  // TODO:
+  double getGrowthRateByCryptoAndTime(Crypto crypto, TimeInterval timeInterval) {
+    return 1.0;
   }
 }
