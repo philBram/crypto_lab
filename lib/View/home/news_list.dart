@@ -29,6 +29,7 @@ class _NewsList extends State<NewsList> {
 
   final _streamSubscriptions = <StreamSubscription<dynamic>>[];
   final _scrollDirection = Axis.horizontal;
+
   late double _listLength;
   final int _yRotationThreshold = 15;
   final double _scrollingSpeed = 0.3;
@@ -41,24 +42,29 @@ class _NewsList extends State<NewsList> {
     // Make Api call to get Articles and store Future in _articleList for later use
     _articleList = _cryptoNewsApiService.getArticle();
 
-    // get the length which is used to get the news articles from the newsApi
+    // get the length for the ListView
     _listLength = double.parse(_cryptoNewsApiService.newsArticleSize);
 
+    _initAutoScrollController();
+    _initSensorStreamListener();
+  }
+
+  // https://pub.dev/packages/scroll_to_index
+  void _initAutoScrollController() {
     _autoScrollController = AutoScrollController(
       viewportBoundaryGetter: () =>
           Rect.fromLTRB(0, 0, 0, MediaQuery.of(context).padding.bottom),
       axis: _scrollDirection,
     );
+  }
 
-    // Listens to Rotation changes
-    // https://pub.dev/packages/sensors_plus
+  // Listens to Rotation changes
+  // https://pub.dev/packages/sensors_plus
+  void _initSensorStreamListener() {
     _streamSubscriptions.add(
       magnetometerEvents.listen(
-        (MagnetometerEvent event) {
+            (MagnetometerEvent event) {
           setState(() {
-            // comment out to get information about the current sensor and list state
-            /* print(event.x);
-            print(_currentListPosition); */
             if (event.x > _yRotationThreshold) {
               _currentListPosition = _currentListPosition <= 0.0
                   ? _currentListPosition
@@ -186,8 +192,8 @@ class _NewsList extends State<NewsList> {
     }
   }
 
-  Future _scrollToIndex(index) async {
-    await _autoScrollController.scrollToIndex(index,
+  void _scrollToIndex(index) {
+    _autoScrollController.scrollToIndex(index,
         preferPosition: AutoScrollPosition.begin);
   }
 }
