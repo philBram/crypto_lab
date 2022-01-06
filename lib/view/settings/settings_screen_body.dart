@@ -1,7 +1,7 @@
-import 'package:crypto_lab/View/globals.dart';
-import 'package:crypto_lab/View/widgets/circular_icon_widget.dart';
-import 'package:crypto_lab/View/widgets/custom_snackbar.dart';
-import 'package:crypto_lab/View/widgets/popup.dart';
+import 'package:crypto_lab/view/globals.dart';
+import 'package:crypto_lab/view/widgets/circular_icon_widget.dart';
+import 'package:crypto_lab/view/widgets/custom_snackbar.dart';
+import 'package:crypto_lab/view/widgets/popup.dart';
 import 'package:crypto_lab/controller/authentication_service.dart';
 import 'package:crypto_lab/controller/route_manager.dart';
 import 'package:flutter/material.dart';

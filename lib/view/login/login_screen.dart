@@ -1,17 +1,15 @@
-import 'package:crypto_lab/Controller/route_manager.dart';
-import 'package:crypto_lab/View/globals.dart';
-import 'package:crypto_lab/View/home/home_screen.dart';
-import 'package:crypto_lab/View/widgets/custom_snackbar.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:crypto_lab/view/home/home_screen.dart';
+import 'package:crypto_lab/view/widgets/custom_snackbar.dart';
+import 'package:crypto_lab/controller/authentication_service.dart';
+import 'package:crypto_lab/controller/route_manager.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_login/flutter_login.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import '../../controller/authentication_service.dart';
+import '../globals.dart';
 
 class LoginScreen extends StatelessWidget {
-  LoginScreen({Key? key}) : super(key: key);
+  const LoginScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

@@ -1,6 +1,6 @@
-import 'package:crypto_lab/View/settings/settings_screen_body.dart';
 import 'package:crypto_lab/view/app_bar/app_bar.dart';
 import 'package:crypto_lab/view/navigation_bar/nav_bar.dart';
+import 'package:crypto_lab/view/settings/settings_screen_body.dart';
 import 'package:flutter/material.dart';
 
 class SettingsScreen extends StatelessWidget {

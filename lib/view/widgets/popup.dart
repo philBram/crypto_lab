@@ -1,4 +1,4 @@
-import 'package:crypto_lab/View/crypto_lab_colors.dart';
+import 'package:crypto_lab/view/crypto_lab_colors.dart';
 import 'package:flutter/material.dart';
 
 import '../globals.dart';
