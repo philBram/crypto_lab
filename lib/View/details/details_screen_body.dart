@@ -1,6 +1,6 @@
-import 'package:crypto_lab/Model/crypto.dart';
-import 'package:crypto_lab/Model/ohlc.dart';
-import 'package:crypto_lab/Controller/ohlc_history_api_service.dart';
+import 'package:crypto_lab/controller/ohlc/ohlc_history_api_service.dart';
+import 'package:crypto_lab/model/crypto.dart';
+import 'package:crypto_lab/model/ohlc.dart';
 import 'package:flutter/material.dart';
 
 class DetailsScreenBody extends StatefulWidget {
