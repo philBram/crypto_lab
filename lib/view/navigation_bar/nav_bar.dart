@@ -1,5 +1,5 @@
-import 'package:crypto_lab/Controller/route_manager.dart';
-import 'package:crypto_lab/View/login/authentication_service.dart';
+import 'package:crypto_lab/controller/route_manager.dart';
+import 'package:crypto_lab/view/login/authentication_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 

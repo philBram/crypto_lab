@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:crypto_lab/Model/articles.dart';
+import 'package:crypto_lab/model/articles.dart';
 import 'package:http/http.dart' as http;
 
 class CryptoNewsApiService {

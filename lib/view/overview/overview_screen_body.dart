@@ -1,7 +1,6 @@
-import 'package:crypto_lab/Controller/coin_overview_api_service.dart';
-import 'package:crypto_lab/Model/crypto.dart';
+import 'package:crypto_lab/controller/coin_overview_api_service.dart';
+import 'package:crypto_lab/model/crypto.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class OverViewScreenBody extends StatefulWidget {
   const OverViewScreenBody({Key? key}) : super(key: key);
@@ -118,7 +117,22 @@ class _OverViewScreenBody extends State<OverViewScreenBody> {
             "https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fwww.trendycovers.com%2Fcovers%2F1324229779.jpg&f=1&nofb=1"),
         title: Text(crypto.name ?? "name not found"),
         subtitle: Text(crypto.symbol ?? "symbol not found"),
-        trailing: Text(crypto.current_price.toString() + ' €'),
+        trailing: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            Text(crypto.current_price.toString() + ' €'),
+            Text(
+              ((crypto.price_change_percentage_24h != null)
+                  ? crypto.price_change_percentage_24h!.toStringAsFixed(2) + " %"
+                  : "change not found"),
+              style: TextStyle(
+                  color: (crypto.price_change_percentage_24h == null || crypto.price_change_percentage_24h! < 0.0)
+                      ? Colors.red
+                      : Colors.green),
+            ),
+          ],
+        ),
       ),
     );
   }

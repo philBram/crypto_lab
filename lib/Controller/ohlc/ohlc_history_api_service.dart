@@ -1,35 +1,35 @@
 import 'dart:convert';
 
-import 'package:crypto_lab/Model/ohlc.dart';
+import 'package:crypto_lab/model/ohlc.dart';
+import 'package:crypto_lab/model/time_interval.dart';
 import 'package:http/http.dart' as http;
 
 class OhlcHistoryApiService {
   // https://www.coingecko.com/en/api/documentation
   final String _baseUrl = "https://api.coingecko.com/api/v3/coins/";
   final String _targetCurrency = "vs_currency=eur";
-  final String _dateUpTo = "&days=365";
-  
+
   static final OhlcHistoryApiService _instance = OhlcHistoryApiService._internal();
 
   factory OhlcHistoryApiService() => _instance;
 
   OhlcHistoryApiService._internal();
 
-  Future<List<Ohlc>> getOhlc(String coinId) async {
-    final url = _baseUrl + coinId + "/ohlc?" + _targetCurrency + _dateUpTo;
+  Future<List<Ohlc>> getOhlc(String coinId, TimeInterval? timeInterval) async {
+    String timeUpTo = timeInterval != null ? timeInterval.dayValue : TimeInterval.oneYear.dayValue;
+    final url = _baseUrl + coinId + "/ohlc?" + _targetCurrency + "&days=" + timeUpTo;
     final http.Response res = await http.get(Uri.parse(url));
     if (res.statusCode == 200) {
       List<dynamic> jsonOhlc = json.decode(res.body);
       // res.body is a Json-Array with Json-Arrays which contain the single Ohlc values
       // ForEach Ohlc Array value the num values are for:
-      // 1. time (int)
+      // 1. time in ms from epoch (int)
       // 2. open (double)
       // 3. high (double)
       // 4. low (double)
       // 5. close (double)
       return _createOhlc(jsonOhlc);
-    }
-    else {
+    } else {
       throw ("Api not available");
     }
   }

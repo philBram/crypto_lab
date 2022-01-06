@@ -1,10 +1,10 @@
 import 'dart:async';
 
-import 'package:crypto_lab/Model/articles.dart';
-import 'package:crypto_lab/View/adaptive_text_size.dart';
-import 'package:crypto_lab/Controller/crypto_news_api_service.dart';
+import 'package:crypto_lab/model/articles.dart';
+import 'package:crypto_lab/view/adaptive_text_size.dart';
+import 'package:crypto_lab/controller/crypto_news_api_service.dart';
 import 'package:flutter/material.dart';
-import 'package:crypto_lab/View/crypto_lab_colors.dart';
+import 'package:crypto_lab/view/crypto_lab_colors.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
 import 'package:sensors_plus/sensors_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
