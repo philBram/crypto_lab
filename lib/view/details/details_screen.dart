@@ -1,6 +1,6 @@
-import 'package:crypto_lab/Model/crypto.dart';
-import 'package:crypto_lab/View/appBar/app_bar.dart';
-import 'package:crypto_lab/View/navigationBar/nav_bar.dart';
+import 'package:crypto_lab/model/crypto.dart';
+import 'package:crypto_lab/view/app_bar/app_bar.dart';
+import 'package:crypto_lab/view/navigation_bar/nav_bar.dart';
 import 'package:flutter/material.dart';
 
 import 'package:crypto_lab/View/details/details_screen_body.dart';
