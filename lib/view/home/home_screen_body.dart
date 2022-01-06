@@ -1,4 +1,4 @@
-import 'package:crypto_lab/View/home/news_list.dart';
+import 'package:crypto_lab/view/home/news_list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 

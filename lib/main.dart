@@ -1,18 +1,17 @@
 import 'dart:io';
-import 'dart:typed_data';
 
-import 'package:crypto_lab/View/login/login_screen.dart';
+import 'package:crypto_lab/view/login/login_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:crypto_lab/Model/crypto.dart';
-import 'package:crypto_lab/View/details/details_screen.dart';
+import 'package:crypto_lab/model/crypto.dart';
+import 'package:crypto_lab/view/details/details_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'View/crypto_lab_colors.dart';
-import 'View/home/home_screen.dart';
-import 'View/overview/overview_screen.dart';
-import 'View/favorites/favorites_screen.dart';
-import 'View/settings/settings_screen.dart';
+import 'view/crypto_lab_colors.dart';
+import 'view/home/home_screen.dart';
+import 'view/overview/overview_screen.dart';
+import 'view/favorites/favorites_screen.dart';
+import 'view/settings/settings_screen.dart';
 
 Future <void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -60,8 +59,8 @@ class CryptoLab extends StatelessWidget {
     switch (settings.name) {
       // settings has to be passed in so ModalRoute.of(context)?.settings.name
       // in nav_bar.dart can check if already on current page
-      case "/": return MaterialPageRoute(settings: settings, builder: (_) => LoginScreen());
-      case "/login": return MaterialPageRoute(settings: settings, builder: (_) => LoginScreen());
+      case "/": return MaterialPageRoute(settings: settings, builder: (_) => const LoginScreen());
+      case "/login": return MaterialPageRoute(settings: settings, builder: (_) => const LoginScreen());
       case "/home": return MaterialPageRoute(settings: settings, builder: (_) => const HomeScreen());
       case "/overview": return MaterialPageRoute(settings: settings, builder: (_) => const OverViewScreen());
       case "/favorites": return MaterialPageRoute(settings: settings, builder: (_) => const FavoritesScreen());

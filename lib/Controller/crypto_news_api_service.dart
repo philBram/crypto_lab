@@ -1,13 +1,14 @@
 import 'dart:convert';
 
-import 'package:crypto_lab/Model/articles.dart';
+import 'package:crypto_lab/model/articles.dart';
 import 'package:http/http.dart' as http;
 
 class CryptoNewsApiService {
   // https://newsapi.org/docs
   final String _baseUrl = "https://newsapi.org/v2/everything?";
   final String _keyWords = "q=crypto OR Bitcoin OR ethereum";
-  final String _pageSize = "&pagesize=20";
+  final String newsArticleSize = "20";
+  final String _pageSize = "&pagesize=";
   final String _apiKey = "&apiKey=d05f511c622b4c069efd97d09df654df";
 
   static final CryptoNewsApiService _instance = CryptoNewsApiService._internal();
@@ -17,7 +18,7 @@ class CryptoNewsApiService {
   CryptoNewsApiService._internal();
 
   Future<List<Article>> getArticle() async {
-    final url = _baseUrl + _keyWords + _pageSize + _apiKey;
+    final url = _baseUrl + _keyWords + _pageSize + newsArticleSize + _apiKey;
     final http.Response res = await http.get(Uri.parse(url));
     if (res.statusCode == 200) {
       // res.body is a Json-Object

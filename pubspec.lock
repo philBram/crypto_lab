@@ -625,6 +625,34 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.3"
+  scroll_to_index:
+    dependency: "direct main"
+    description:
+      name: scroll_to_index
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.1.1"
+  sensors_plus:
+    dependency: "direct main"
+    description:
+      name: sensors_plus
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.2.1"
+  sensors_plus_platform_interface:
+    dependency: transitive
+    description:
+      name: sensors_plus_platform_interface
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.1.0"
+  sensors_plus_web:
+    dependency: transitive
+    description:
+      name: sensors_plus_web
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.1.0"
   shelf:
     dependency: transitive
     description:
@@ -693,6 +721,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.1.0"
+  syncfusion_flutter_charts:
+    dependency: "direct main"
+    description:
+      name: syncfusion_flutter_charts
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "19.3.59"
+  syncfusion_flutter_core:
+    dependency: transitive
+    description:
+      name: syncfusion_flutter_core
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "19.3.59"
   term_glyph:
     dependency: transitive
     description:

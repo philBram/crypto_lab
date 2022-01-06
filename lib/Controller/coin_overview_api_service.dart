@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:crypto_lab/Model/crypto.dart';
+import 'package:crypto_lab/model/crypto.dart';
 import 'package:http/http.dart' as http;
 
 class CoinOverviewApiService {
