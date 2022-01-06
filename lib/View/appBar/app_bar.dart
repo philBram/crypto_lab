@@ -11,7 +11,7 @@ class MyAppBar extends StatelessWidget with PreferredSizeWidget {
   @override
   AppBar build(BuildContext context) {
     return AppBar(
-      iconTheme: const IconThemeData(color: CryptoLabColors.cryptoLabFont),
+      iconTheme: const IconThemeData(color: CryptoLabColors.cryptoLabIcon),
       backgroundColor: CryptoLabColors.cryptoLabBackground,
       elevation: 0,
       title: Text(

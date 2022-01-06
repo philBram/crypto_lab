@@ -66,7 +66,7 @@ class Popup extends StatelessWidget {
         return true;
       case PopupType.twoStandardInputFields:
         return true;
-      case PopupType.passwordInputField:
+      case PopupType.changePassword:
         return true;
       default:
         return false;
@@ -82,6 +82,7 @@ class Popup extends StatelessWidget {
       } else if (popupType == PopupType.oneStandardInputField || popupType == PopupType.twoStandardInputFields) {
         if (popupType == PopupType.twoStandardInputFields) {}
       }
+      return inputFieldWidgets;
     } else {
       return const <Widget>[];
     }

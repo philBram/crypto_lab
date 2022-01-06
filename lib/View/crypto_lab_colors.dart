@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 class CryptoLabColors {
   static const int _cryptoLabFontPrimaryValue = 0xFF363636;
   static const int _cryptoLabBackgroundPrimaryValue = 0xFF9093ab;
-  static const int _cryptoLabIconPrimaryValue = 0xFF9093ab;
+  static const int _cryptoLabIconPrimaryValue = 0xFF363636;
+  static const int _cryptoLabButtonPrimaryValue = 0xFF673ab7;
 
   static const MaterialColor cryptoLabFont = MaterialColor(
     _cryptoLabFontPrimaryValue,
@@ -20,7 +21,14 @@ class CryptoLabColors {
   );
 
   static const MaterialColor cryptoLabIcon = MaterialColor(
-    _cryptoLabBackgroundPrimaryValue,
+    _cryptoLabIconPrimaryValue,
+    <int, Color>{
+
+    },
+  );
+
+  static const MaterialColor cryptoLabButton = MaterialColor(
+    _cryptoLabButtonPrimaryValue,
     <int, Color>{
 
     },
