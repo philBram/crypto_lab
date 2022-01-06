@@ -13,7 +13,7 @@ extension TimeIntervalExtension on TimeInterval {
   String get name {
     switch (this) {
       case TimeInterval.oneDay:
-        return "1d";
+        return "24h";
       case TimeInterval.sevenDays:
         return "7d";
       case TimeInterval.fourteenDays:

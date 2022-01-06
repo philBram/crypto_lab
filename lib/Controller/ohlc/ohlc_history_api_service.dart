@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-import 'package:crypto_lab/Model/ohlc.dart';
-import 'package:crypto_lab/Model/time_interval.dart';
+import 'package:crypto_lab/model/ohlc.dart';
+import 'package:crypto_lab/model/time_interval.dart';
 import 'package:http/http.dart' as http;
 
 class OhlcHistoryApiService {

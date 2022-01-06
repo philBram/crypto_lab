@@ -1,12 +1,14 @@
-import 'package:crypto_lab/Model/crypto.dart';
-import 'package:crypto_lab/Model/ohlc.dart';
-import 'package:crypto_lab/Controller/ohlc_history_api_service.dart';
-import 'package:crypto_lab/Model/time_interval.dart';
-import 'package:crypto_lab/View/crypto_lab_colors.dart';
-import 'package:crypto_lab/controller/ohlc_calculator.dart';
+import 'package:crypto_lab/controller/ohlc/ohlc_calculator.dart';
+import 'package:crypto_lab/controller/ohlc/ohlc_history_api_service.dart';
+import 'package:crypto_lab/controller/time_interval_service.dart';
+import 'package:crypto_lab/model/crypto.dart';
+import 'package:crypto_lab/model/ohlc.dart';
+import 'package:crypto_lab/model/time_interval.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:intl/intl.dart';
+
+import '../crypto_lab_colors.dart';
 
 class DetailsScreenBody extends StatefulWidget {
   final Crypto _crypto;
@@ -44,10 +46,9 @@ class _DetailsScreenBody extends State<DetailsScreenBody> {
   }
 
   _setGrowthRate() {
-    if (_ohlcData == null) {
+    if (_ohlcData == null || _pressedTimeInterval == TimeInterval.oneDay) {
       _growthRate = widget._crypto.price_change_percentage_24h;
-    }
-    else {
+    } else {
       _growthRate = OhlcCalculator().getGrowthRateByOhlcData(_ohlcData!);
     }
   }
@@ -65,31 +66,8 @@ class _DetailsScreenBody extends State<DetailsScreenBody> {
 
   /// Updates the time interval [_pressedTimeInterval] and [_ohlcData] after a dropdown-button is clicked.
   Future<void> _updateTimeInterval(String dropdownInput) async {
-    _pressedTimeInterval = _getTimeIntervalByName(dropdownInput);
+    _pressedTimeInterval = TimeIntervalService().getTimeIntervalByName(dropdownInput);
     await _pullRefresh();
-  }
-
-  // TODO: maybe refactor
-  /// Returns a TimeInterval by a given [timerIntervalName].
-  ///
-  /// Throws an [Exception] if no appropriate TimeInterval can be found.
-  TimeInterval _getTimeIntervalByName(String timeIntervalName) {
-    for (TimeInterval timeInterval in TimeInterval.values) {
-      if (timeInterval.name == timeIntervalName) {
-        return timeInterval;
-      }
-    }
-    throw Exception("Dies ist keine gültige Zeitspanne!");
-  }
-
-  // TODO: maybe refactor
-  /// Returns a list of strings containing all name-values of the TimeInterval-enum.
-  List<String> _getAllTimeIntervalNames() {
-    List<String> listOfTimeIntervalNames = [];
-    for (TimeInterval timeInterval in TimeInterval.values) {
-      listOfTimeIntervalNames.add(timeInterval.name);
-    }
-    return listOfTimeIntervalNames;
   }
 
   /// Creates and returns a SFCartesianChart to display the Ohlc-data of a given [snapshot].
@@ -160,7 +138,9 @@ class _DetailsScreenBody extends State<DetailsScreenBody> {
                             }
                           });
                         },
-                        items: _getAllTimeIntervalNames().map<DropdownMenuItem<String>>((String value) {
+                        items: TimeIntervalService()
+                            .getAllTimeIntervalNames()
+                            .map<DropdownMenuItem<String>>((String value) {
                           return DropdownMenuItem<String>(
                             value: value,
                             child: Text(value),
@@ -176,9 +156,7 @@ class _DetailsScreenBody extends State<DetailsScreenBody> {
                       Text(
                         _growthRate != null ? _growthRate!.toStringAsFixed(2) + " %" : "",
                         style: TextStyle(
-                          color: (_growthRate == null || _growthRate! < 0.0)
-                              ? Colors.red
-                              : Colors.green,
+                          color: (_growthRate == null || _growthRate! < 0.0) ? Colors.red : Colors.green,
                         ),
                       ),
                     ],

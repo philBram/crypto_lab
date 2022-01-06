@@ -1,6 +1,5 @@
-import 'package:crypto_lab/View/appBar/app_bar.dart';
-import 'package:crypto_lab/View/navigationBar/nav_bar.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:crypto_lab/view/app_bar/app_bar.dart';
+import 'package:crypto_lab/view/navigation_bar/nav_bar.dart';
 import 'package:flutter/material.dart';
 
 import 'home_screen_body.dart';
