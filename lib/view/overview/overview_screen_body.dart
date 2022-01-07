@@ -1,5 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:crypto_lab/controller/coin_overview_api_service.dart';
 import 'package:crypto_lab/model/crypto.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class OverViewScreenBody extends StatefulWidget {
@@ -29,14 +31,13 @@ class _OverViewScreenBody extends State<OverViewScreenBody> {
   @override
   Widget build(BuildContext context) {
     return RefreshIndicator(
-      onRefresh: _pullRefresh,
-      child: Column(
-        children: [
-          _searchBar(),
-          _createCryptoView(),
-        ],
-      )
-    );
+        onRefresh: _pullRefresh,
+        child: Column(
+          children: [
+            _searchBar(),
+            _createCryptoView(),
+          ],
+        ));
   }
 
   Future<void> _pullRefresh() async {
@@ -108,32 +109,56 @@ class _OverViewScreenBody extends State<OverViewScreenBody> {
   Widget _createListViewItems(BuildContext context, Crypto crypto) {
     return Card(
       child: ListTile(
-        onTap: () {
-          // pass tapped Crypto instance to the details-screen => check _generateRoute in main.dart
-          Navigator.of(context).pushNamed("/details", arguments: crypto);
-        },
-        // if crypto data is null => output a "not found" String instead, toString() on null will not throw an exception
-        leading: Image.network(crypto.image ??
-            "https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fwww.trendycovers.com%2Fcovers%2F1324229779.jpg&f=1&nofb=1"),
-        title: Text(crypto.name ?? "name not found"),
-        subtitle: Text(crypto.symbol ?? "symbol not found"),
-        trailing: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            Text(crypto.current_price.toString() + ' €'),
-            Text(
-              ((crypto.price_change_percentage_24h != null)
-                  ? crypto.price_change_percentage_24h!.toStringAsFixed(2) + " %"
-                  : "change not found"),
-              style: TextStyle(
-                  color: (crypto.price_change_percentage_24h == null || crypto.price_change_percentage_24h! < 0.0)
-                      ? Colors.red
-                      : Colors.green),
-            ),
-          ],
-        ),
-      ),
+          onTap: () {
+            // pass tapped Crypto instance to the details-screen => check _generateRoute in main.dart
+            Navigator.of(context).pushNamed("/details", arguments: crypto);
+          },
+          // if crypto data is null => output a "not found" String instead, toString() on null will not throw an exception
+          leading: Image.network(crypto.image ??
+              "https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fwww.trendycovers.com%2Fcovers%2F1324229779.jpg&f=1&nofb=1"),
+          title: Text(crypto.name ?? "name not found"),
+          subtitle: Text(crypto.symbol ?? "symbol not found"),
+          trailing: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Text(crypto.current_price.toString() + ' €'),
+              Text(
+                ((crypto.price_change_percentage_24h != null)
+                    ? crypto.price_change_percentage_24h!.toStringAsFixed(2) +
+                        " %"
+                    : "change not found"),
+                style: TextStyle(
+                    color: (crypto.price_change_percentage_24h == null ||
+                            crypto.price_change_percentage_24h! < 0.0)
+                        ? Colors.red
+                        : Colors.green),
+              ),
+            ],
+          ),
+          onLongPress: () {
+            final User? user = FirebaseAuth.instance.currentUser;
+
+            if (user == null || user.isAnonymous) {
+              const snackBar = SnackBar(
+                content: Text('you are anon no favorites available'),
+              );
+              ScaffoldMessenger.of(context).showSnackBar(snackBar);
+            } else {
+              FirebaseFirestore.instance
+                  .collection('users')
+                  .doc(FirebaseAuth.instance.currentUser?.uid)
+                  .collection('coins_favorites')
+                  .doc(crypto.name ?? 'not found')
+                  .set({
+                'coin_json': crypto.toJson(),
+              });
+              final snackBar = SnackBar(
+                content: Text('${crypto.name} added'),
+              );
+              ScaffoldMessenger.of(context).showSnackBar(snackBar);
+            }
+          }),
     );
   }
 }
