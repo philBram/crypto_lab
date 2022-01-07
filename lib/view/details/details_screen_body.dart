@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:intl/intl.dart';
 
-import '../crypto_lab_colors.dart';
+import '../widgets/custom_colors.dart';
 
 class DetailsScreenBody extends StatefulWidget {
   final Crypto _crypto;
@@ -116,13 +116,15 @@ class _DetailsScreenBody extends State<DetailsScreenBody> {
                         value: _pressedTimeInterval.name,
                         icon: const Icon(
                           Icons.access_time,
-                          color: CryptoLabColors.cryptoLabIcon,
+                          color: CustomColors.cryptoLabIcon,
                         ),
                         elevation: 16,
-                        style: const TextStyle(color: CryptoLabColors.cryptoLabFont),
+                        style: const TextStyle(
+                          color: CustomColors.cryptoLabStandardFont,
+                        ),
                         underline: Container(
                           height: 2,
-                          color: CryptoLabColors.cryptoLabBackground,
+                          color: CustomColors.cryptoLabBackground,
                         ),
                         onChanged: (String? newValue) {
                           setState(() {

@@ -1,5 +1,6 @@
 import 'package:crypto_lab/controller/route_manager.dart';
 import 'package:crypto_lab/controller/authentication_service.dart';
+import 'package:crypto_lab/view/widgets/custom_colors.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -11,10 +12,11 @@ class NavBar extends StatelessWidget {
     final User? user = FirebaseAuth.instance.currentUser;
 
     return Drawer(
+      backgroundColor: CustomColors.cryptoLabBackground,
       child: ListView(children: [
         Stack(children: [
           UserAccountsDrawerHeader(
-            accountName: const Text("Eingelogt als:"),
+            accountName: const Text("Eingeloggt als:"),
             accountEmail: user == null || user.isAnonymous ? const Text("Gast") : Text(user.email!),
             currentAccountPicture: CircleAvatar(
               child: ClipOval(
@@ -38,20 +40,29 @@ class NavBar extends StatelessWidget {
           ),
         ]),
         ListTile(
-          leading: const Icon(Icons.home),
-          title: const Text('Home'),
+          leading: const Icon(Icons.home, color: CustomColors.cryptoLabIcon),
+          title: const Text(
+            'Home',
+            style: TextStyle(color: CustomColors.cryptoLabIcon),
+          ),
           onTap: () => RouteManager().navigateToRoute(context, "/home"),
         ),
         ListTile(
-          leading: const Icon(Icons.list_alt),
-          title: const Text('Krypto-Übersicht'),
+          leading: const Icon(Icons.list_alt, color: CustomColors.cryptoLabIcon),
+          title: const Text(
+            'Krypto-Übersicht',
+            style: TextStyle(color: CustomColors.cryptoLabIcon),
+          ),
           onTap: () => RouteManager().navigateToRoute(context, "/overview"),
         ),
         for (Widget widget in _buildUserWidgets(context, user)) widget,
-        const Divider(),
+        const Divider(color: CustomColors.cryptoLabIcon),
         ListTile(
-          leading: const Icon(Icons.logout),
-          title: const Text('Ausloggen'),
+          leading: const Icon(Icons.logout, color: CustomColors.cryptoLabIcon),
+          title: const Text(
+            'Ausloggen',
+            style: TextStyle(color: CustomColors.cryptoLabIcon),
+          ),
           onTap: () async {
             await AuthenticationService().signOut();
             RouteManager().navigateToRoute(context, "/login");
@@ -68,17 +79,22 @@ class NavBar extends StatelessWidget {
       //if (!(user == null || user.isAnonymous)) {
       return <Widget>[
         ListTile(
-          leading: const Icon(Icons.favorite),
-          title: const Text('Favoriten'),
+          leading: const Icon(Icons.favorite, color: CustomColors.cryptoLabIcon),
+          title: const Text(
+            'Favoriten',
+            style: TextStyle(color: CustomColors.cryptoLabIcon),
+          ),
           onTap: () => RouteManager().navigateToRoute(context, "/favorites"),
         ),
-        const Divider(),
+        const Divider(color: CustomColors.cryptoLabIcon),
         ListTile(
-          leading: const Icon(Icons.settings),
-          title: const Text('Einstellungen'),
+          leading: const Icon(Icons.settings, color: CustomColors.cryptoLabIcon),
+          title: const Text(
+            'Einstellungen',
+            style: TextStyle(color: CustomColors.cryptoLabIcon),
+          ),
           onTap: () => RouteManager().navigateToRoute(context, "/settings"),
         ),
-        const Divider(),
       ];
     } else {
       return const <Widget>[];

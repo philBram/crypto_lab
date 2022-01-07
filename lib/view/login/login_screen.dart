@@ -1,4 +1,5 @@
 import 'package:crypto_lab/view/home/home_screen.dart';
+import 'package:crypto_lab/view/widgets/custom_colors.dart';
 import 'package:crypto_lab/view/widgets/custom_snackbar.dart';
 import 'package:crypto_lab/controller/authentication_service.dart';
 import 'package:crypto_lab/controller/route_manager.dart';
@@ -63,8 +64,8 @@ class LoginScreen extends StatelessWidget {
       theme: LoginTheme(
         accentColor: Colors.white,
         pageColorDark: Colors.grey,
-        pageColorLight: Colors.deepPurple,
-        primaryColor: Colors.deepPurple,
+        pageColorLight: Color(CustomColors.cryptoLabBackgroundPrimaryValue),
+        primaryColor: Color(CustomColors.cryptoLabBackgroundPrimaryValue),
         logoWidth: 1,
       ),
       onLogin: (loginData) async {

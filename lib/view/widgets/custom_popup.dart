@@ -1,4 +1,4 @@
-import 'package:crypto_lab/view/crypto_lab_colors.dart';
+import 'package:crypto_lab/view/widgets/custom_colors.dart';
 import 'package:flutter/material.dart';
 
 import '../globals.dart';
@@ -12,7 +12,7 @@ enum PopupType {
   twoStandardInputFields,
 }
 
-class Popup extends StatelessWidget {
+class CustomPopup extends StatefulWidget {
   final BuildContext buildContext;
   final PopupType popupType;
   final String title;
@@ -23,7 +23,7 @@ class Popup extends StatelessWidget {
 
   final Function(List<String>)? onConfirmationTextFieldValues;
 
-  const Popup({
+  const CustomPopup({
     required this.buildContext,
     required this.popupType,
     required this.title,
@@ -34,17 +34,32 @@ class Popup extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  CustomPopupState createState() {
+    return CustomPopupState();
+  }
+}
+
+class CustomPopupState extends State<CustomPopup> {
+  final _formKey = GlobalKey<FormState>();
+
+  @override
   Widget build(BuildContext context) => _buildAlertDialog();
 
   Widget _buildAlertDialog() {
     return AlertDialog(
-      title: Text(title, style: const TextStyle(color: CryptoLabColors.cryptoLabFont)),
-      content: Column(
-        children: [
-          Text(content, style: const TextStyle(color: CryptoLabColors.cryptoLabFont)),
-          // _isInputFieldPopup() ? _buildInputFields() : const SizedBox.shrink(),
-          for (Widget widget in _buildInputFields()) widget,
-        ],
+      scrollable: true,
+      title: Text(widget.title),
+      content: Form(
+        key: _formKey,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(widget.content),
+            for (Widget widget in _buildInputFields()) widget,
+          ],
+        ),
       ),
       actions: [
         _isConfirmationPopup() ? _buildCancelButton() : const SizedBox.shrink(),
@@ -53,15 +68,17 @@ class Popup extends StatelessWidget {
     );
   }
 
+  /// Checks if the [popupType] is a standard confirmation-type or an inputField-type.
   bool _isConfirmationPopup() {
-    if (popupType == PopupType.confirmation || _isInputFieldPopup()) {
+    if (widget.popupType == PopupType.confirmation || _isInputFieldPopup()) {
       return true;
     }
     return false;
   }
 
+  /// Checks if the [popupType] is one of the inputField-types.
   bool _isInputFieldPopup() {
-    switch (popupType) {
+    switch (widget.popupType) {
       case PopupType.oneStandardInputField:
         return true;
       case PopupType.twoStandardInputFields:
@@ -75,13 +92,24 @@ class Popup extends StatelessWidget {
 
   /// Builds input-field(s) if [PopupType] is [passwordInputField], [oneStandardInputField] or [twoStandardInputFields].
   List<Widget> _buildInputFields() {
-    if (_isInputFieldPopup()) {
-      List<Widget> inputFieldWidgets = [];
-
-      if (popupType == PopupType.changePassword) {
-      } else if (popupType == PopupType.oneStandardInputField || popupType == PopupType.twoStandardInputFields) {
-        if (popupType == PopupType.twoStandardInputFields) {}
-      }
+    List<Widget> inputFieldWidgets = [];
+    inputFieldWidgets.add(
+      const SizedBox(height: 10.0),
+    );
+    if (widget.popupType == PopupType.changePassword) {
+      TextFormField passwordFormField = TextFormField(validator: (value) {
+        if (value == null || value.isEmpty) {
+          return "Bitte etwas eingeben!";
+        } else if (value.length < 6) {
+          return "Passwort-Mindestlänge von 6 Zeichen!";
+        }
+        return null;
+      });
+      inputFieldWidgets.add(passwordFormField);
+      return inputFieldWidgets;
+    } else if (widget.popupType == PopupType.oneStandardInputField ||
+        widget.popupType == PopupType.twoStandardInputFields) {
+      if (widget.popupType == PopupType.twoStandardInputFields) {}
       return inputFieldWidgets;
     } else {
       return const <Widget>[];
@@ -93,11 +121,10 @@ class Popup extends StatelessWidget {
     return TextButton(
       child: const Text(
         confirmationButtonText,
-        style: TextStyle(color: CryptoLabColors.cryptoLabBackground),
       ),
       onPressed: () {
-        Navigator.pop(buildContext);
-        onConfirmationCallback(true);
+        Navigator.pop(widget.buildContext);
+        widget.onConfirmationCallback(true);
       },
     );
   }
@@ -107,11 +134,10 @@ class Popup extends StatelessWidget {
     return TextButton(
       child: const Text(
         cancelButtonText,
-        style: TextStyle(color: CryptoLabColors.cryptoLabBackground),
       ),
       onPressed: () {
-        Navigator.pop(buildContext);
-        onConfirmationCallback(false);
+        Navigator.pop(widget.buildContext);
+        widget.onConfirmationCallback(false);
       },
     );
   }
@@ -121,9 +147,15 @@ class Popup extends StatelessWidget {
     return TextButton(
       child: const Text(
         confirmationButtonText,
-        style: TextStyle(color: CryptoLabColors.cryptoLabBackground),
       ),
-      onPressed: () => onConfirmationCallback(true),
+      onPressed: () {
+        if (_isInputFieldPopup()) {
+          if (_formKey.currentState!.validate()) {
+            _formKey.currentState!.save();
+          }
+        }
+        widget.onConfirmationCallback(true);
+      },
     );
   }
 }
