@@ -1,7 +1,6 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:crypto_lab/controller/firebase_instance_service.dart';
 import 'package:crypto_lab/controller/route_manager.dart';
 import 'package:crypto_lab/view/home/home_screen.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_login/flutter_login.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -97,11 +96,7 @@ class LoginScreen extends StatelessWidget {
           );
 
           // Add new users collection with docs containing a uid of current user
-          String? userId = FirebaseAuth.instance.currentUser?.uid;
-          // FirebaseInstanceManager().getCurrentUserDocument(userId).set({});
-          FirebaseFirestore.instance.collection('users').doc(userId!).set({});
-          // User? currentUser = FirebaseInstanceManager().getCurrentUser();
-          //FirebaseInstanceManager().getCurrentUserDocument(currentUser?.uid).set({});
+          FirebaseInstanceManager().createNewUserDocument();
 
           RouteManager().navigateToRoute(context, "/login");
         } on Exception catch (e) {

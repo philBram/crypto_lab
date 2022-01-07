@@ -41,25 +41,45 @@ class FavoritesScreenBody extends StatelessWidget {
             "https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fwww.trendycovers.com%2Fcovers%2F1324229779.jpg&f=1&nofb=1"),
         title: Text(crypto.name ?? "name not found"),
         subtitle: Text(crypto.symbol ?? "symbol not found"),
-        trailing: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            Text(crypto.current_price.toString() + ' €'),
-            Text(
-              ((crypto.price_change_percentage_24h != null)
-                  ? crypto.price_change_percentage_24h!.toStringAsFixed(2) +
-                      " %"
-                  : "change not found"),
-              style: TextStyle(
-                  color: (crypto.price_change_percentage_24h == null ||
-                          crypto.price_change_percentage_24h! < 0.0)
-                      ? Colors.red
-                      : Colors.green),
-            ),
-
-          ],
+        trailing: FittedBox(
+          child: Row(
+            children: [
+              Column(
+                children: [
+                  Text(crypto.current_price.toString() + ' €'),
+                  Text(
+                    ((crypto.price_change_percentage_24h != null)
+                        ? crypto.price_change_percentage_24h!
+                                .toStringAsFixed(2) +
+                            " %"
+                        : "change not found"),
+                    style: TextStyle(
+                        color: (crypto.price_change_percentage_24h == null ||
+                                crypto.price_change_percentage_24h! < 0.0)
+                            ? Colors.red
+                            : Colors.green),
+                  ),
+                ],
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(15, 0, 0, 0),
+                child: _addRemoveFavorites(crypto),
+              )
+            ],
+          ),
         ),
+      ),
+    );
+  }
+
+  Widget _addRemoveFavorites(Crypto crypto) {
+    return GestureDetector(
+      onTap: () {
+        FirebaseInstanceManager().deleteFavoriteCoin(crypto.name);
+      },
+      child: const Icon(
+        Icons.delete,
+        color: Colors.deepOrange,
       ),
     );
   }

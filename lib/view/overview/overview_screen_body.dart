@@ -1,8 +1,6 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:crypto_lab/controller/coin_overview_api_service.dart';
 import 'package:crypto_lab/controller/firebase_instance_service.dart';
 import 'package:crypto_lab/model/crypto.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class OverViewScreenBody extends StatefulWidget {
@@ -96,7 +94,7 @@ class _OverViewScreenBody extends State<OverViewScreenBody> {
             // FutureBuilder to wait for the favorite coins which are stored
             // in the Firebase users collection
             return FutureBuilder(
-                future: _getFavoriteCoins(),
+                future: FirebaseInstanceManager().getFavoriteCoins(),
                 builder: (BuildContext context, AsyncSnapshot snapshot) {
                   if (snapshot.hasData) {
                     // store resolved Future in the _favCoin List so it is possible
@@ -126,7 +124,7 @@ class _OverViewScreenBody extends State<OverViewScreenBody> {
     return Card(
       child: ListTile(
         onTap: () {
-          // pass tapped Crypto instance to the details-screen => check _generateRoute in main.dart
+          // pass tapped Crypto instance to the details-screen
           Navigator.of(context).pushNamed("/details", arguments: crypto);
         },
         // if crypto data is null => output a "not found" String instead, toString() on null will not throw an exception
@@ -134,71 +132,56 @@ class _OverViewScreenBody extends State<OverViewScreenBody> {
             "https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fwww.trendycovers.com%2Fcovers%2F1324229779.jpg&f=1&nofb=1"),
         title: Text(crypto.name ?? "name not found"),
         subtitle: Text(crypto.symbol ?? "symbol not found"),
-        trailing: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            Text(crypto.current_price.toString() + ' €'),
-            Text(
-              ((crypto.price_change_percentage_24h != null)
-                  ? crypto.price_change_percentage_24h!.toStringAsFixed(2) +
-                      " %"
-                  : "change not found"),
-              style: TextStyle(
-                  color: (crypto.price_change_percentage_24h == null ||
-                          crypto.price_change_percentage_24h! < 0.0)
-                      ? Colors.red
-                      : Colors.green),
-            ),
-            // check if favorite coins of the user are currently marked as favorite
-            _addRemoveFavorites(crypto),
-          ],
+        trailing: FittedBox(
+          child: Row(
+            children: [
+              Column(
+                children: [
+                  Text(crypto.current_price.toString() + ' €'),
+                  Text(
+                    ((crypto.price_change_percentage_24h != null)
+                        ? crypto.price_change_percentage_24h!
+                                .toStringAsFixed(2) +
+                            " %"
+                        : "change not found"),
+                    style: TextStyle(
+                        color: (crypto.price_change_percentage_24h == null ||
+                                crypto.price_change_percentage_24h! < 0.0)
+                            ? Colors.red
+                            : Colors.green),
+                  ),
+                  // check if favorite coins of the user are currently marked as favorite
+                ],
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(15, 0, 0, 0),
+                child: _addRemoveFavorites(crypto),
+              )
+            ],
+          ),
         ),
       ),
     );
   }
 
   Widget _addRemoveFavorites(Crypto crypto) {
-    return GestureDetector(
-      onTap: () {
-        _favCoins.contains(crypto.name)
-            ? FirebaseInstanceManager()
-            .getCurrentUserFavoriteCoinsCollection()
-            .doc(crypto.name ?? 'not found')
-            .delete()
-            : FirebaseInstanceManager()
-            .getCurrentUserFavoriteCoinsCollection()
-            .doc(crypto.name ?? 'not found')
-            .set({
-          'coin_json': crypto.toJson(),
-        });
-        setState(() {});
-      },
-      child: _favCoins.contains(crypto.name)
-          ? const Icon(
-        Icons.favorite,
-        color: Colors.red,
-      )
-          : const Icon(Icons.favorite_border),
-    );
-  }
-
-  // Get all favorite coin names for the current user
-  Future<List<String>> _getFavoriteCoins() async {
-    List<String> favCoins = [];
-
-    // cant use FirebaseInstanceManager here
-    await FirebaseFirestore.instance
-        .collection('users')
-        .doc(FirebaseAuth.instance.currentUser?.uid)
-        .collection('coins_favorites')
-        .get()
-        .then((querySnapshot) {
-      querySnapshot.docs.forEach((result) {
-        favCoins.add(result.data()['coin_json']['name']);
-      });
-    });
-
-    return Future.value(favCoins);
+    if (FirebaseInstanceManager().checkAnonymousUser()) {
+      return const Center();
+    } else {
+      return GestureDetector(
+        onTap: () {
+          _favCoins.contains(crypto.name)
+              ? FirebaseInstanceManager().deleteFavoriteCoin(crypto.name)
+              : FirebaseInstanceManager().addFavoriteCoin(crypto.name, crypto);
+          setState(() {});
+        },
+        child: _favCoins.contains(crypto.name)
+            ? const Icon(
+                Icons.favorite,
+                color: Colors.red,
+              )
+            : const Icon(Icons.favorite_border),
+      );
+    }
   }
 }
