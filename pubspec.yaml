@@ -38,6 +38,7 @@ dependencies:
   url_launcher: ^6.0.17
   sensors_plus: ^1.2.1
   scroll_to_index: ^2.1.1
+  provider: ^6.0.2
 
   # The flutter_login package gives easy login functionalties
   flutter_login: ^3.0.0-beta.2
