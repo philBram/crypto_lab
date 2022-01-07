@@ -38,7 +38,8 @@ class LoginScreen extends StatelessWidget {
         recoverPasswordIntro: 'Passwort zurücksetzen',
         recoverPasswordDescription:
             'Bitte geben Sie Ihre E-Mail ein, um eine Mail zum Zurücksetzen Ihres Passwortes zu erhalten.',
-        recoverPasswordSuccess: 'E-Mail zum Zurücksetzen des Passwortes erfolgreich versendet!',
+        recoverPasswordSuccess:
+            'E-Mail zum Zurücksetzen des Passwortes erfolgreich versendet!',
         resendCodeButton: 'Code erneut senden',
         confirmationCodeHint: 'Bestätigungs-Code',
         confirmSignupButton: 'Bestätigen',
@@ -51,9 +52,11 @@ class LoginScreen extends StatelessWidget {
         providersTitleSecond: 'Anonym',
         setPasswordButton: 'Passwort',
         resendCodeSuccess: 'Rücksetz-Code erfolgreich versendet!',
-        confirmationCodeValidationError: 'Der Code konnte nicht validiert werden!',
+        confirmationCodeValidationError:
+            'Der Code konnte nicht validiert werden!',
         confirmRecoverIntro: 'Erfolg!',
-        recoverCodePasswordDescription: 'Lasse Dir zum Zurücksetzen deines Passwortes einen Code zuschicken!',
+        recoverCodePasswordDescription:
+            'Lasse Dir zum Zurücksetzen deines Passwortes einen Code zuschicken!',
       ),
       onSubmitAnimationCompleted: () {
         Navigator.of(context).pushReplacement(MaterialPageRoute(
@@ -78,7 +81,8 @@ class LoginScreen extends StatelessWidget {
           );
           RouteManager().navigateToRoute(context, "/home");
         } on Exception catch (e) {
-          return ("Anmeldung fehlgeschlagen: " + e.toString().replaceAll("Exception: ", ""));
+          return ("Anmeldung fehlgeschlagen: " +
+              e.toString().replaceAll("Exception: ", ""));
         }
       },
       onSignup: (signupData) async {
@@ -86,18 +90,23 @@ class LoginScreen extends StatelessWidget {
           await AuthenticationService().registerUser(signupData);
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
-              content: Text("Registrierung erfolgreich! Du kannst Dich nun mit den Daten anmelden."),
+              content: Text(
+                  "Registrierung erfolgreich! Du kannst Dich nun mit den Daten anmelden."),
               backgroundColor: Colors.green,
             ),
           );
 
           // Add new users collection with docs containing a uid of current user
           String? userId = FirebaseAuth.instance.currentUser?.uid;
+          // FirebaseInstanceManager().getCurrentUserDocument(userId).set({});
           FirebaseFirestore.instance.collection('users').doc(userId!).set({});
+          // User? currentUser = FirebaseInstanceManager().getCurrentUser();
+          //FirebaseInstanceManager().getCurrentUserDocument(currentUser?.uid).set({});
 
           RouteManager().navigateToRoute(context, "/login");
         } on Exception catch (e) {
-          return ("Registrierung fehlgeschlagen: " + e.toString().replaceAll("Exception: ", ""));
+          return ("Registrierung fehlgeschlagen: " +
+              e.toString().replaceAll("Exception: ", ""));
         }
       },
       onRecoverPassword: (email) async {
@@ -130,7 +139,8 @@ class LoginScreen extends StatelessWidget {
               RouteManager().navigateToRoute(context, "/home");
               return null;
             } on Exception catch (e) {
-              return ("Anmeldung fehlgeschlagen: " + e.toString().replaceAll("Exception: ", ""));
+              return ("Anmeldung fehlgeschlagen: " +
+                  e.toString().replaceAll("Exception: ", ""));
             }
           },
         )
