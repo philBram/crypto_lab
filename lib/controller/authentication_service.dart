@@ -84,5 +84,22 @@ class AuthenticationService {
     }
   }
 
+  Future<bool> validateCurrentPassword(String password) async {
+    User? user = _auth.currentUser;
 
+    AuthCredential authCredential = EmailAuthProvider.credential(
+      email: user!.email!,
+      password: password,
+    );
+    try {
+      var authResult = await user.reauthenticateWithCredential(authCredential);
+      return authResult.user != null;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  Future<void> changePassword(String newPassword) async {
+    await _auth.currentUser!.updatePassword(newPassword);
+  }
 }

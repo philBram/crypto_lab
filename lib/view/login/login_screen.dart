@@ -63,6 +63,7 @@ class LoginScreen extends StatelessWidget {
       },
       theme: LoginTheme(
         accentColor: Colors.white,
+        bodyStyle: const TextStyle(backgroundColor: Colors.white),
         pageColorDark: Colors.grey,
         pageColorLight: Color(CustomColors.cryptoLabBackgroundPrimaryValue),
         primaryColor: Color(CustomColors.cryptoLabBackgroundPrimaryValue),

@@ -18,6 +18,7 @@ class CustomSnackbar {
   final Duration _duration = const Duration(seconds: 3);
   final String _unknownText = "Unbekannt";
 
+  /// Shows a snackbar with plain text.
   void displayText({required BuildContext context, required SnackbarStatus status, required String displayText}) {
     try {
       ScaffoldMessenger.of(context).showSnackBar(_display(displayText, status));
@@ -26,6 +27,7 @@ class CustomSnackbar {
     }
   }
 
+  /// Shows a snackbar with a title and text.
   void displayTextWithTitle(
       {required BuildContext context,
       required SnackbarStatus status,
@@ -33,7 +35,9 @@ class CustomSnackbar {
       required String displayTitle}) {
     try {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: status == SnackbarStatus.unknown ? Text(_unknownText) : Text(displayText),
+        content: status == SnackbarStatus.unknown
+            ? Text(_unknownText)
+            : _createSnackbarContentWithTitle(displayText, displayTitle),
         backgroundColor: _getBackgroundColor(status),
         duration: _duration,
       ));
@@ -42,6 +46,7 @@ class CustomSnackbar {
     }
   }
 
+  /// Shows a snackbar that prints a processed exception-text.
   void displayException({required BuildContext context, required SnackbarStatus status, required Exception exception}) {
     displayText(context: context, status: status, displayText: exception.toString().replaceAll("Exception: ", ""));
   }
@@ -52,6 +57,27 @@ class CustomSnackbar {
         duration: _duration,
       );
 
+  /// Returns a column, that contains the Text-elements (title and text) and styling.
+  Widget _createSnackbarContentWithTitle(String displayText, String displayTitle) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(
+          displayTitle,
+          style: const TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        const SizedBox(height: 10.0),
+        Text(displayText),
+      ],
+    );
+  }
+
+  /// Returns a background color for the shown snackbar by given [status].
   Color _getBackgroundColor(SnackbarStatus status) {
     switch (status) {
       case SnackbarStatus.success:

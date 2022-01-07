@@ -43,12 +43,6 @@ class CryptoLab extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Crypto Lab',
       theme: ThemeData(
-        textButtonTheme: TextButtonThemeData(
-          style: TextButton.styleFrom(
-            primary: CustomColors.cryptoLabLightFont,
-            backgroundColor: CustomColors.cryptoLabButton,
-          ),
-        ),
         primaryColor: CustomColors.cryptoLabBackground,
         iconTheme: const IconThemeData(color: CustomColors.cryptoLabIcon),
         textTheme: Theme.of(context).textTheme.apply(bodyColor: CustomColors.cryptoLabStandardFont),

@@ -116,7 +116,7 @@ class _DetailsScreenBody extends State<DetailsScreenBody> {
                         value: _pressedTimeInterval.name,
                         icon: const Icon(
                           Icons.access_time,
-                          color: CustomColors.cryptoLabIcon,
+                          color: CustomColors.cryptoLabStandardFont,
                         ),
                         elevation: 16,
                         style: const TextStyle(

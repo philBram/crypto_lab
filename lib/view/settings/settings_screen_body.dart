@@ -80,10 +80,11 @@ class _SettingsScreenBody extends State<SettingsScreenBody> {
             ),
           ),
         ),
-        trailing: const Icon(
+        // TODO make
+        /*trailing: const Icon(
           Icons.edit,
           color: Colors.white,
-        ),
+        ),*/
       ),
     );
   }
@@ -133,20 +134,18 @@ class _SettingsScreenBody extends State<SettingsScreenBody> {
                 popupType: PopupType.changePassword,
                 title: changePasswordTitle,
                 content: changePasswordText,
-                onConfirmationCallback: (bool confirmed) {
-                  setState(() {
-                    if (confirmed) {
-                      // TODO:
-                    }
-                  });
-                },
                 onConfirmationTextFieldValues: (List<String> values) {
-                  setState(() {
-                    // TODO:
-                  });
-                }
+                  try {
+                    AuthenticationService().changePassword(values.first);
+                    CustomSnackbar().displayText(
+                        context: context, status: SnackbarStatus.success, displayText: successChangePasswordText);
+                    Navigator.pop(context);
+                  } on Exception catch (e) {
+                    CustomSnackbar().displayException(context: context, status: SnackbarStatus.failure, exception: e);
+                  }
+                },
               );
-            }
+            },
           );
         },
       );
