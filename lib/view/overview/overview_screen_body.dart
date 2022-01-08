@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:crypto_lab/controller/coin_overview_api_service.dart';
 import 'package:crypto_lab/controller/firebase_instance_service.dart';
 import 'package:crypto_lab/model/crypto.dart';
@@ -91,23 +93,26 @@ class _OverViewScreenBody extends State<OverViewScreenBody> {
               _searchList = snapshot.data;
               _referenceList = snapshot.data;
             }
-            // FutureBuilder to wait for the favorite coins which are stored
-            // in the Firebase users collection
-            return FutureBuilder(
-                future: FirebaseInstanceManager().getFavoriteCoins(),
+            // StreamBuilder to get the names of the currently favorite coins of the current user
+            return StreamBuilder(
+                stream: FirebaseInstanceManager().getCurrentUserFavoriteCoinsCollection().snapshots(),
                 builder: (BuildContext context, AsyncSnapshot snapshot) {
                   if (snapshot.hasData) {
                     // store resolved Future in the _favCoin List so it is possible
                     // to distinguish between a favorite coin and a not favorite coin
-                    _favCoins = snapshot.data;
-
+                    _favCoins = [];
+                    snapshot.data.docs.forEach((result) {
+                      _favCoins.add(result.data()['coin_json']['name']);
+                    });
                     return ListView.builder(
                       itemCount: _searchList.length,
                       itemBuilder: (BuildContext context, int index) =>
                           _createListViewItems(context, _searchList[index]),
                     );
                   } else {
-                    return const Center();
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
                   }
                 });
           } else {

@@ -69,7 +69,7 @@ class CryptoLab extends StatelessWidget {
       case "/favorites":
         return MaterialPageRoute(settings: settings, builder: (_) => const FavoritesScreen());
       case "/settings":
-        return MaterialPageRoute(settings: settings, builder: (_) => SettingsScreen());
+        return MaterialPageRoute(settings: settings, builder: (_) => const SettingsScreen());
       case "/details":
         if (settings.arguments is Crypto) {
           return MaterialPageRoute(

@@ -57,22 +57,4 @@ class FirebaseInstanceManager {
     CustomSnackbar().displayText(
         context: context, status: SnackbarStatus.success, displayText: '$coinName wurde zu den Favoriten hinzugefügt');
   }
-
-  Future<List<String>> getFavoriteCoins() async {
-    List<String> favCoins = [];
-
-    // cant use FirebaseInstanceManager here
-    await FirebaseFirestore.instance
-        .collection('users')
-        .doc(FirebaseAuth.instance.currentUser?.uid)
-        .collection('coins_favorites')
-        .get()
-        .then((querySnapshot) {
-      querySnapshot.docs.forEach((result) {
-        favCoins.add(result.data()['coin_json']['name']);
-      });
-    });
-
-    return Future.value(favCoins);
-  }
 }
