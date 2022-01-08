@@ -58,6 +58,16 @@ class AuthenticationService {
     }
   }
 
+  Future<void> deleteUser() async {
+    try {
+      await FirebaseAuth.instance.currentUser!.delete();
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'requires-recent-login') {
+        throw Exception("Du musst dich erneut authentifizieren!");
+      }
+    }
+  }
+
   Future<void> sendPasswordResetEmail(String email) async {
     try {
       await _auth.sendPasswordResetEmail(email: email);
@@ -74,5 +84,22 @@ class AuthenticationService {
     }
   }
 
+  Future<bool> validateCurrentPassword(String password) async {
+    User? user = _auth.currentUser;
 
+    AuthCredential authCredential = EmailAuthProvider.credential(
+      email: user!.email!,
+      password: password,
+    );
+    try {
+      var authResult = await user.reauthenticateWithCredential(authCredential);
+      return authResult.user != null;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  Future<void> changePassword(String newPassword) async {
+    await _auth.currentUser!.updatePassword(newPassword);
+  }
 }

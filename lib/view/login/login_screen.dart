@@ -1,11 +1,15 @@
 import 'package:crypto_lab/controller/firebase_instance_service.dart';
 import 'package:crypto_lab/controller/route_manager.dart';
 import 'package:crypto_lab/view/home/home_screen.dart';
+import 'package:crypto_lab/view/widgets/custom_colors.dart';
+import 'package:crypto_lab/view/widgets/custom_snackbar.dart';
+import 'package:crypto_lab/controller/authentication_service.dart';
+import 'package:crypto_lab/controller/route_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_login/flutter_login.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import 'authentication_service.dart';
+import '../globals.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -37,8 +41,7 @@ class LoginScreen extends StatelessWidget {
         recoverPasswordIntro: 'Passwort zurücksetzen',
         recoverPasswordDescription:
             'Bitte geben Sie Ihre E-Mail ein, um eine Mail zum Zurücksetzen Ihres Passwortes zu erhalten.',
-        recoverPasswordSuccess:
-            'E-Mail zum Zurücksetzen des Passwortes erfolgreich versendet!',
+        recoverPasswordSuccess: 'E-Mail zum Zurücksetzen des Passwortes erfolgreich versendet!',
         resendCodeButton: 'Code erneut senden',
         confirmationCodeHint: 'Bestätigungs-Code',
         confirmSignupButton: 'Bestätigen',
@@ -51,11 +54,9 @@ class LoginScreen extends StatelessWidget {
         providersTitleSecond: 'Anonym',
         setPasswordButton: 'Passwort',
         resendCodeSuccess: 'Rücksetz-Code erfolgreich versendet!',
-        confirmationCodeValidationError:
-            'Der Code konnte nicht validiert werden!',
+        confirmationCodeValidationError: 'Der Code konnte nicht validiert werden!',
         confirmRecoverIntro: 'Erfolg!',
-        recoverCodePasswordDescription:
-            'Lasse Dir zum Zurücksetzen deines Passwortes einen Code zuschicken!',
+        recoverCodePasswordDescription: 'Lasse Dir zum Zurücksetzen deines Passwortes einen Code zuschicken!',
       ),
       onSubmitAnimationCompleted: () {
         Navigator.of(context).pushReplacement(MaterialPageRoute(
@@ -64,35 +65,34 @@ class LoginScreen extends StatelessWidget {
       },
       theme: LoginTheme(
         accentColor: Colors.white,
+        bodyStyle: const TextStyle(backgroundColor: Colors.white),
         pageColorDark: Colors.grey,
-        pageColorLight: Colors.deepPurple,
-        primaryColor: Colors.deepPurple,
+        pageColorLight: Color(CustomColors.cryptoLabBackgroundPrimaryValue),
+        primaryColor: Color(CustomColors.cryptoLabBackgroundPrimaryValue),
         logoWidth: 1,
       ),
       onLogin: (loginData) async {
         try {
           await AuthenticationService().loginUser(loginData);
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text("Anmeldung erfolgreich!"),
-              backgroundColor: Colors.green,
-            ),
+          CustomSnackbar().displayTextWithTitle(
+            context: context,
+            status: SnackbarStatus.success,
+            displayText: successLoginText,
+            displayTitle: successLoginTitle,
           );
           RouteManager().navigateToRoute(context, "/home");
         } on Exception catch (e) {
-          return ("Anmeldung fehlgeschlagen: " +
-              e.toString().replaceAll("Exception: ", ""));
+          return ("Anmeldung fehlgeschlagen: " + e.toString().replaceAll("Exception: ", ""));
         }
       },
       onSignup: (signupData) async {
         try {
           await AuthenticationService().registerUser(signupData);
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text(
-                  "Registrierung erfolgreich! Du kannst Dich nun mit den Daten anmelden."),
-              backgroundColor: Colors.green,
-            ),
+          CustomSnackbar().displayTextWithTitle(
+            context: context,
+            status: SnackbarStatus.success,
+            displayText: successSignupText,
+            displayTitle: successSignupTitle,
           );
 
           // Add new users collection with docs containing a uid of current user
@@ -100,8 +100,7 @@ class LoginScreen extends StatelessWidget {
 
           RouteManager().navigateToRoute(context, "/login");
         } on Exception catch (e) {
-          return ("Registrierung fehlgeschlagen: " +
-              e.toString().replaceAll("Exception: ", ""));
+          return ("Registrierung fehlgeschlagen: " + e.toString().replaceAll("Exception: ", ""));
         }
       },
       onRecoverPassword: (email) async {
@@ -134,8 +133,7 @@ class LoginScreen extends StatelessWidget {
               RouteManager().navigateToRoute(context, "/home");
               return null;
             } on Exception catch (e) {
-              return ("Anmeldung fehlgeschlagen: " +
-                  e.toString().replaceAll("Exception: ", ""));
+              return ("Anmeldung fehlgeschlagen: " + e.toString().replaceAll("Exception: ", ""));
             }
           },
         )

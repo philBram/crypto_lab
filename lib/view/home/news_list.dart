@@ -4,7 +4,7 @@ import 'package:crypto_lab/model/articles.dart';
 import 'package:crypto_lab/view/adaptive_text_size.dart';
 import 'package:crypto_lab/controller/crypto_news_api_service.dart';
 import 'package:flutter/material.dart';
-import 'package:crypto_lab/view/crypto_lab_colors.dart';
+import 'package:crypto_lab/view/widgets/custom_colors.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
 import 'package:sensors_plus/sensors_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -17,8 +17,7 @@ class NewsList extends StatefulWidget {
 }
 
 class _NewsList extends State<NewsList> {
-  final BorderRadius _listItemBorderRadius =
-      const BorderRadius.all(Radius.circular(10));
+  final BorderRadius _listItemBorderRadius = const BorderRadius.all(Radius.circular(10));
   final EdgeInsets _listItemMargin = const EdgeInsets.all(5);
   final EdgeInsets _listItemPadding = const EdgeInsets.fromLTRB(2, 5, 2, 15);
   final double _listItemWidthFactor = 0.9;
@@ -52,8 +51,7 @@ class _NewsList extends State<NewsList> {
   // https://pub.dev/packages/scroll_to_index
   void _initAutoScrollController() {
     _autoScrollController = AutoScrollController(
-      viewportBoundaryGetter: () =>
-          Rect.fromLTRB(0, 0, 0, MediaQuery.of(context).padding.bottom),
+      viewportBoundaryGetter: () => Rect.fromLTRB(0, 0, 0, MediaQuery.of(context).padding.bottom),
       axis: _scrollDirection,
     );
   }
@@ -98,8 +96,8 @@ class _NewsList extends State<NewsList> {
               controller: _autoScrollController,
               scrollDirection: _scrollDirection,
               itemCount: snapshot.data.length,
-              itemBuilder: (_, index) => _createListViewItem(
-                  context, snapshot.data[index], index, _autoScrollController),
+              itemBuilder: (_, index) =>
+                  _createListViewItem(context, snapshot.data[index], index, _autoScrollController),
             );
           } else {
             return const Center(
@@ -111,8 +109,8 @@ class _NewsList extends State<NewsList> {
     );
   }
 
-  Widget _createListViewItem(BuildContext context, Article article, int index,
-      AutoScrollController autoScrollController) {
+  Widget _createListViewItem(
+      BuildContext context, Article article, int index, AutoScrollController autoScrollController) {
     return AutoScrollTag(
       index: index,
       key: ValueKey(index),
@@ -122,8 +120,10 @@ class _NewsList extends State<NewsList> {
         // width of listview item is % value of _listItemWidthFactor
         width: MediaQuery.of(context).size.width * _listItemWidthFactor,
         decoration: BoxDecoration(
-          color: CryptoLabColors.cryptoLabBackground.withOpacity(0.8),
-          border: Border.all(color: CryptoLabColors.cryptoLabFont),
+          color: CustomColors.cryptoLabBackground.withOpacity(0.8),
+          border: Border.all(
+            color: CustomColors.cryptoLabLightFont,
+          ),
           borderRadius: _listItemBorderRadius,
         ),
         padding: _listItemPadding,
@@ -148,8 +148,7 @@ class _NewsList extends State<NewsList> {
     );
   }
 
-  Widget _createArticleText(
-      String? articleText, double size, FontWeight weight, flexValue) {
+  Widget _createArticleText(String? articleText, double size, FontWeight weight, flexValue) {
     return Expanded(
       flex: flexValue,
       child: Text(
@@ -157,6 +156,7 @@ class _NewsList extends State<NewsList> {
         articleText ?? "Text not found",
         style: TextStyle(
           // 720 is the medium screen size => responsive Text
+          color: CustomColors.cryptoLabLightFont,
           fontSize: AdaptiveTextSize.getAdaptiveTextSize(context, size),
           fontWeight: weight,
         ),
@@ -195,7 +195,6 @@ class _NewsList extends State<NewsList> {
   }
 
   void _scrollToIndex(index) {
-    _autoScrollController.scrollToIndex(index,
-        preferPosition: AutoScrollPosition.begin);
+    _autoScrollController.scrollToIndex(index, preferPosition: AutoScrollPosition.begin);
   }
 }
