@@ -40,8 +40,7 @@ class Crypto {
     required this.atl,
   });
 
-  factory Crypto.fromJson(Map<String, dynamic> json) =>
-      _$CryptoFromJson(json);
+  factory Crypto.fromJson(Map<String, dynamic> json) => _$CryptoFromJson(json);
 
   Map<String, dynamic> toJson() => _$CryptoToJson(this);
 }

@@ -27,8 +27,7 @@ class CryptoNewsApiService {
       final List<dynamic> jsonArticles = jsonData['articles'];
       final List<Article> articles = jsonArticles.map((item) => Article.fromJson(item)).toList();
       return articles;
-    }
-    else {
+    } else {
       throw ("Api not available");
     }
   }

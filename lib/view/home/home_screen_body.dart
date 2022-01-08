@@ -6,8 +6,7 @@ class HomeScreenBody extends StatelessWidget {
   // https://www.hicetnunc.xyz/objkt/278284
   //final String backGroundImage = "https://ipfs.io/ipfs/bafybeicass6d3ftqyfigxciwfysnzm4aobfjuk4zvtueenvqqpjo3p75ju";
   final String backGroundImage = "assets/images/backGroundImage.gif";
-  final String backGroundImagePlaceholder =
-      "assets/images/backGroundImagePlaceholder.jpg";
+  final String backGroundImagePlaceholder = "assets/images/backGroundImagePlaceholder.jpg";
 
   // [logo_white.png, logo_white_simple.png] in assets/images
   final String imageLogo = "assets/images/logo_white_simple.png";
@@ -27,7 +26,10 @@ class HomeScreenBody extends StatelessWidget {
             fadeInDuration: const Duration(milliseconds: 1),
             fit: BoxFit.cover,
           ),*/
-              Image.asset(backGroundImage, fit: BoxFit.cover,),
+              Image.asset(
+            backGroundImage,
+            fit: BoxFit.cover,
+          ),
           height: MediaQuery.of(context).size.height,
           width: MediaQuery.of(context).size.width,
         ),

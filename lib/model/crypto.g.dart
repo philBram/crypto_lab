@@ -17,12 +17,9 @@ Crypto _$CryptoFromJson(Map<String, dynamic> json) => Crypto(
       high_24h: (json['high_24h'] as num?)?.toDouble(),
       low_24h: (json['low_24h'] as num?)?.toDouble(),
       price_change_24h: (json['price_change_24h'] as num?)?.toDouble(),
-      price_change_percentage_24h:
-          (json['price_change_percentage_24h'] as num?)?.toDouble(),
-      market_cap_change_24h:
-          (json['market_cap_change_24h'] as num?)?.toDouble(),
-      market_cap_change_percentage_24h:
-          (json['market_cap_change_percentage_24h'] as num?)?.toDouble(),
+      price_change_percentage_24h: (json['price_change_percentage_24h'] as num?)?.toDouble(),
+      market_cap_change_24h: (json['market_cap_change_24h'] as num?)?.toDouble(),
+      market_cap_change_percentage_24h: (json['market_cap_change_percentage_24h'] as num?)?.toDouble(),
       ath: (json['ath'] as num?)?.toDouble(),
       atl: (json['atl'] as num?)?.toDouble(),
     );
@@ -40,8 +37,7 @@ Map<String, dynamic> _$CryptoToJson(Crypto instance) => <String, dynamic>{
       'price_change_24h': instance.price_change_24h,
       'price_change_percentage_24h': instance.price_change_percentage_24h,
       'market_cap_change_24h': instance.market_cap_change_24h,
-      'market_cap_change_percentage_24h':
-          instance.market_cap_change_percentage_24h,
+      'market_cap_change_percentage_24h': instance.market_cap_change_percentage_24h,
       'ath': instance.ath,
       'atl': instance.atl,
     };

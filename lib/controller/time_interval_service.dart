@@ -2,7 +2,6 @@ import 'package:crypto_lab/model/time_interval.dart';
 
 /// The TimeIntervalService provides functionalites that can be used on the model [TimeInterval].
 class TimeIntervalService {
-
   /// TimeIntervalService-Singleton
   static final TimeIntervalService _instance = TimeIntervalService._internal();
 

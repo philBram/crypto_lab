@@ -7,6 +7,7 @@ import 'package:crypto_lab/view/details/details_screen_body.dart';
 
 class DetailsScreen extends StatelessWidget {
   final Crypto _crypto;
+
   const DetailsScreen(this._crypto, {Key? key}) : super(key: key);
 
   @override

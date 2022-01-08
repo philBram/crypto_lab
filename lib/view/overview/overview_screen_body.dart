@@ -140,13 +140,10 @@ class _OverViewScreenBody extends State<OverViewScreenBody> {
                   Text(crypto.current_price.toString() + ' €'),
                   Text(
                     ((crypto.price_change_percentage_24h != null)
-                        ? crypto.price_change_percentage_24h!
-                                .toStringAsFixed(2) +
-                            " %"
+                        ? crypto.price_change_percentage_24h!.toStringAsFixed(2) + " %"
                         : "change not found"),
                     style: TextStyle(
-                        color: (crypto.price_change_percentage_24h == null ||
-                                crypto.price_change_percentage_24h! < 0.0)
+                        color: (crypto.price_change_percentage_24h == null || crypto.price_change_percentage_24h! < 0.0)
                             ? Colors.red
                             : Colors.green),
                   ),
@@ -171,8 +168,8 @@ class _OverViewScreenBody extends State<OverViewScreenBody> {
       return GestureDetector(
         onTap: () {
           _favCoins.contains(crypto.name)
-              ? FirebaseInstanceManager().deleteFavoriteCoin(crypto.name)
-              : FirebaseInstanceManager().addFavoriteCoin(crypto.name, crypto);
+              ? FirebaseInstanceManager().deleteFavoriteCoin(coinName: crypto.name, context: context)
+              : FirebaseInstanceManager().addFavoriteCoin(coinName: crypto.name, crypto: crypto, context: context);
           setState(() {});
         },
         child: _favCoins.contains(crypto.name)

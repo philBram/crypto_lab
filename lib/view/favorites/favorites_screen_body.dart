@@ -9,16 +9,13 @@ class FavoritesScreenBody extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: StreamBuilder(
-          stream: FirebaseInstanceManager()
-              .getCurrentUserFavoriteCoinsCollection()
-              .snapshots(),
+          stream: FirebaseInstanceManager().getCurrentUserFavoriteCoinsCollection().snapshots(),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.hasData) {
               return ListView.builder(
                 itemCount: snapshot.data.docs.length,
                 itemBuilder: (BuildContext context, int index) {
-                  Crypto crypto = Crypto.fromJson(
-                      snapshot.data.docs[index].data()['coin_json']);
+                  Crypto crypto = Crypto.fromJson(snapshot.data.docs[index].data()['coin_json']);
                   return _createListViewItems(context, crypto);
                 },
               );
@@ -49,13 +46,10 @@ class FavoritesScreenBody extends StatelessWidget {
                   Text(crypto.current_price.toString() + ' €'),
                   Text(
                     ((crypto.price_change_percentage_24h != null)
-                        ? crypto.price_change_percentage_24h!
-                                .toStringAsFixed(2) +
-                            " %"
+                        ? crypto.price_change_percentage_24h!.toStringAsFixed(2) + " %"
                         : "change not found"),
                     style: TextStyle(
-                        color: (crypto.price_change_percentage_24h == null ||
-                                crypto.price_change_percentage_24h! < 0.0)
+                        color: (crypto.price_change_percentage_24h == null || crypto.price_change_percentage_24h! < 0.0)
                             ? Colors.red
                             : Colors.green),
                   ),
@@ -63,7 +57,7 @@ class FavoritesScreenBody extends StatelessWidget {
               ),
               Padding(
                 padding: const EdgeInsets.fromLTRB(15, 0, 0, 0),
-                child: _addRemoveFavorites(crypto),
+                child: _addRemoveFavorites(context, crypto),
               )
             ],
           ),
@@ -72,10 +66,10 @@ class FavoritesScreenBody extends StatelessWidget {
     );
   }
 
-  Widget _addRemoveFavorites(Crypto crypto) {
+  Widget _addRemoveFavorites(BuildContext context, Crypto crypto) {
     return GestureDetector(
       onTap: () {
-        FirebaseInstanceManager().deleteFavoriteCoin(crypto.name);
+        FirebaseInstanceManager().deleteFavoriteCoin(coinName: crypto.name, context: context);
       },
       child: const Icon(
         Icons.delete,

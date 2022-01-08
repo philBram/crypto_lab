@@ -24,8 +24,7 @@ class CoinOverviewApiService {
       // res.body is a Json-Array with Json-Objects which contain the Data needed for the Crypto Class
       final List<Crypto> cryptos = jsonCryptos.map((item) => Crypto.fromJson(item)).toList();
       return cryptos;
-    }
-    else {
+    } else {
       throw ("Api not available");
     }
   }
