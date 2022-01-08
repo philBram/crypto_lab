@@ -1,3 +1,5 @@
+import 'package:crypto_lab/controller/firebase_instance_service.dart';
+import 'package:crypto_lab/controller/route_manager.dart';
 import 'package:crypto_lab/view/home/home_screen.dart';
 import 'package:crypto_lab/view/widgets/custom_colors.dart';
 import 'package:crypto_lab/view/widgets/custom_snackbar.dart';
@@ -92,6 +94,10 @@ class LoginScreen extends StatelessWidget {
             displayText: successSignupText,
             displayTitle: successSignupTitle,
           );
+
+          // Add new users collection with docs containing a uid of current user
+          FirebaseInstanceManager().createNewUserDocument();
+
           RouteManager().navigateToRoute(context, "/login");
         } on Exception catch (e) {
           return ("Registrierung fehlgeschlagen: " + e.toString().replaceAll("Exception: ", ""));
