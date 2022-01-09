@@ -26,14 +26,16 @@ class _DetailsScreenBody extends State<DetailsScreenBody> {
   List<Ohlc>? _ohlcData;
 
   late TimeInterval _pressedTimeInterval;
-
   double? _growthRate;
+
+  late TooltipBehavior _tooltipBehavior;
 
   @override
   void initState() {
     _pressedTimeInterval = TimeInterval.oneDay;
+    _tooltipBehavior = _getTooltipBehavior();
     _ohlcFuture = _ohlcHistoryApiService.getOhlc(widget._crypto.id ?? "no valid id", _pressedTimeInterval);
-    _setGrowthRate();
+    _setValues();
     super.initState();
   }
 
@@ -45,7 +47,7 @@ class _DetailsScreenBody extends State<DetailsScreenBody> {
     );
   }
 
-  _setGrowthRate() {
+  _setValues() {
     if (_ohlcData == null || _pressedTimeInterval == TimeInterval.oneDay) {
       _growthRate = widget._crypto.price_change_percentage_24h;
     } else {
@@ -60,7 +62,7 @@ class _DetailsScreenBody extends State<DetailsScreenBody> {
     _ohlcFuture = null;
     _ohlcFuture = _ohlcHistoryApiService.getOhlc(widget._crypto.id ?? "no valid id", _pressedTimeInterval);
     _ohlcData = await _ohlcFuture;
-    _setGrowthRate();
+    _setValues();
     setState(() {});
   }
 
@@ -81,10 +83,13 @@ class _DetailsScreenBody extends State<DetailsScreenBody> {
           xValueMapper: (Ohlc data, _) {
             return DateTime.fromMillisecondsSinceEpoch(data.time);
           },
+          xAxisName: "Zeit",
+          yAxisName: "Preis",
           lowValueMapper: (Ohlc data, _) => data.low,
           highValueMapper: (Ohlc data, _) => data.high,
           openValueMapper: (Ohlc data, _) => data.open,
           closeValueMapper: (Ohlc data, _) => data.close,
+          enableTooltip: true,
         ),
       ],
       // TODO: german format - but it's some expense, because Syncfusion-chart already auto-formats the axis if it detects only time of day or year
@@ -92,6 +97,7 @@ class _DetailsScreenBody extends State<DetailsScreenBody> {
       primaryYAxis: NumericAxis(
         numberFormat: NumberFormat.simpleCurrency(locale: "de"),
       ),
+      tooltipBehavior: _tooltipBehavior,
     );
   }
 
@@ -156,7 +162,7 @@ class _DetailsScreenBody extends State<DetailsScreenBody> {
                     children: [
                       const Text("G/V(%): "),
                       Text(
-                        _growthRate != null ? _growthRate!.toStringAsFixed(2) + " %" : "",
+                        _growthRate != null ? _growthRate!.toStringAsFixed(2).replaceAll(".", ",") + " %" : "",
                         style: TextStyle(
                           color: (_growthRate == null || _growthRate! < 0.0) ? Colors.red : Colors.green,
                         ),
@@ -166,6 +172,15 @@ class _DetailsScreenBody extends State<DetailsScreenBody> {
                   Expanded(
                     child: _createChart(snapshot),
                   ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      _getStartValueText(snapshot),
+                      _getEndValueText(snapshot),
+                    ],
+                  ),
+                  const SizedBox(height: 5),
                 ],
               ),
             ),
@@ -176,6 +191,24 @@ class _DetailsScreenBody extends State<DetailsScreenBody> {
           );
         }
       },
+    );
+  }
+
+  Text _getStartValueText(AsyncSnapshot snapshot) {
+    return Text(
+        "Start: " + OhlcCalculator().getOpenStartValueByOhlcData(snapshot.data).toString().replaceAll(".", ",") + " €");
+  }
+
+  Text _getEndValueText(AsyncSnapshot snapshot) {
+    return Text(
+        "Ende: " + OhlcCalculator().getOpenEndValueByOhlcData(snapshot.data).toString().replaceAll(".", ",") + " €");
+  }
+
+  TooltipBehavior _getTooltipBehavior() {
+    return TooltipBehavior(
+      enable: true,
+      color: CustomColors.cryptoLabBackground,
+
     );
   }
 }

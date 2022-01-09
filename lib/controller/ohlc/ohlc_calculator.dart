@@ -23,11 +23,6 @@ class OhlcCalculator {
     double avgStart = getOpenStartValueByOhlcData(ohlcData);
     double avgEnd = getOpenEndValueByOhlcData(ohlcData);
 
-    double growthRate = avgEnd / avgStart;
-    if (growthRate < 1.0) {
-      return (1.0 - growthRate) * (-1.0) * 100;
-    } else {
-      return (growthRate * 100 - 100);
-    }
+    return ((avgEnd - avgStart) / avgStart) * 100;
   }
 }

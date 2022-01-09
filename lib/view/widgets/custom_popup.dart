@@ -186,7 +186,7 @@ class CustomPopupState extends State<CustomPopup> {
             if (_formKey.currentState!.validate() && checkCurrentPasswordValid) {
               _formKey.currentState!.save();
               widget.onConfirmationTextFieldValues!([
-                _textEditingController1.text,
+                _textEditingController2.text,
               ]);
             }
           }
