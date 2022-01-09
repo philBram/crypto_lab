@@ -153,10 +153,10 @@ class _OverViewScreenBody extends State<OverViewScreenBody> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  Text(crypto.current_price.toString() + ' €'),
+                  Text(crypto.current_price.toString().replaceAll(".", ",") + ' €'),
                   Text(
                     ((crypto.price_change_percentage_24h != null)
-                        ? crypto.price_change_percentage_24h!.toStringAsFixed(2) + " %"
+                        ? crypto.price_change_percentage_24h!.toStringAsFixed(2).replaceAll(".", ",") + " %"
                         : "change not found"),
                     style: TextStyle(
                         color: (crypto.price_change_percentage_24h == null || crypto.price_change_percentage_24h! < 0.0)
