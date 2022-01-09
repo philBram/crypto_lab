@@ -102,4 +102,16 @@ class AuthenticationService {
   Future<void> changePassword(String newPassword) async {
     await _auth.currentUser!.updatePassword(newPassword);
   }
+
+  String? validateEmail(String? emailInput) {
+    if (emailInput!.isEmpty) {
+      return "E-Mail ist erforderlich.";
+    }
+    /// https://html.spec.whatwg.org/multipage/input.html#e-mail-state-%28type=email%29
+    if (!emailInput.contains(RegExp(
+        r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$"))) {
+      return "Keine valide E-Mail.";
+    }
+    return null;
+  }
 }

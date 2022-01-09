@@ -179,14 +179,19 @@ class CustomPopupState extends State<CustomPopup> {
       ),
       onPressed: () async {
         if (_isInputFieldPopup()) {
-          checkCurrentPasswordValid =
-              await AuthenticationService().validateCurrentPassword(_textEditingController1.text);
-          setState(() {});
-          if (_formKey.currentState!.validate() && checkCurrentPasswordValid) {
-            _formKey.currentState!.save();
-            widget.onConfirmationTextFieldValues!([
-              _textEditingController1.text,
-            ]);
+          if (widget.popupType == PopupType.changePassword) {
+            checkCurrentPasswordValid =
+            await AuthenticationService().validateCurrentPassword(_textEditingController1.text);
+            setState(() {});
+            if (_formKey.currentState!.validate() && checkCurrentPasswordValid) {
+              _formKey.currentState!.save();
+              widget.onConfirmationTextFieldValues!([
+                _textEditingController1.text,
+              ]);
+            }
+          }
+          else if(widget.popupType == PopupType.oneStandardInputField) {
+            // TODO: implement if necessary
           }
         }
         widget.onConfirmationCallback!(true);

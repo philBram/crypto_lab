@@ -133,14 +133,25 @@ class _OverViewScreenBody extends State<OverViewScreenBody> {
           Navigator.of(context).pushNamed("/details", arguments: crypto);
         },
         // if crypto data is null => output a "not found" String instead, toString() on null will not throw an exception
-        leading: Image.network(crypto.image ??
-            "https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fwww.trendycovers.com%2Fcovers%2F1324229779.jpg&f=1&nofb=1"),
+        leading: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Image.network(
+              crypto.image ??
+                  "https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fwww.trendycovers.com%2Fcovers%2F1324229779.jpg&f=1&nofb=1",
+              width: 45,
+              height: 45,
+            ),
+          ],
+        ),
         title: Text(crypto.name ?? "name not found"),
         subtitle: Text(crypto.symbol ?? "symbol not found"),
         trailing: FittedBox(
           child: Row(
             children: [
               Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Text(crypto.current_price.toString() + ' €'),
                   Text(
