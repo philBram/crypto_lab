@@ -11,6 +11,7 @@ enum PopupType {
   changePassword,
   oneStandardInputField,
   twoStandardInputFields,
+  oneDigitInputField,
 }
 
 enum PasswordInputFieldType {
@@ -102,6 +103,8 @@ class CustomPopupState extends State<CustomPopup> {
         return true;
       case PopupType.changePassword:
         return true;
+      case PopupType.oneDigitInputField:
+        return true;
       default:
         return false;
     }
@@ -130,8 +133,16 @@ class CustomPopupState extends State<CustomPopup> {
         // TODO: add popup with two standard input fields when needed
       }
       return inputFieldWidgets;
-    } else {
-      return const <Widget>[];
+    }
+    else if (widget.popupType == PopupType.oneDigitInputField) {
+      List<TextFormField> digitInputFields = [
+        _buildDigitInputField(),
+      ];
+      inputFieldWidgets.addAll(digitInputFields);
+      return inputFieldWidgets;
+    }
+    else {
+    return const <Widget>[];
     }
   }
 
@@ -190,7 +201,15 @@ class CustomPopupState extends State<CustomPopup> {
               ]);
             }
           }
-          else if(widget.popupType == PopupType.oneStandardInputField) {
+          else if (widget.popupType == PopupType.oneDigitInputField) {
+            if (_formKey.currentState!.validate()) {
+              _formKey.currentState!.save();
+              widget.onConfirmationTextFieldValues!([
+                _textEditingController1.text,
+              ]);
+            }
+          }
+          else if (widget.popupType == PopupType.oneStandardInputField) {
             // TODO: implement if necessary
           }
         }
@@ -218,6 +237,26 @@ class CustomPopupState extends State<CustomPopup> {
         }
         return null;
       },
+    );
+  }
+
+  TextFormField _buildDigitInputField() {
+    return TextFormField(
+      keyboardType: TextInputType.number,
+      decoration: const InputDecoration(
+        labelText: "Eingabe",
+      ),
+      controller: _textEditingController1,
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return "Bitte etwas eingeben!";
+        }
+        else if (!value.contains(RegExp(
+            r"^[+]?([0-9]+(?:[\.][0-9]*)?|\.[0-9]+)$"))) {
+          return "Kein valider Wert!";
+        }
+        return null;
+      }
     );
   }
 

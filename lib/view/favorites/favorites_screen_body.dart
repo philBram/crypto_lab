@@ -1,5 +1,6 @@
 import 'package:crypto_lab/controller/firebase_instance_service.dart';
 import 'package:crypto_lab/model/crypto.dart';
+import 'package:crypto_lab/view/widgets/custom_popup.dart';
 import 'package:flutter/material.dart';
 
 class FavoritesScreenBody extends StatelessWidget {
@@ -58,7 +59,11 @@ class FavoritesScreenBody extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.fromLTRB(15, 0, 0, 0),
                 child: _addRemoveFavorites(context, crypto),
-              )
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(15, 0, 0, 0),
+                child: _doSomething(context),
+              ),
             ],
           ),
         ),
@@ -73,6 +78,33 @@ class FavoritesScreenBody extends StatelessWidget {
       },
       child: const Icon(
         Icons.delete,
+        color: Colors.deepOrange,
+      ),
+    );
+  }
+
+  Widget _doSomething(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return CustomPopup(
+              title: "",
+              popupType: PopupType.oneDigitInputField,
+              buildContext: context,
+              content: "",
+              onConfirmationCallback: (bool value) {},
+              onConfirmationTextFieldValues: (List<String> values) {
+                String myValue = values.first;
+                Navigator.pop(context);
+              },
+            );
+          },
+        );
+      },
+      child: const Icon(
+        Icons.lock_outline,
         color: Colors.deepOrange,
       ),
     );
