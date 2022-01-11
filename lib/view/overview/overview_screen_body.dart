@@ -84,7 +84,7 @@ class _OverViewScreenBody extends State<OverViewScreenBody> {
       child: FutureBuilder(
         future: _cryptoList,
         builder: (BuildContext context, AsyncSnapshot snapshot) {
-          if (snapshot.hasData) {
+          if (snapshot.connectionState == ConnectionState.done && snapshot.hasData) {
             // store snapshot data in _searchList and _referenceList
             // only for the first time FutureBuilder returns the data
             // so it wont be overridden and a search is possible

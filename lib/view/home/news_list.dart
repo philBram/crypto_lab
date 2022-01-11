@@ -61,22 +61,20 @@ class _NewsList extends State<NewsList> {
   void _initSensorStreamListener() {
     _streamSubscriptions.add(
       magnetometerEvents.listen(
-            (MagnetometerEvent event) {
-              if (mounted) {
-                setState(() {
-                  if (event.x > _yRotationThreshold) {
-                    _currentListPosition = _currentListPosition <= 0.0
-                        ? _currentListPosition
-                        : _currentListPosition - _scrollingSpeed;
-                    _scrollToIndex(_currentListPosition.round());
-                  } else if (event.x < -_yRotationThreshold) {
-                    _currentListPosition = _currentListPosition > _listLength
-                        ? _currentListPosition
-                        : _currentListPosition + _scrollingSpeed;
-                    _scrollToIndex(_currentListPosition.round());
-                  }
-                });
+        (MagnetometerEvent event) {
+          if (mounted) {
+            setState(() {
+              if (event.x > _yRotationThreshold) {
+                _currentListPosition =
+                    _currentListPosition <= 0.0 ? _currentListPosition : _currentListPosition - _scrollingSpeed;
+                _scrollToIndex(_currentListPosition.round());
+              } else if (event.x < -_yRotationThreshold) {
+                _currentListPosition =
+                    _currentListPosition > _listLength ? _currentListPosition : _currentListPosition + _scrollingSpeed;
+                _scrollToIndex(_currentListPosition.round());
               }
+            });
+          }
         },
       ),
     );
