@@ -1,6 +1,5 @@
 import 'package:crypto_lab/controller/firebase_instance_service.dart';
 import 'package:crypto_lab/model/crypto.dart';
-import 'package:crypto_lab/view/widgets/custom_popup.dart';
 import 'package:flutter/material.dart';
 
 class FavoritesScreenBody extends StatelessWidget {
@@ -55,13 +54,13 @@ class FavoritesScreenBody extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  Text(crypto.current_price.toString() + ' €'),
+                  Text(crypto.currentPrice.toString() + ' €'),
                   Text(
-                    ((crypto.price_change_percentage_24h != null)
-                        ? crypto.price_change_percentage_24h!.toStringAsFixed(2) + " %"
+                    ((crypto.priceChangePercentage_24h != null)
+                        ? crypto.priceChangePercentage_24h!.toStringAsFixed(2) + " %"
                         : "Preis-Änderung nicht gefunden"),
                     style: TextStyle(
-                        color: (crypto.price_change_percentage_24h == null || crypto.price_change_percentage_24h! < 0.0)
+                        color: (crypto.priceChangePercentage_24h == null || crypto.priceChangePercentage_24h! < 0.0)
                             ? Colors.red
                             : Colors.green),
                   ),

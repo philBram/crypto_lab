@@ -49,7 +49,7 @@ class _DetailsScreenBody extends State<DetailsScreenBody> {
 
   _setValues() {
     if (_ohlcData == null || _pressedTimeInterval == TimeInterval.oneDay) {
-      _growthRate = widget._crypto.price_change_percentage_24h;
+      _growthRate = widget._crypto.priceChangePercentage_24h;
     } else {
       _growthRate = OhlcCalculator().getGrowthRateByOhlcData(_ohlcData!);
     }

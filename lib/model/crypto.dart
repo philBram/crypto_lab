@@ -10,15 +10,15 @@ class Crypto {
   final String? symbol;
   final String? name;
   final String? image;
-  final double? current_price;
-  final double? market_cap;
-  final double? total_volume;
+  final double? currentPrice;
+  final double? marketCap;
+  final double? totalVolume;
   final double? high_24h;
   final double? low_24h;
-  final double? price_change_24h;
-  final double? price_change_percentage_24h;
-  final double? market_cap_change_24h;
-  final double? market_cap_change_percentage_24h;
+  final double? priceChange_24h;
+  final double? priceChangePercentage_24h;
+  final double? marketCapChange_24h;
+  final double? marketCapChangePercentage_24h;
   final double? ath;
   final double? atl;
 
@@ -27,15 +27,15 @@ class Crypto {
     required this.symbol,
     required this.name,
     required this.image,
-    required this.current_price,
-    required this.market_cap,
-    required this.total_volume,
+    required this.currentPrice,
+    required this.marketCap,
+    required this.totalVolume,
     required this.high_24h,
     required this.low_24h,
-    required this.price_change_24h,
-    required this.price_change_percentage_24h,
-    required this.market_cap_change_24h,
-    required this.market_cap_change_percentage_24h,
+    required this.priceChange_24h,
+    required this.priceChangePercentage_24h,
+    required this.marketCapChange_24h,
+    required this.marketCapChangePercentage_24h,
     required this.ath,
     required this.atl,
   });

@@ -47,6 +47,9 @@ dependencies:
   firebase_auth: ^3.3.0
   cloud_firestore: ^3.1.1
 
+  # A small command line utility to generate a class (UML or similar) diagram from a Dart package.
+  dcdg: ^4.0.1
+
   #The Font Awesome Icon pack available as Flutter Icons.
   #Provides 1600 additional icons to use in your apps.
   font_awesome_flutter: ^9.2.0
