@@ -1,10 +1,8 @@
 import 'package:crypto_lab/controller/firebase_instance_service.dart';
-import 'package:crypto_lab/controller/route_manager.dart';
 import 'package:crypto_lab/view/home/home_screen.dart';
 import 'package:crypto_lab/view/widgets/custom_colors.dart';
 import 'package:crypto_lab/view/widgets/custom_snackbar.dart';
 import 'package:crypto_lab/controller/authentication_service.dart';
-import 'package:crypto_lab/controller/route_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_login/flutter_login.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';

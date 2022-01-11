@@ -15,7 +15,7 @@ class CustomSnackbar {
 
   CustomSnackbar._internal();
 
-  final Duration _duration = const Duration(seconds: 3);
+  final Duration _duration = const Duration(milliseconds: 2200);
   final String _unknownText = "Unbekannt";
 
   /// Shows a snackbar with plain text.
