@@ -39,6 +39,11 @@ class CryptoLab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // deactivate landscape mode
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Crypto Lab',

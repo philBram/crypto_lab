@@ -193,7 +193,9 @@ class _OverViewScreenBody extends State<OverViewScreenBody> {
                 Icons.favorite,
                 color: Colors.red,
               )
-            : const Icon(Icons.favorite_border),
+            : const Icon(
+                Icons.favorite_border,
+              ),
       );
     }
   }
