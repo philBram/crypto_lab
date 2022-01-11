@@ -101,8 +101,8 @@ class NavBar extends StatelessWidget {
               style: TextStyle(color: CustomColors.cryptoLabLightFont),
             ),
             onTap: () async {
-              await AuthenticationService().signOut();
-              RouteManager().navigateToRoute(context, "/login");
+              await AuthenticationService().signOut(context);
+              RouteManager().navigateToRoute(context, "/");
             },
           ),
         ],

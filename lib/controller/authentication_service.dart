@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_login/flutter_login.dart';
 
 class AuthenticationService {
@@ -76,7 +77,7 @@ class AuthenticationService {
     }
   }
 
-  Future<void> signOut() async {
+  Future<void> signOut(BuildContext context) async {
     try {
       await _auth.signOut();
     } on Exception catch(e) {

@@ -161,9 +161,9 @@ class _SettingsScreenBody extends State<SettingsScreenBody> {
       );
     } on Exception catch (e) {
       CustomSnackbar().displayException(context: context, status: SnackbarStatus.failure, exception: e);
-      await AuthenticationService().signOut();
+      await AuthenticationService().signOut(context);
     } finally {
-      RouteManager().navigateToRoute(context, "/login");
+      RouteManager().navigateToRoute(context, "/");
     }
   }
 }

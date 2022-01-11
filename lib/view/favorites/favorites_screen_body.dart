@@ -35,20 +35,31 @@ class FavoritesScreenBody extends StatelessWidget {
           Navigator.of(context).pushNamed("/details", arguments: crypto);
         },
         // if crypto data is null => output a "not found" String instead, toString() on null will not throw an exception
-        leading: Image.network(crypto.image ??
-            "https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fwww.trendycovers.com%2Fcovers%2F1324229779.jpg&f=1&nofb=1"),
-        title: Text(crypto.name ?? "name not found"),
-        subtitle: Text(crypto.symbol ?? "symbol not found"),
+        leading: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Image.network(
+              crypto.image ??
+                  "https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fwww.trendycovers.com%2Fcovers%2F1324229779.jpg&f=1&nofb=1",
+              width: 45,
+              height: 45,
+            ),
+          ],
+        ),
+        title: Text(crypto.name ?? "Name nicht gefunden"),
+        subtitle: Text(crypto.symbol ?? "Logo nicht gefunden"),
         trailing: FittedBox(
           child: Row(
             children: [
               Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Text(crypto.current_price.toString() + ' €'),
                   Text(
                     ((crypto.price_change_percentage_24h != null)
                         ? crypto.price_change_percentage_24h!.toStringAsFixed(2) + " %"
-                        : "change not found"),
+                        : "Preis-Änderung nicht gefunden"),
                     style: TextStyle(
                         color: (crypto.price_change_percentage_24h == null || crypto.price_change_percentage_24h! < 0.0)
                             ? Colors.red
@@ -59,10 +70,6 @@ class FavoritesScreenBody extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.fromLTRB(15, 0, 0, 0),
                 child: _addRemoveFavorites(context, crypto),
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(15, 0, 0, 0),
-                child: _doSomething(context),
               ),
             ],
           ),
@@ -78,33 +85,6 @@ class FavoritesScreenBody extends StatelessWidget {
       },
       child: const Icon(
         Icons.delete,
-        color: Colors.deepOrange,
-      ),
-    );
-  }
-
-  Widget _doSomething(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return CustomPopup(
-              title: "",
-              popupType: PopupType.oneDigitInputField,
-              buildContext: context,
-              content: "",
-              onConfirmationCallback: (bool value) {},
-              onConfirmationTextFieldValues: (List<String> values) {
-                String myValue = values.first;
-                Navigator.pop(context);
-              },
-            );
-          },
-        );
-      },
-      child: const Icon(
-        Icons.lock_outline,
         color: Colors.deepOrange,
       ),
     );

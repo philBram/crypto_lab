@@ -60,7 +60,7 @@ class _OverViewScreenBody extends State<OverViewScreenBody> {
         decoration: const InputDecoration(
           prefixIcon: Icon(Icons.search),
           border: OutlineInputBorder(),
-          hintText: 'search for coins',
+          hintText: 'Suche nach Krypto-Währungen',
           contentPadding: EdgeInsets.symmetric(horizontal: 8, vertical: 6),
         ),
         controller: _textEditingController,
@@ -145,8 +145,8 @@ class _OverViewScreenBody extends State<OverViewScreenBody> {
             ),
           ],
         ),
-        title: Text(crypto.name ?? "name not found"),
-        subtitle: Text(crypto.symbol ?? "symbol not found"),
+        title: Text(crypto.name ?? "Name nicht gefunden"),
+        subtitle: Text(crypto.symbol ?? "Logo nicht gefunden"),
         trailing: FittedBox(
           child: Row(
             children: [
@@ -157,7 +157,7 @@ class _OverViewScreenBody extends State<OverViewScreenBody> {
                   Text(
                     ((crypto.price_change_percentage_24h != null)
                         ? crypto.price_change_percentage_24h!.toStringAsFixed(2).replaceAll(".", ",") + " %"
-                        : "change not found"),
+                        : "Preis-Änderung nicht gefunden"),
                     style: TextStyle(
                         color: (crypto.price_change_percentage_24h == null || crypto.price_change_percentage_24h! < 0.0)
                             ? Colors.red
