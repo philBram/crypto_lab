@@ -1,16 +1,35 @@
 # Crypto Lab
 
-Crypto-Lab, your contact point for everything that revolves around cryptos
 
-## Getting Started
+Ist eine App, die dazu da ist, die Übersicht über alle Kryptowährung an einem Ort zu haben.
 
-This project is a starting point for a Flutter application.
+##Projekt Beschreibung
+Die App zeigt dir alle Kryptowährungen an und zu jeder Kryptowährung kann man den Kurssehen.
+Um immer auf dem Laufenden zu bleiben kann man direkt in der App relevante Nachrichten anschauen.
+Dazu kann man, um einen besseren Überblick zu bekommen, seine Lieblings Kryptowährung auswählen und sie gesondert auf einem Blick anschauen.
+Features
+-    Kryptowährung Übersicht
+-    Krypto-Nachrichten
+-    Favoritenliste
+-    Kryptowährungs-Preiskurse
+-    Login
+-    Unitests
+-    CRUD: create, read, update und delete Kryptowährungen mit Firebase
 
-A few resources to get you started if this is your first Flutter project:
+##Wie man die App installiert
+…
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+##Code-Aufbau
+Requierements:
+-    jedes Betriebssystem (z.B.: Windows, Linux oder MacOS)
+-    IDE mit Flutter SDK (empfohlen: 2.8.1, Android Studio)
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+##Tools:
+-    Flutter
+-    Firebase
+-    CoinGecko API
+-    NewsAPI
+
+##Struckture:
+-    Im „lib“ Ordner finden wir zuerst die Main datei. Allgemein haben wir das Projekt mit dem MVC Pattern aufgebaut. Im Controller sind unsere Service, wie z.B.: die Authentifikation mit Firebase.
+     Im Model sind unsere Logischen Daten wie z.B.: Crypto, die alle Informationen, wie Name, beinhaltet. Und im View Ordner sind unsere UI Elemente und die Einzelnen Screens. Jeder Screen ist aufgeteilt in screen und screen_body.
