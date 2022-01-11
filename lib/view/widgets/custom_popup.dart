@@ -167,7 +167,7 @@ class CustomPopupState extends State<CustomPopup> {
     return TextButton(
       style: TextButton.styleFrom(
         primary: CustomColors.cryptoLabLightFont,
-        backgroundColor: CustomColors.cryptoLabButton,
+        backgroundColor: Colors.red.shade900,
       ),
       child: const Text(
         cancelButtonText,

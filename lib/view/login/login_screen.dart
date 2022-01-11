@@ -46,7 +46,6 @@ class LoginScreen extends StatelessWidget {
         try {
           await AuthenticationService().loginUser(loginData);
           _displayLoginSuccessful(context);
-          RouteManager().navigateToRoute(context, "/home");
         } on Exception catch (e) {
           return ("Anmeldung fehlgeschlagen: " + e.toString().replaceAll("Exception: ", ""));
         }
@@ -63,8 +62,7 @@ class LoginScreen extends StatelessWidget {
 
           // Add new users collection with docs containing a uid of current user
           FirebaseInstanceManager().createNewUserDocument();
-
-          RouteManager().navigateToRoute(context, "/login");
+          Navigator.pushNamedAndRemoveUntil(context, "/", (r) => false);
         } on Exception catch (e) {
           return ("Registrierung fehlgeschlagen: " + e.toString().replaceAll("Exception: ", ""));
         }
@@ -89,7 +87,6 @@ class LoginScreen extends StatelessWidget {
             try {
               await AuthenticationService().signInAnonymously();
               _displayLoginSuccessful(context);
-              RouteManager().navigateToRoute(context, "/home");
               return null;
             } on Exception catch (e) {
               return ("Anmeldung fehlgeschlagen: " + e.toString().replaceAll("Exception: ", ""));
