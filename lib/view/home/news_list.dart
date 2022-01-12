@@ -204,4 +204,13 @@ class _NewsList extends State<NewsList> {
   void _scrollToIndex(index) {
     _autoScrollController.scrollToIndex(index, preferPosition: AutoScrollPosition.begin);
   }
+
+  /// cancel all stream-subscriptions
+  @override
+  void dispose() {
+    super.dispose();
+    for (final subscription in _streamSubscriptions) {
+      subscription.cancel();
+    }
+  }
 }
