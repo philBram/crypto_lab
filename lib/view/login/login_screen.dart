@@ -1,4 +1,5 @@
 import 'package:crypto_lab/controller/firebase_instance_service.dart';
+import 'package:crypto_lab/controller/validator.dart';
 import 'package:crypto_lab/view/home/home_screen.dart';
 import 'package:crypto_lab/view/widgets/custom_colors.dart';
 import 'package:crypto_lab/view/widgets/custom_snackbar.dart';
@@ -18,14 +19,8 @@ class LoginScreen extends StatelessWidget {
     return FlutterLogin(
       //title: 'Crypto-Lab',
       logo: 'assets/images/logo_white_simple2.png',
-      passwordValidator: (password) {
-        if (password == null || password.length < 6) {
-          return validatorPasswordTooShort;
-        } else {
-          return null;
-        }
-      },
-      userValidator: (email) => AuthenticationService().validateEmail(email),
+      passwordValidator: (password) => Validator().validatePassword(password),
+      userValidator: (email) => Validator().validateEmail(email),
       messages: CustomLoginMessages.getLoginMessages(),
       onSubmitAnimationCompleted: () {
         Navigator.of(context).pushReplacement(MaterialPageRoute(

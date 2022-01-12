@@ -33,7 +33,8 @@ const String hintTextNewPassword = "Neues Passwort";
 const String hintTextConfirmNewPassword = "Neues Passwort wiederholen";
 const String validatorWrongPassword = "Passwort ist falsch!";
 const String validatorPasswordsDontMatch = "Passwörter stimmen nicht überein!";
-const String validatorPasswordTooShort = "Passwort-Mindestlänge von 6 Zeichen!";
+const String validatorPasswordTooShort = "Passwort-Mindestlänge von 8 Zeichen!";
+const String validatorPasswordUnsafe = "Buchstabe und Zahl erforderlich!";
 const String successResetPassword = "Es wurde eine Mail an die angegebene E-Mail-Adresse zum Zurücksetzen des Passwortes geschickt!";
 
 // validators
