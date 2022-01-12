@@ -1,4 +1,4 @@
-![logo-img](assets/readme/logo.png)
+# Crypto-Lab
 
 Crypto-Lab ist eine crossfunktionale Handy-Applikation, die es dem Nutzer ermöglicht, an Informationen rund um das Thema Kryptowährungen zu gelangen.
 
@@ -39,19 +39,22 @@ unteren "Anonym"-Button. Für die Nutzung aller Funktionen ist eine Registrierun
 
 #### Startseite & News
 <p>Nach erfolgreicher Anmeldung befindet man sich auf der Startseite. Dort sind allerlei News zu Krypto-Themen auffindbar. Die News lassen sich zusätzlich durch Kipp-Bewegungen des Handys nach rechts oder links durchscrollen.
-![home-img](assets/readme/home.png)</p>
+</p>
+![home-img](assets/readme/home.png)
 
 #### Navigation
 <p>Die Navigation durch die App erfolgt durch einen Klick auf das überall erreichbare Menü-Icon am oberen rechten Rand der App. Auch durch einen Swipe vom rechten App-Rand öffnet sich das Navigationsmenü.
-![navigation-img](assets/readme/navigation.png)</p>
+</p>
+<img align="right" alt="navigation-img" src="assets/readme/navigation.png">
 
 #### Gesamt-Übersicht aller Kryptos
 <p>Durch einen Klick auf "Krypto-Übersicht" erhält man eine geordnete Liste aller Krypto-Währungen. Eine Suche lässt den Nutzer schnell bestimmte Währungen finden. Einzelne Kryptos können durch einen Klick auf das Herz-Icon den Favoriten hinzugefügt werden.
-![overview-img](assets/readme/overview.png)</p>
+</p>
+![overview-img](assets/readme/overview.png)
 
 #### Kursverlauf einer Krypto-Währung
-<p>Klickt man innerhalb der Favoriten- oder Krypto-Übersicht auf eine bestimmte Coin, so erhält man ein Candle-Chart. Dieses lässt sich auf bestimmte Zeiträume anpassen.
-![detail-img](assets/readme/detail.png)</p>
+<p>Klickt man innerhalb der Favoriten- oder Krypto-Übersicht auf eine bestimmte Coin, so erhält man ein Candle-Chart. Dieses lässt sich auf bestimmte Zeiträume anpassen.</p>
+![detail-img](assets/readme/detail.png)
 
 #### Favoriten (nur für registrierte Nutzer)
 <p>In den Favoriten findet man seine Lieblings-Kryptos wieder. Durch einen Klick auf das Mülleimer-Symbol lassen sich Kryptos aus den Favoriten wieder entfernen</p>
