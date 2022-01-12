@@ -35,26 +35,26 @@ Favoritenliste betrachtet und gewählt werden.</p>
 <p>Die App ist in einem Gast und einem User-Modus benutzbar. Möchte man in die App hineinschnuppern, so genügt beim Login ein einfacher Klick auf den
 unteren "Anonym"-Button. Für die Nutzung aller Funktionen ist eine Registrierung erforderlich. Bei vergessenem Passwort lässt sich dieses durch Zuschicken einer E-Mail zurücksetzen.
 </p>
-<img align="right" alt="login-img" src="assets/readme/login.png" height="500">
+<img align="center" alt="login-img" src="assets/readme/login.png" height="500">
 
 #### Startseite & News
 <p>Nach erfolgreicher Anmeldung befindet man sich auf der Startseite. Dort sind allerlei News zu Krypto-Themen auffindbar. Die News lassen sich zusätzlich durch Kipp-Bewegungen des Handys nach rechts oder links durchscrollen.
 </p>
-<img align="right" alt="home-img" src="assets/readme/home.png" height="500">
+<img align="center" alt="home-img" src="assets/readme/home.png" height="500">
 
 #### Navigation
 <p>Die Navigation durch die App erfolgt durch einen Klick auf das überall erreichbare Menü-Icon am oberen rechten Rand der App. Auch durch einen Swipe vom rechten App-Rand öffnet sich das Navigationsmenü.
 </p>
-<img align="right" alt="navigation-img" src="assets/readme/navigation.png" height="500">
+<img align="center" alt="navigation-img" src="assets/readme/navigation.png" height="500">
 
 #### Gesamt-Übersicht aller Kryptos
 <p>Durch einen Klick auf "Krypto-Übersicht" erhält man eine geordnete Liste aller Krypto-Währungen. Eine Suche lässt den Nutzer schnell bestimmte Währungen finden. Einzelne Kryptos können durch einen Klick auf das Herz-Icon den Favoriten hinzugefügt werden.
 </p>
-<img align="right" alt="overview-img" src="assets/readme/overview.png" height="500">
+<img align="center" alt="overview-img" src="assets/readme/overview.png" height="500">
 
 #### Kursverlauf einer Krypto-Währung
 <p>Klickt man innerhalb der Favoriten- oder Krypto-Übersicht auf eine bestimmte Coin, so erhält man ein Candle-Chart. Dieses lässt sich auf bestimmte Zeiträume anpassen.</p>
-<img align="right" alt="detail-img" src="assets/readme/detail.png" height="500">
+<img align="center" alt="detail-img" src="assets/readme/detail.png" height="500">
 
 #### Favoriten (nur für registrierte Nutzer)
 <p>In den Favoriten findet man seine Lieblings-Kryptos wieder. Durch einen Klick auf das Mülleimer-Symbol lassen sich Kryptos aus den Favoriten wieder entfernen</p>
