@@ -22,6 +22,7 @@ gesondert auf einem Blick anschauen.
 2. Repository klonen
 3. [Firebase](https://console.firebase.google.com) registrieren
 4. Projekt erstellen und beim einrichten den Bündel Identifier: "com.example.crypto_lab" eingeben
+5. In Sign-in method in Authentication müssen die Anbieter "E-Mail-Adresse/Passwort " und "Anonym" aktiviert werden.
 
 ## Code-Aufbau
 ###Requierements:
