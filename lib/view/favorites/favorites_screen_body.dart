@@ -26,14 +26,14 @@ class FavoritesScreenBody extends StatelessWidget {
     );
   }
 
+  /// creates the list-view-items for a single [crypto]
   Widget _createListViewItems(BuildContext context, Crypto crypto) {
     return Card(
       child: ListTile(
         onTap: () {
-          // pass tapped Crypto instance to the details-screen => check _generateRoute in main.dart
+          /// pass tapped Crypto instance to the details-screen => check _generateRoute in main.dart
           Navigator.of(context).pushNamed("/details", arguments: crypto);
         },
-        // if crypto data is null => output a "not found" String instead, toString() on null will not throw an exception
         leading: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -77,6 +77,7 @@ class FavoritesScreenBody extends StatelessWidget {
     );
   }
 
+  /// add or remove a [crypto] from favorites
   Widget _addRemoveFavorites(BuildContext context, Crypto crypto) {
     return GestureDetector(
       onTap: () {

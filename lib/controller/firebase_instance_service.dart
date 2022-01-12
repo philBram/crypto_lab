@@ -11,6 +11,7 @@ class FirebaseInstanceManager {
 
   FirebaseInstanceManager._internal();
 
+  /// create new documents / collections so they can be used to store favorite coin information in them
   void createNewUserDocument() {
     String? userId = FirebaseAuth.instance.currentUser?.uid;
     FirebaseFirestore.instance.collection('users').doc(userId!).set({});
@@ -36,6 +37,7 @@ class FirebaseInstanceManager {
     return user == null || user.isAnonymous;
   }
 
+  /// delete coin [coinName] from the favorite coins for the currently logged in user
   void deleteFavoriteCoin({required String? coinName, required BuildContext context}) {
     FirebaseFirestore.instance
         .collection('users')
@@ -47,6 +49,7 @@ class FirebaseInstanceManager {
         context: context, status: SnackbarStatus.failure, displayText: '$coinName wurde aus Favoriten entfernt');
   }
 
+  /// add coin [coinName] to the favorite coins for the currently logged in user
   void addFavoriteCoin({required String? coinName, required Crypto crypto, required BuildContext context}) {
     FirebaseFirestore.instance
         .collection('users')

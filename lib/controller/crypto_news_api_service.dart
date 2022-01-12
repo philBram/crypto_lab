@@ -4,7 +4,7 @@ import 'package:crypto_lab/model/articles.dart';
 import 'package:http/http.dart' as http;
 
 class CryptoNewsApiService {
-  // https://newsapi.org/docs
+  /// https://newsapi.org/docs
   final String _baseUrl = "https://newsapi.org/v2/everything?";
   final String _keyWords = "q=crypto OR Bitcoin OR ethereum";
   final String newsArticleSize = "20";

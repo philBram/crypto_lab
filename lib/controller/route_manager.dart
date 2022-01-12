@@ -9,8 +9,7 @@ class RouteManager {
 
   void navigateToRoute(BuildContext context, String route) {
     Navigator.pop(context);
-    // only push if not already on current page to prevent multiple identical
-    // instances on stack
+    /// only push if not already on current page to prevent multiple identical instances on stack
     if (ModalRoute.of(context)?.settings.name != route) {
       Navigator.pushNamed(context, route);
     }
