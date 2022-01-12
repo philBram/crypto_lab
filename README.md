@@ -97,12 +97,12 @@ unteren "Anonym"-Button. Für die Nutzung aller Funktionen ist eine Registrierun
 
 #### View-Struktur
 
-<p>Für jede Route haben wir ein Screen-Body-Konzept verwendet, um für eine eventuelle Weiterentwicklung redundanten Code für die AppBar und NavBar-Aufrufe zu entfernen. Ziel sollte später ein Aufruf einer allgemeinen Screen-Klasse sein, die einen Seiten-Titel und die Body-Klasse als Übergabe-Parameter erhält. Dementsprechend haben wir für die Routen Packages angelegt, z.B. die Library `details` mit den Klassen `DetailsScreen` und `DetailsScreenBody` für die Anzeige der Candle-Charts.</p>
-<p>Widgets, die sich in nur einem Screen befinden, sind im jeweiligen Package auffindbar (z.B. `NewsList` in der Library `home`). Widgets, die wir angepasst haben und an verschiedenen Stellen aufgerufen werden, befinden sich in der Library `widgets`.</p>
+Für jede Route haben wir ein Screen-Body-Konzept verwendet, um für eine eventuelle Weiterentwicklung redundanten Code für die AppBar und NavBar-Aufrufe zu entfernen. Ziel sollte später ein Aufruf einer allgemeinen Screen-Klasse sein, die einen Seiten-Titel und die Body-Klasse als Übergabe-Parameter erhält. Dementsprechend haben wir für die Routen Packages angelegt, z.B. die Library `details` mit den Klassen `DetailsScreen` und `DetailsScreenBody` für die Anzeige der Candle-Charts.<br/><br/> 
+Widgets, die sich in nur einem Screen befinden, sind im jeweiligen Package auffindbar (z.B. `NewsList` in der Library `home`). Widgets, die wir angepasst haben und an verschiedenen Stellen aufgerufen werden, befinden sich in der Library `widgets`.
 
 #### Eigene benutzerdefinierte Widgets
 
-<p>Häufig verwendete Widgets und Farben haben wir modularisiert und für verschiedene Aufruf-Szenarien verfügbar gemacht. Diese befinden sich in der Library `widgets`. Ziel ist die Schaffung einer möglichst guten Grundlage für mögliche Weiterentwicklungen und die Vermeidung von redundantem Code. Beispiele sind das `CustomPopup`, die `CustomSnackbar` oder die `CustomColors`.</p>
+Häufig verwendete Widgets und Farben haben wir modularisiert und für verschiedene Aufruf-Szenarien verfügbar gemacht. Diese befinden sich in der Library `widgets`. Ziel ist die Schaffung einer möglichst guten Grundlage für mögliche Weiterentwicklungen und die Vermeidung von redundantem Code. Beispiele sind das `CustomPopup`, die `CustomSnackbar` oder die `CustomColors`.
 
 # About
 
