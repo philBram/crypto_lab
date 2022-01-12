@@ -1,4 +1,5 @@
 import 'package:crypto_lab/controller/authentication_service.dart';
+import 'package:crypto_lab/controller/validator.dart';
 import 'package:flutter/material.dart';
 
 import '../globals.dart';
@@ -181,6 +182,7 @@ class CustomPopupState extends State<CustomPopup> {
   /// Builds a "Bestätigen"-Button.
   Widget _buildConfirmationButton() {
     return TextButton(
+      key: const Key("popupConfirmationButton"),
       style: TextButton.styleFrom(
         primary: CustomColors.cryptoLabLightFont,
         backgroundColor: CustomColors.cryptoLabButton,
@@ -221,6 +223,7 @@ class CustomPopupState extends State<CustomPopup> {
   /// Builds an appropriate password input field depending on [passwordInputFieldType]
   TextFormField _buildPasswordInputField(PasswordInputFieldType passwordInputFieldType) {
     return TextFormField(
+      key: Key(passwordInputFieldType.toString() + "InputField"),
       decoration: _getPasswordInputDecoration(passwordInputFieldType),
       obscureText: true,
       enableSuggestions: false,
@@ -229,8 +232,8 @@ class CustomPopupState extends State<CustomPopup> {
       validator: (value) {
         if (value == null || value.isEmpty) {
           return validatorNoInput;
-        } else if ((passwordInputFieldType != PasswordInputFieldType.oldPassword) && (value.length < 6)) {
-          return validatorPasswordTooShort;
+        } else if (passwordInputFieldType != PasswordInputFieldType.oldPassword) {
+          return Validator().validatePassword(value);
         } else if ((passwordInputFieldType == PasswordInputFieldType.newPasswordConfirmation) &&
             (_textEditingController2.text != value)) {
           return validatorPasswordsDontMatch;
@@ -247,16 +250,7 @@ class CustomPopupState extends State<CustomPopup> {
         labelText: "Eingabe",
       ),
       controller: _textEditingController1,
-      validator: (value) {
-        if (value == null || value.isEmpty) {
-          return "Bitte etwas eingeben!";
-        }
-        else if (!value.contains(RegExp(
-            r"^[+]?([0-9]+(?:[\.][0-9]*)?|\.[0-9]+)$"))) {
-          return "Kein valider Wert!";
-        }
-        return null;
-      }
+      validator: (value) => Validator().validatePositiveNumber(value),
     );
   }
 
