@@ -86,18 +86,18 @@ unteren "Anonym"-Button. Für die Nutzung aller Funktionen ist eine Registrierun
 
 #### MVC-Pattern
 
-- Die Library ```model``` beinhaltet alle Klassen, die Objekte abbilden. Dabei handelt es sich um reine Daten-Klassen. Die Attribute der
-  Klassen ```crypto```, ```ohlc``` und ```articles``` werden nur auf Grundlage der API-Calls gesetzt.
-- Die Library ```controller``` beinhaltet alle Service-Klassen, die Berechnungen, Validierungen, API-Calls etc. durchführen. Dazu zählen unter anderem
+- Die Library `model` beinhaltet alle Klassen, die Objekte abbilden. Dabei handelt es sich um reine Daten-Klassen. Die Attribute der
+  Klassen `crypto`, `ohlc` und `articles` werden nur auf Grundlage der API-Calls gesetzt.
+- Die Library `controller` beinhaltet alle Service-Klassen, die Berechnungen, Validierungen, API-Calls etc. durchführen. Dazu zählen unter anderem
   der `AuthenticationService`, der alle Funktionen rund um den Login & die Registrierung bereitstellt oder den `CryptoNewsApiService`, welcher die
   Nachrichten aus der News API fetcht. Alle Controller-Klassen sind als Singleton realisiert und dienen dazu, die View-Klassen vom Umfang her zu
   entlasten, indem oft genutzte Logik dorthin ausgelagert wird.
-- In der Library ```view``` befinden sich dementsprechend die Widget-Builder. Innerhalb dieser Library haben wir eine weitere Package-Strukturierung
+- In der Library `view` befinden sich dementsprechend die Widget-Builder. Innerhalb dieser Library haben wir eine weitere Package-Strukturierung
   nach eigen erstellten Widgets oder den verschiedenen Routen vorgenommen.
 
 #### View-Struktur
 
-<p>Für jede Route haben wir ein Screen-Body-Konzept verwendet, um für eine eventuelle Weiterentwicklung redundanten Code für die AppBar und NavBar-Aufrufe zu entfernen. Ziel sollte später ein Aufruf einer allgemeinen Screen-Klasse sein, die einen Seiten-Titel und die Body-Klasse als Übergabe-Parameter erhält. Dementsprechend haben wir für die Routen Packages angelegt, z.B. die Library `details` mit den Klassen `DetailsScreen` und `DetailsScreenBody` für die Anzeige der Candle-Charts.</p>
+<p>Für jede Route haben wir ein Screen-Body-Konzept verwendet, um für eine eventuelle Weiterentwicklung redundanten Code für die AppBar und NavBar-Aufrufe zu entfernen. Ziel sollte später ein Aufruf einer allgemeinen Screen-Klasse sein, die einen Seiten-Titel und die Body-Klasse als Übergabe-Parameter erhält. Dementsprechend haben wir für die Routen Packages angelegt, z.B. die Library `details` mit den Klassen `DetailsScreen` und DetailsScreenBody für die Anzeige der Candle-Charts.</p>
 <p>Widgets, die sich in nur einem Screen befinden, sind im jeweiligen Package auffindbar (z.B. `NewsList` in der Library `home`). Widgets, die wir angepasst haben und an verschiedenen Stellen aufgerufen werden, befinden sich in der Library `widgets`.</p>
 
 #### Eigene benutzerdefinierte Widgets
