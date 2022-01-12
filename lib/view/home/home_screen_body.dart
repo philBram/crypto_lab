@@ -3,12 +3,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreenBody extends StatelessWidget {
-  // https://www.hicetnunc.xyz/objkt/278284
-  //final String backGroundImage = "https://ipfs.io/ipfs/bafybeicass6d3ftqyfigxciwfysnzm4aobfjuk4zvtueenvqqpjo3p75ju";
+  /// crypto_lab background-image
   final String backGroundImage = "assets/images/backGroundImage.gif";
-  final String backGroundImagePlaceholder = "assets/images/backGroundImagePlaceholder.jpg";
 
-  // [logo_white.png, logo_white_simple.png] in assets/images
+  /// crypto_lab logo
   final String imageLogo = "assets/images/logo_white_simple.png";
 
   const HomeScreenBody({Key? key}) : super(key: key);
@@ -17,16 +15,9 @@ class HomeScreenBody extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        // BackgroundImage for the hole screen
+        /// BackgroundImage for the hole screen
         SizedBox(
-          child: /*FadeInImage.assetNetwork(
-            // show placeholder as long as network image is not loaded yet
-            placeholder: backGroundImagePlaceholder,
-            image: backGroundImage,
-            fadeInDuration: const Duration(milliseconds: 1),
-            fit: BoxFit.cover,
-          ),*/
-              Image.asset(
+          child: Image.asset(
             backGroundImage,
             fit: BoxFit.cover,
           ),
@@ -38,10 +29,9 @@ class HomeScreenBody extends StatelessWidget {
     );
   }
 
+  /// create the crypto_lab logo and the news-list
   Widget _createStackElements() {
-    // 2 Columns with a logo and a ListView to display crypto news
     return Column(children: [
-      // logo
       Expanded(
         child: Image.asset(imageLogo, alignment: Alignment.topCenter),
       ),

@@ -13,41 +13,49 @@ class OverViewScreenBody extends StatefulWidget {
 }
 
 class _OverViewScreenBody extends State<OverViewScreenBody> {
+  /// API service and list for the returned future from the API service
   final CoinOverviewApiService _cryptoCoinsApi = CoinOverviewApiService();
-  final TextEditingController _textEditingController = TextEditingController();
-
-  // only true if _cryptoList returned List<Crypto> in FutureBuilder
-  bool _futureReturnedFlag = false;
   late Future<List<Crypto>> _cryptoList;
+
+  /// needed for search-bar
   List<Crypto> _referenceList = [];
   List<Crypto> _searchList = [];
+  final TextEditingController _textEditingController = TextEditingController();
+
+  /// needed to distinguish between favorite and not favorite coin
   List<String> _favCoins = [];
+
+  /// is needed for the search-bar
+  bool _futureReturnedFlag = false;
 
   @override
   void initState() {
     super.initState();
-    // Make Api call to get crypto coins and store Future in _cryptoList for later use
+
+    /// Make Api call to get crypto coins and store Future in _cryptoList for later use
     _cryptoList = _cryptoCoinsApi.getCrypto();
   }
 
   @override
   Widget build(BuildContext context) {
     return RefreshIndicator(
-        onRefresh: _pullRefresh,
-        child: Column(
-          children: [
-            _searchBar(),
-            _createCryptoView(),
-          ],
-        ));
+      onRefresh: _pullRefresh,
+      child: Column(
+        children: [
+          _searchBar(),
+          _createCryptoView(),
+        ],
+      ),
+    );
   }
 
   Future<void> _pullRefresh() async {
-    // reset flag and text of the TextField after refresh so new data can be loaded
+    /// reset flag and text of the TextField after refresh so new data can be loaded
     _futureReturnedFlag = false;
     _textEditingController.text = '';
-    // new API call and setState so that the Price change can get updated
-    // CoinGecko update-rate about 1 min
+
+    /// new API call and setState so that the Price change can get updated
+    /// CoinGecko update-rate about 1 min
     _cryptoList = _cryptoCoinsApi.getCrypto();
     setState(() {});
   }
@@ -70,7 +78,7 @@ class _OverViewScreenBody extends State<OverViewScreenBody> {
 
   void _searchKeywordChange(String text) {
     setState(() {
-      // filter keywords by coin-name and symbol-name and only show these in the ListView
+      /// filter keywords by coin-name and symbol-name and only show these in the ListView
       _searchList = _referenceList
           .where((element) =>
               element.name!.toLowerCase().contains(text.toLowerCase()) ||
@@ -85,21 +93,20 @@ class _OverViewScreenBody extends State<OverViewScreenBody> {
         future: _cryptoList,
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (snapshot.connectionState == ConnectionState.done && snapshot.hasData) {
-            // store snapshot data in _searchList and _referenceList
-            // only for the first time FutureBuilder returns the data
-            // so it wont be overridden and a search is possible
+            /// store snapshot data in _searchList and _referenceList only for the first time FutureBuilder returns
+            /// the data so it wont be overridden and a search is possible
             if (!_futureReturnedFlag) {
               _futureReturnedFlag = true;
               _searchList = snapshot.data;
               _referenceList = snapshot.data;
             }
-            // StreamBuilder to get the names of the currently favorite coins of the current user
+            /// StreamBuilder to get the names of the currently favorite coins of the current user
             return StreamBuilder(
                 stream: FirebaseInstanceManager().getCurrentUserFavoriteCoinsCollection().snapshots(),
                 builder: (BuildContext context, AsyncSnapshot snapshot) {
                   if (snapshot.hasData) {
-                    // store resolved Future in the _favCoin List so it is possible
-                    // to distinguish between a favorite coin and a not favorite coin
+                    /// store resolved Future in the _favCoin List so it is possible
+                    /// to distinguish between a favorite coin and a not favorite coin
                     _favCoins = [];
                     snapshot.data.docs.forEach((result) {
                       _favCoins.add(result.data()['coin_json']['name']);
@@ -129,10 +136,9 @@ class _OverViewScreenBody extends State<OverViewScreenBody> {
     return Card(
       child: ListTile(
         onTap: () {
-          // pass tapped Crypto instance to the details-screen
+          /// pass tapped Crypto instance to the details-screen
           Navigator.of(context).pushNamed("/details", arguments: crypto);
         },
-        // if crypto data is null => output a "not found" String instead, toString() on null will not throw an exception
         leading: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -178,16 +184,19 @@ class _OverViewScreenBody extends State<OverViewScreenBody> {
   }
 
   Widget _addRemoveFavorites(Crypto crypto) {
+    /// return no icon if logged in as anonymous user
     if (FirebaseInstanceManager().checkAnonymousUser()) {
-      return const Center();
+      return const SizedBox.shrink();
     } else {
       return GestureDetector(
         onTap: () {
+          /// add or delete coins from the favorites list
           _favCoins.contains(crypto.name)
               ? FirebaseInstanceManager().deleteFavoriteCoin(coinName: crypto.name, context: context)
               : FirebaseInstanceManager().addFavoriteCoin(coinName: crypto.name, crypto: crypto, context: context);
           setState(() {});
         },
+        /// show different icons for favorite and not favorite coins
         child: _favCoins.contains(crypto.name)
             ? const Icon(
                 Icons.favorite,
